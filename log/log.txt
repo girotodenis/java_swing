@@ -1,0 +1,15 @@
+03-12-2019 22:39:08,387  INFO  - Main                       - swing-ui
+03-12-2019 22:39:55,018  INFO  - Main                       - swing-ui
+03-12-2019 22:40:35,843  INFO  - Main                       - swing-ui
+03-12-2019 22:41:14,322  INFO  - Main                       - swing-ui
+03-12-2019 22:41:29,892  INFO  - Main                       - swing-ui
+03-12-2019 22:42:16,841  INFO  - Main                       - swing-ui
+03-12-2019 22:42:28,287  INFO  - Main                       - swing-ui
+03-12-2019 22:42:40,288  INFO  - Main                       - swing-ui
+03-12-2019 22:43:24,912  INFO  - Main                       - swing-ui
+03-12-2019 22:43:37,535  INFO  - Main                       - swing-ui
+03-12-2019 22:43:45,158  INFO  - Main                       - swing-ui
+03-12-2019 22:43:55,999  INFO  - Main                       - swing-ui
+03-12-2019 22:44:27,450  INFO  - Main                       - swing-ui
+03-12-2019 22:45:03,686  INFO  - Main                       - swing-ui
+03-12-2019 22:45:40,381  INFO  - Main                       - swing-ui
