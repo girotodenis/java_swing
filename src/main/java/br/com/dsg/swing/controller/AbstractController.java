@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 import br.com.dsg.swing.controller.action.AbstractAction;
+import br.com.dsg.swing.controller.action.Action;
 
 /**
  * @author Denis Giroto
@@ -41,7 +42,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
 	
 	private java.util.List<AbstractController> subControllers = new ArrayList<AbstractController>();
 	
-	private Map<String, AbstractAction> actions = new HashMap<String, AbstractAction>();
+	private Map<String, Action> actions = new HashMap<String, Action>();
 	
 	private Map<String, List<AbstractEventListener<?>>> eventListeners = new HashMap<String, List<AbstractEventListener<?>>>();
 	
@@ -79,7 +80,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
 	 * @param source
 	 * @param action
 	 */
-	protected void registerAction(Button source, AbstractAction action) {
+	protected void registerAction(Button source, Action action) {
 		if (source.getActionCommand() == null) {
 			throw new RuntimeException("Componente (Button) sem acao definida!");
 		}
@@ -98,7 +99,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
 	protected <T> void fireEvent(T event) {
 		if (eventListeners.get(event.getClass().getName()) != null) {
             for (AbstractEventListener eventListener : eventListeners.get(event.getClass().getName())) {
-                LOG.info("Evento: " + event.getClass().getName() + " com listener: " + eventListener.getClass().getName());
+                LOG.info("Evento: " + event.getClass().getSimpleName() + " com listener: " + eventListener.getClass().getName());
                 eventListener.handleEvent(event);
             }
         }
@@ -122,7 +123,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
         eventListeners.put(eventClass.getName(), listenersForEvent);
     }
 	
-	protected AbstractAction getAction(ActionEvent actionEvent) {
+	protected Action getAction(ActionEvent actionEvent) {
 		
 		String actionCommand = null;
 		if(actionEvent.getSource() instanceof AbstractButton) {
@@ -145,12 +146,12 @@ public abstract class AbstractController implements ActionListener, WindowListen
 	public void actionPerformed(ActionEvent actionEvent) {
 		try {
 			
-			AbstractAction action = getAction(actionEvent);
+			Action action = getAction(actionEvent);
 
 			if (action != null) {
 				LOG.info("Executando action: " + action.getClass());
 				try {
-					action.actionPerformed();
+					action.executar();
 				} catch (Exception ex) {
 					handlerException(ex);
 				}

@@ -6,6 +6,7 @@ package br.com.dsg.principal.view;
 import javax.swing.JFrame;
 
 import br.com.dsg.principal.view.componente.AppBar;
+import br.com.dsg.principal.view.componente.Menu;
 import br.com.dsg.swing.tela.layout.AbsoluteConstraints;
 import br.com.dsg.swing.tela.layout.AbsoluteLayout;
 import br.com.dsg.swing.util.Constantes;
@@ -20,6 +21,9 @@ public class PrincipalView extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -4304807636437465026L;
+	
+	private Menu menu;
+	public AbsoluteConstraints constraintsMenu;
 	
 	private AppBar appBar;
 	
@@ -41,15 +45,16 @@ public class PrincipalView extends JFrame {
 		appBar = new AppBar();
 		getContentPane().add(appBar, new AbsoluteConstraints(Constantes.LARGURA_MENU_ABERTO, 0, Constantes.LARGURA_APP_BAR, Constantes.ALTURA_APP_BAR));
         
-		
-		
+		this.menu = new Menu();
+		constraintsMenu = new AbsoluteConstraints(0, 0, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_APP);
+		add(menu, constraintsMenu);
 		
 		
 		
         botao = new java.awt.Button();
         botao.setName("botao01");
         botao.setLabel("Acao");
-        getContentPane().add(botao, new AbsoluteConstraints(100, 80, 100, 40));
+        getContentPane().add(botao, new AbsoluteConstraints(300, 80, 100, 40));
         
         
         target = new javax.swing.JPanel();
@@ -76,6 +81,11 @@ public class PrincipalView extends JFrame {
 
 	public AppBar getAppBar() {
 		return appBar;
+	}
+
+
+	public Menu getMenu() {
+		return menu;
 	}
 
 	
