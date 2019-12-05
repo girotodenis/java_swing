@@ -34,7 +34,7 @@ public class PropertiesUtil {
 					properties.setProperty(chave, config.getString(chave));
 				}
 				
-				properties.store(new FileOutputStream(external), "epol prehom");
+				//properties.store(new FileOutputStream(external), "epol prehom");
 			}
 			
 		} catch (Exception e) {
@@ -45,6 +45,10 @@ public class PropertiesUtil {
 	public static String get(String chave) {
 		return properties.getProperty(chave);
 		
+	}
+
+	public static int getInt(String string) {
+		return Integer.valueOf(get(string).replaceAll("[^0-9]", ""));
 	}
 
 }

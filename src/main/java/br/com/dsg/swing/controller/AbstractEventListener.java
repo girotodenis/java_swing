@@ -15,7 +15,7 @@ package br.com.dsg.swing.controller;
  *
  * @param <M> tipo do Evento que deverá ser tratado.
  */
-public interface AbstractEventListener<M extends AbstractEvent<?>> {
+public interface AbstractEventListener<M> {
 
 	 public void handleEvent(M event);
 
