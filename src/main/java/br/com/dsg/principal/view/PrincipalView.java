@@ -37,7 +37,7 @@ public class PrincipalView extends JFrame {
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setBackground(Constantes.COR_FUNDO_APP);
 		setLocationByPlatform(true);//centralizar
-		setUndecorated(true);//retirar barra
+		
 		getContentPane().setLayout(new AbsoluteLayout());
 		setResizable(false);
 		setSize(Constantes.LARGURA_APP, Constantes.ALTURA_APP);

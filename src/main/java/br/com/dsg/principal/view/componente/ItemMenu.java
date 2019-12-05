@@ -1,5 +1,13 @@
 package br.com.dsg.principal.view.componente;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+
 import br.com.dsg.swing.controller.action.AbstractAction;
 import br.com.dsg.swing.util.Constantes;
 
@@ -12,13 +20,14 @@ public class ItemMenu extends javax.swing.JPanel {
 	javax.swing.GroupLayout layoutItem = new javax.swing.GroupLayout(this);
 	private javax.swing.JPanel ind = new javax.swing.JPanel();
 	private javax.swing.JLabel jLabel = new javax.swing.JLabel();
+	private javax.swing.JLabel imagem = new javax.swing.JLabel();
 	
 	private int ordem = 0;
 	private int posicao = 0;
 	
 	private AbstractAction action;
 	
-	public ItemMenu(String nome, AbstractAction action) {
+	public ItemMenu(String nome, String imagepath, AbstractAction action) {
 		
 		setName(nome);
 		
@@ -45,13 +54,24 @@ public class ItemMenu extends javax.swing.JPanel {
         jLabel.setForeground(Constantes.COR_FUNDO_LABEL_ITEM_MENU);
         jLabel.setText(nome);
 		
+        Box box = Box.createHorizontalBox();
+        
+        if(imagepath==null) {
+        	imagepath = "/imagens/icons8-cardapio-16.png";
+        }
+        javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource(imagepath));
+		imagem.setIcon(icon);
+		box.add(ind);
+        box.add(imagem);
+        box.add(jLabel);
 		
         layoutItem.setHorizontalGroup(
             layoutItem.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layoutItem.createSequentialGroup()
                 .addComponent(ind, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         
@@ -72,6 +92,8 @@ public class ItemMenu extends javax.swing.JPanel {
             }
         });
 	}
+	
+	
 
 	public AbstractAction getAction() {
 		return action;

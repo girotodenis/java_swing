@@ -39,7 +39,13 @@ public class Main {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new PrincipalController();
+				LOG.info("PrincipalController criando...");
+				new PrincipalController()
+					//.habilitaMovimentavaoAppBar()
+					.addItemMenu("Home")
+					.addItemMenu("Configuração")
+					.visualizarApp();
+				LOG.info("PrincipalController criado");
 			}
 		});
 

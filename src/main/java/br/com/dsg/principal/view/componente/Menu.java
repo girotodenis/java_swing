@@ -5,12 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.swing.SwingUtilities;
-
 import br.com.dsg.swing.tela.layout.AbsoluteConstraints;
 import br.com.dsg.swing.tela.layout.AbsoluteLayout;
 import br.com.dsg.swing.util.Constantes;
-import br.com.dsg.swing.util.PropertiesUtil;
 
 public class Menu extends javax.swing.JPanel {
 
@@ -21,7 +18,7 @@ public class Menu extends javax.swing.JPanel {
 
 	private Map<String, ItemMenu> mapa = new HashMap<String, ItemMenu>();
 
-	private NomeSistema nomeSistema;
+	private BotaoMenu botaoMenu;
 	
 //	private boolean menuAberto = true;
 //	
@@ -44,15 +41,15 @@ public class Menu extends javax.swing.JPanel {
 		setBackground(Constantes.COR_FUNDO_MENU);
 		setLayout(new AbsoluteLayout());
 		
-		nomeSistema = new NomeSistema(PropertiesUtil.get("sistema"), 14);
-		add(nomeSistema, new AbsoluteConstraints(0, 0, Constantes.LARGURA_MENU_ABERTO, -1));
+		botaoMenu = new BotaoMenu(true);
+		add(botaoMenu, new AbsoluteConstraints(0, 0, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU));
 	}
 
 	public void addItem(ItemMenu item) {
 		mapa.put(item.getName(), item);
 		item.setOrdem(mapa.size());
 
-		add(item, new AbsoluteConstraints(0, item.getPosicao(), Constantes.LARGURA_MENU_ABERTO, -1));
+		add(item, new AbsoluteConstraints(0, item.getPosicao(), Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU));
 	}
 
 	public ItemMenu getItem(String nome) {
@@ -67,29 +64,29 @@ public class Menu extends javax.swing.JPanel {
 
 	public void encolheItens() {
 		
-		remove(nomeSistema);
-		nomeSistema = new NomeSistema(PropertiesUtil.get("sigla"), 12);
-		add(nomeSistema, new AbsoluteConstraints(0, 0, Constantes.LARGURA_MENU_FECHADO, Constantes.ALTURA_ITEM_MENU));
+		remove(botaoMenu);
+		botaoMenu = new BotaoMenu(false);
+		add(botaoMenu, new AbsoluteConstraints(0, 0, Constantes.LARGURA_MENU_FECHADO, Constantes.ALTURA_ITEM_MENU));
 		
 		List<ItemMenu> itens = mapa.values().stream().collect(Collectors.toList());
 		itens.forEach(i -> {
 
 			remove(i);
-			add(i, new AbsoluteConstraints(0, i.getPosicao(), Constantes.LARGURA_MENU_FECHADO, -1));
+			add(i, new AbsoluteConstraints(0, i.getPosicao(), Constantes.LARGURA_MENU_FECHADO, Constantes.ALTURA_ITEM_MENU));
 		});
 	}
 
 	public void expandeItens() {
 		
-		remove(nomeSistema);
-		nomeSistema = new NomeSistema(PropertiesUtil.get("sistema"), 14);
-		add(nomeSistema, new AbsoluteConstraints(0, 0, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU));
+		remove(botaoMenu);
+		botaoMenu = new BotaoMenu(true);
+		add(botaoMenu, new AbsoluteConstraints(0, 0, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU));
 		
 		List<ItemMenu> itens = mapa.values().stream().collect(Collectors.toList());
 		itens.forEach(i -> {
 
 			remove(i);
-			add(i, new AbsoluteConstraints(0, i.getPosicao(), Constantes.LARGURA_MENU_ABERTO, -1));
+			add(i, new AbsoluteConstraints(0, i.getPosicao(), Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU));
 		});
 	}
 	
@@ -99,8 +96,8 @@ public class Menu extends javax.swing.JPanel {
 		this.repaint();
 	}
 
-	public NomeSistema getNomeSistema() {
-		return nomeSistema;
+	public BotaoMenu getNomeSistema() {
+		return botaoMenu;
 	}
 	
 	

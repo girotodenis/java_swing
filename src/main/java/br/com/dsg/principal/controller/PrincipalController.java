@@ -45,7 +45,6 @@ public class PrincipalController extends AbstractController{
 	public PrincipalController() {
 		
 		frame.addWindowListener(this);
-		frame.setVisible(true);
 		
 		registerEventListener(AtualizarAppEvento.class, (event) -> frame.atualizar());
 		registerEventListener(MeuEvento.class, (event) -> event.print());
@@ -61,34 +60,8 @@ public class PrincipalController extends AbstractController{
 			}
 		);
 		
-		frame.getMenu().addItem(new ItemMenu("Home", new AbstractAction() {
-			protected void action() {
-				LOG.info("menu home");
-				fireEvent(new EventItemMenu("Home"));
-			}
-		}));
 		
-		frame.getMenu().addItem(new ItemMenu("Configuracao", new AbstractAction() {
-			protected void action() {
-				LOG.info("menu Configuracao");
-				fireEvent(new EventItemMenu("Configuracao"));
-			}
-		}));
-		
-		frame.getAppBar().addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseDragged(java.awt.event.MouseEvent evt) {
-            	int x = evt.getXOnScreen();
-                int y = evt.getYOnScreen();
-                frame.setLocation(x-xx,y-xy);
-            }
-        });
-		
-		frame.getAppBar().addMouseListener(new java.awt.event.MouseAdapter() {
-			public void mousePressed(java.awt.event.MouseEvent evt) {
-            	xx = evt.getX();
-            	xy = evt.getY();
-            }
-        });
+
 		
 		frame.getMenu().getNomeSistema().addMouseListener(new java.awt.event.MouseAdapter() {
 			private boolean menuAberto = true;
@@ -133,6 +106,41 @@ public class PrincipalController extends AbstractController{
 		
 		
 		
+	}
+	
+	public PrincipalController habilitaMovimentavaoAppBar() {
+		frame.setUndecorated(true);//retirar barra
+		frame.getAppBar().addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+            	int x = evt.getXOnScreen();
+                int y = evt.getYOnScreen();
+                frame.setLocation(x-xx,y-xy);
+            }
+        });
+		
+		frame.getAppBar().addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mousePressed(java.awt.event.MouseEvent evt) {
+            	xx = evt.getX();
+            	xy = evt.getY();
+            }
+        });
+		
+		return this;
+	}
+	
+	public PrincipalController addItemMenu(String nome) {
+		
+		frame.getMenu().addItem(new ItemMenu(nome, null, new AbstractAction() {
+			protected void action() {
+				LOG.info("menu "+nome+" criado");
+				fireEvent(new EventItemMenu(nome));
+			}
+		}));
+		return this;
+	}
+	
+	public void visualizarApp() {
+		this.frame.setVisible(true);
 	}
 	
 
