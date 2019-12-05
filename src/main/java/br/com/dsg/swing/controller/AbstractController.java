@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
+import br.com.dsg.swing.controller.action.AbstractAction;
+
 /**
  * @author Denis Giroto
  * 

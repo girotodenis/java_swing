@@ -6,8 +6,8 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import br.com.dsg.principal.view.PrincipalView;
-import br.com.dsg.swing.controller.AbstractAction;
 import br.com.dsg.swing.controller.AbstractController;
+import br.com.dsg.swing.controller.action.AbstractAction;
 import br.com.dsg.swing.tela.layout.AbsoluteConstraints;
 import br.com.dsg.swing.util.Constantes;
 

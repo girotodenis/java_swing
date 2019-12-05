@@ -1,4 +1,4 @@
-package br.com.dsg.swing.controller;
+package br.com.dsg.swing.controller.action;
 
 /**
  * @author Denis Giroto

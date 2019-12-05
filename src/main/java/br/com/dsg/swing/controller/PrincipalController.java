@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
+import br.com.dsg.swing.controller.action.AbstractAction;
 import br.com.dsg.swing.view.PrincipalView;
 
 /**
