@@ -39,11 +39,9 @@ public abstract class AbstractController implements ActionListener, WindowListen
 	
 	private java.util.List<AbstractController> subControllers = new ArrayList<AbstractController>();
 	
-	private Map<String, AbstractAction> actions = 
-			new HashMap<String, AbstractAction>();
+	private Map<String, AbstractAction> actions = new HashMap<String, AbstractAction>();
 	
-	private Map<Class<?>, List<AbstractEventListener<?>>> eventListeners = 
-			new HashMap<Class<?>, List<AbstractEventListener<?>>>();
+	private Map<String, List<AbstractEventListener<?>>> eventListeners = new HashMap<String, List<AbstractEventListener<?>>>();
 	
 	public AbstractController(){}
 	
@@ -83,7 +81,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
 		if (source.getActionCommand() == null) {
 			throw new RuntimeException("Componente (Button) sem acao definida!");
 		}
-		LOG.debug("Registrando action: " + action.getClass().getName() + " para o botao: " + source.getLabel() );
+		LOG.info("Registrando action: " + action.getClass().getName() + " para o botao: " + source.getLabel() );
 		source.addActionListener(this);
 		this.actions.put(source.getActionCommand(), action);
 	}
@@ -95,10 +93,10 @@ public abstract class AbstractController implements ActionListener, WindowListen
 	 * @param event referÃªncia do evento gerado
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected void fireEvent(AbstractEvent<?> event) {
-		if (eventListeners.get(event.getClass()) != null) {
-            for (AbstractEventListener eventListener : eventListeners.get(event.getClass())) {
-                LOG.debug("Evento: " + event.getClass().getName() + " com listener: " + eventListener.getClass().getName());
+	protected <T> void fireEvent(T event) {
+		if (eventListeners.get(event.getClass().getName()) != null) {
+            for (AbstractEventListener eventListener : eventListeners.get(event.getClass().getName())) {
+                LOG.info("Evento: " + event.getClass().getName() + " com listener: " + eventListener.getClass().getName());
                 eventListener.handleEvent(event);
             }
         }
@@ -112,14 +110,14 @@ public abstract class AbstractController implements ActionListener, WindowListen
 	 * @param eventClass tipo do evento
 	 * @param eventListener tratador (<code>listener</code>) do evento
 	 */
-	protected void registerEventListener(Class<?> eventClass, AbstractEventListener<?> eventListener) {
-        LOG.debug("Registrando listener: " + eventListener + " para o evento: " + eventClass.getName());
-        java.util.List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(eventClass);
+	protected <T> void registerEventListener(Class<T> eventClass, AbstractEventListener<T> eventListener) {
+        LOG.info("Registrando listener: " + eventListener + " para o evento: " + eventClass.getName());
+        java.util.List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(eventClass.getName());
         if (listenersForEvent == null) {
         	listenersForEvent = new ArrayList<AbstractEventListener<?>>(); 
         }
         listenersForEvent.add(eventListener);
-        eventListeners.put(eventClass, listenersForEvent);
+        eventListeners.put(eventClass.getName(), listenersForEvent);
     }
 	
 	protected AbstractAction getAction(ActionEvent actionEvent) {
@@ -148,7 +146,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
 			AbstractAction action = getAction(actionEvent);
 
 			if (action != null) {
-				LOG.debug("Executando action: " + action.getClass());
+				LOG.info("Executando action: " + action.getClass());
 				try {
 					action.actionPerformed();
 				} catch (Exception ex) {
@@ -156,7 +154,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
 				}
 			}
 		} catch (ClassCastException e) {
-			handlerException(new IllegalArgumentException("Action source não é um Abstractbutton: " + actionEvent));
+			handlerException(new IllegalArgumentException("Action source não é um Abstractbutton/Button: " + actionEvent));
 		}
 	}
 	
