@@ -42,8 +42,8 @@ public class Main {
 				LOG.info("PrincipalController criando...");
 				new PrincipalController()
 					//.habilitaMovimentavaoAppBar()
-					.addItemMenu("Home")
-					.addItemMenu("Configuração")
+					.addItemMenu("Home","/imagens/home_house_10811.png")
+					.addItemMenu("Configuração","/imagens/setting-configure.png")
 					.visualizarApp();
 				LOG.info("PrincipalController criado");
 			}

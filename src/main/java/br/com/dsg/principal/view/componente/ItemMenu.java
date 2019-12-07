@@ -9,6 +9,7 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 
 import br.com.dsg.swing.controller.action.AbstractAction;
+import br.com.dsg.swing.tela.layout.AbsoluteLayout;
 import br.com.dsg.swing.util.Constantes;
 
 public class ItemMenu extends javax.swing.JPanel {
@@ -20,7 +21,6 @@ public class ItemMenu extends javax.swing.JPanel {
 	javax.swing.GroupLayout layoutItem = new javax.swing.GroupLayout(this);
 	private javax.swing.JPanel ind = new javax.swing.JPanel();
 	private javax.swing.JLabel jLabel = new javax.swing.JLabel();
-	private javax.swing.JLabel imagem = new javax.swing.JLabel();
 	
 	private int ordem = 0;
 	private int posicao = 0;
@@ -50,20 +50,16 @@ public class ItemMenu extends javax.swing.JPanel {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        jLabel.setForeground(Constantes.COR_FUNDO_LABEL_ITEM_MENU);
-        jLabel.setText(nome);
-		
-        Box box = Box.createHorizontalBox();
-        
         if(imagepath==null) {
         	imagepath = "/imagens/icons8-cardapio-16.png";
         }
         javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource(imagepath));
-		imagem.setIcon(icon);
-		box.add(ind);
-        box.add(imagem);
-        box.add(jLabel);
+        icon = new javax.swing.ImageIcon(icon.getImage().getScaledInstance(16, 16,  java.awt.Image.SCALE_SMOOTH));
+        
+        jLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jLabel.setForeground(Constantes.COR_FUNDO_LABEL_ITEM_MENU);
+        jLabel.setText(nome);
+		jLabel.setIcon(icon);
 		
         layoutItem.setHorizontalGroup(
             layoutItem.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,7 +117,10 @@ public class ItemMenu extends javax.swing.JPanel {
 		this.ordem = ordem;
 		this.posicao = Constantes.ALTURA_ITEM_MENU * this.ordem;
 	}
-	
+
+	public javax.swing.JLabel getjLabel() {
+		return jLabel;
+	}
 	
 	
 }

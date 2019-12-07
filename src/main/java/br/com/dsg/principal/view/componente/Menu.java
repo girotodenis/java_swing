@@ -70,7 +70,7 @@ public class Menu extends javax.swing.JPanel {
 		
 		List<ItemMenu> itens = mapa.values().stream().collect(Collectors.toList());
 		itens.forEach(i -> {
-
+			i.getjLabel().setText("");
 			remove(i);
 			add(i, new AbsoluteConstraints(0, i.getPosicao(), Constantes.LARGURA_MENU_FECHADO, Constantes.ALTURA_ITEM_MENU));
 		});
@@ -84,7 +84,7 @@ public class Menu extends javax.swing.JPanel {
 		
 		List<ItemMenu> itens = mapa.values().stream().collect(Collectors.toList());
 		itens.forEach(i -> {
-
+			i.getjLabel().setText(i.getName());
 			remove(i);
 			add(i, new AbsoluteConstraints(0, i.getPosicao(), Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU));
 		});

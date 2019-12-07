@@ -139,6 +139,17 @@ public class PrincipalController extends AbstractController{
 		return this;
 	}
 	
+	public PrincipalController addItemMenu(String nome, String imagem) {
+		
+		frame.getMenu().addItem(new ItemMenu(nome, imagem, new AbstractAction() {
+			protected void action() {
+				LOG.info("menu "+nome+" criado");
+				fireEvent(new EventItemMenu(nome));
+			}
+		}));
+		return this;
+	}
+	
 	public void visualizarApp() {
 		this.frame.setVisible(true);
 	}
