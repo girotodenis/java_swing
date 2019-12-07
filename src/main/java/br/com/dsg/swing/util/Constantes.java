@@ -23,6 +23,9 @@ public class Constantes {
 	public static final java.awt.Color COR_FUNDO_APP_BAR = new java.awt.Color(71, 120, 197);
 	//Conf APP_BAR
 	
+	public static  int LARGURA_APP_CONTEUDO_MENU_ABERTO = LARGURA_APP - LARGURA_MENU_ABERTO;
+	public static  int LARGURA_APP_CONTEUDO_MENU_FECHADO = LARGURA_APP - LARGURA_MENU_FECHADO;
+	public static  int ALTURA_APP_CONTEUDO = ALTURA_APP - ALTURA_APP_BAR;
 	
 	
 

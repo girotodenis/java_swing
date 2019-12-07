@@ -1,15 +1,6 @@
 package br.com.dsg.principal.view.componente;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-
 import br.com.dsg.swing.controller.action.AbstractAction;
-import br.com.dsg.swing.tela.layout.AbsoluteLayout;
 import br.com.dsg.swing.util.Constantes;
 
 public class ItemMenu extends javax.swing.JPanel {

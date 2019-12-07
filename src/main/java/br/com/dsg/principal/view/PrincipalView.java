@@ -3,10 +3,17 @@
  */
 package br.com.dsg.principal.view;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import br.com.dsg.principal.view.componente.AppBar;
 import br.com.dsg.principal.view.componente.Menu;
+import br.com.dsg.principal.view.componente.PrincipalJpanel;
 import br.com.dsg.swing.tela.layout.AbsoluteConstraints;
 import br.com.dsg.swing.tela.layout.AbsoluteLayout;
 import br.com.dsg.swing.util.Constantes;
@@ -23,9 +30,9 @@ public class PrincipalView extends JFrame {
 	private static final long serialVersionUID = -4304807636437465026L;
 	
 	private Menu menu;
-	public AbsoluteConstraints constraintsMenu;
-	
 	private AppBar appBar;
+	
+	private PrincipalJpanel principalJpane;
 	
 	private java.awt.Button botao;
 	private javax.swing.JPanel target;
@@ -39,27 +46,58 @@ public class PrincipalView extends JFrame {
 		setLocationByPlatform(true);//centralizar
 		
 		getContentPane().setLayout(new AbsoluteLayout());
-		setResizable(false);
+		setResizable(true);
 		setSize(Constantes.LARGURA_APP, Constantes.ALTURA_APP);
-//		
-		appBar = new AppBar();
-		getContentPane().add(appBar, new AbsoluteConstraints(Constantes.LARGURA_MENU_ABERTO, 0, Constantes.LARGURA_APP_BAR, Constantes.ALTURA_APP_BAR));
-        
+
 		this.menu = new Menu();
-		constraintsMenu = new AbsoluteConstraints(0, 0, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_APP);
-		add(menu, constraintsMenu);
+		add(menu, new AbsoluteConstraints(0, 0, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_APP));
+		
+		this.principalJpane = new PrincipalJpanel();
+		getContentPane().add(principalJpane, new AbsoluteConstraints(Constantes.LARGURA_MENU_ABERTO, 0, Constantes.LARGURA_APP_BAR, Constantes.ALTURA_APP_BAR));
+		atualizar();
+		
+//		appBar = new AppBar();
+//		appBar.setSize(Constantes.LARGURA_APP_BAR, Constantes.ALTURA_APP_BAR);
+//		
+//		principalJpane.setBackground(Constantes.COR_FUNDO_ITEM_MENU);
+//		
+//		principalJpane.setLayout(new GridBagLayout());
+//		GridBagConstraints gbcAppBar = new GridBagConstraints();
+//		gbcAppBar.anchor = GridBagConstraints.NORTHWEST;
+//		gbcAppBar.gridx = GridBagConstraints.RELATIVE;
+//		gbcAppBar.gridy = GridBagConstraints.RELATIVE;
+//		gbcAppBar.fill = GridBagConstraints.HORIZONTAL;
+//		gbcAppBar.weightx = 1.0;
+//		gbcAppBar.weighty = 1.0;
+//		principalJpane.add(appBar, gbcAppBar);
 		
 		
+        
 		
-        botao = new java.awt.Button();
+		botao = new java.awt.Button();
         botao.setName("botao01");
         botao.setLabel("Acao");
-        getContentPane().add(botao, new AbsoluteConstraints(300, 80, 100, 40));
+        //getContentPane().add(botao, new AbsoluteConstraints(300, 80, 100, 40));
         
         
         target = new javax.swing.JPanel();
         target.setBackground(new java.awt.Color(23, 35, 51));
-        getContentPane().add(target, new AbsoluteConstraints(400, 80, 100, 100));
+       // getContentPane().add(target, new AbsoluteConstraints(400, 80, 100, 100));
+        
+        addComponentListener(new ComponentAdapter() {
+		    public void componentResized(ComponentEvent componentEvent) {
+		    	
+		    	PrincipalView.this.remove(menu);
+		    	PrincipalView.this.add(menu, new AbsoluteConstraints(0, 0, PrincipalView.this.getMenu().getWidth(), PrincipalView.this.getHeight()));
+		    	
+		    	PrincipalView.this.remove(principalJpane);
+		    	int largura  = PrincipalView.this.getWidth() - PrincipalView.this.getMenu().getWidth();
+		    	PrincipalView.this.add(principalJpane, new AbsoluteConstraints(PrincipalView.this.getMenu().getWidth(), 0, largura, PrincipalView.this.getHeight()));
+		    	
+		    	PrincipalView.this.atualizar();
+		    	
+		    }
+		});
 	}
 	
 	
@@ -79,8 +117,8 @@ public class PrincipalView extends JFrame {
 	}
 
 
-	public AppBar getAppBar() {
-		return appBar;
+	public PrincipalJpanel getPrincipalJpane() {
+		return principalJpane;
 	}
 
 
@@ -88,6 +126,8 @@ public class PrincipalView extends JFrame {
 		return menu;
 	}
 
-	
+	public static void main(String[] args) {
+		new PrincipalView().setVisible(true);
+	}
 
 }

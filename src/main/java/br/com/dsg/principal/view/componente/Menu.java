@@ -20,23 +20,6 @@ public class Menu extends javax.swing.JPanel {
 
 	private BotaoMenu botaoMenu;
 	
-//	private boolean menuAberto = true;
-//	
-//	private class NomeSistemaAdapter extends java.awt.event.MouseAdapter {
-//		public void mousePressed(java.awt.event.MouseEvent evt) {
-//        	if(menuAberto = !menuAberto) {
-//        		expandeItens();
-//        	}else {
-//        		encolheItens();
-//        	}
-//        	SwingUtilities.invokeLater(new Runnable() {
-//				public void run() {
-//					atualizar();
-//				}
-//			});
-//        }
-//    }
-	
 	public Menu() {
 		setBackground(Constantes.COR_FUNDO_MENU);
 		setLayout(new AbsoluteLayout());
@@ -96,7 +79,7 @@ public class Menu extends javax.swing.JPanel {
 		this.repaint();
 	}
 
-	public BotaoMenu getNomeSistema() {
+	public BotaoMenu getBotaoMenu() {
 		return botaoMenu;
 	}
 	

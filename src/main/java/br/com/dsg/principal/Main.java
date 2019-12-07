@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
+import br.com.dsg.principal.controller.HomeController;
 import br.com.dsg.principal.controller.PrincipalController;
 import br.com.dsg.swing.util.PropertiesUtil;
 
@@ -42,8 +43,8 @@ public class Main {
 				LOG.info("PrincipalController criando...");
 				new PrincipalController()
 					//.habilitaMovimentavaoAppBar()
-					.addItemMenu("Home","/imagens/home_house_10811.png")
-					.addItemMenu("Configuração","/imagens/setting-configure.png")
+					.addItemMenu("Home","/imagens/home_house_10811.png", (controllerPai)->new HomeController(controllerPai))
+					.addItemMenu("Configuração","/imagens/setting-configure.png",  (controllerPai)->new HomeController(controllerPai))
 					.visualizarApp();
 				LOG.info("PrincipalController criado");
 			}
