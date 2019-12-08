@@ -1,11 +1,16 @@
 package br.com.dsg.principal.controller;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
 import br.com.dsg.principal.view.PrincipalView;
+import br.com.dsg.principal.view.componente.ItemMenu;
 import br.com.dsg.swing.controller.AbstractController;
 import br.com.dsg.swing.controller.action.AbstractAction;
 import br.com.dsg.swing.tela.layout.AbsoluteConstraints;
@@ -15,92 +20,110 @@ import br.com.dsg.swing.util.Constantes;
  * @author Denis Giroto
  *
  */
-public class PrincipalController extends AbstractController{
+public class PrincipalController extends AbstractController<PrincipalView>{
 	
 	
-	private PrincipalView frame = new PrincipalView();
 	private int xx,xy;
 	
 	private final static Logger LOG = Logger.getLogger(PrincipalController.class);
 	
 	class AtualizarAppEvento {}
 	
-	class MeuEvento {
-
-		public MeuEvento( String valor, JPanel target) {
-			JLabel jLabel = new JLabel(valor);
-			jLabel.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-			jLabel.setForeground(new java.awt.Color(255, 255, 255));
-			target.add(jLabel);
-		}
+	public PrincipalController() {
+		super(new PrincipalView());
 		
-		public void print() {
-			System.out.println("MeuEvento");
-		}
+		getPanel().addWindowListener(this);
+		
+		registerEventListener(AtualizarAppEvento.class, (event) -> getPanel().atualizar());
+		
+		registerEventListener(EventItemMenu.class, (event)->{
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						ItemMenu item = PrincipalController.this.getPanel().getMenu().getItem(event.getNome());
+						item.seleciona();
+						getPanel().getMenu().resetOutros(item);
+						
+						if(event.getController()!=null) {
+							getPanel().getPrincipalJpane().getConteudo().removeAll();
+							getPanel().getPrincipalJpane().getConteudo().setLayout(new GridBagLayout());
+							GridBagConstraints c = new GridBagConstraints();
+							c.gridx = GridBagConstraints.RELATIVE;
+							c.gridy = GridBagConstraints.RELATIVE;
+							c.fill = GridBagConstraints.BOTH;
+							c.weightx = 1.0;
+							c.weighty = 1.0;
+							c.gridwidth =  GridBagConstraints.REMAINDER;
+							c.gridheight=  GridBagConstraints.REMAINDER;
+							getPanel().getPrincipalJpane().getConteudo().add((Component) event.getController().getPanel(), c);
+							fireEvent(new AtualizarAppEvento());
+						}
+					}
+				});
+			}
+		);
+		
+		
+
+		
+		getPanel().getMenu().getBotaoMenu().addMouseListener(new java.awt.event.MouseAdapter() {
+			private boolean menuAberto = true;
+			public void mousePressed(java.awt.event.MouseEvent evt) {
+				
+				fireEvent(new EventAbrirFecharMenu(menuAberto = !menuAberto, getPanel(), this));
+	        	
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						fireEvent(new AtualizarAppEvento());
+					}
+				});
+            }
+        });
 	}
 	
-	public PrincipalController() {
-		
-		frame.addWindowListener(this);
-		frame.setVisible(true);
-		
-		frame.getAppBar().addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+	public PrincipalController habilitaMovimentavaoAppBar() {
+		getPanel().setUndecorated(true);//retirar barra
+		getPanel().getPrincipalJpane().addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
             	int x = evt.getXOnScreen();
                 int y = evt.getYOnScreen();
-                frame.setLocation(x-xx,y-xy);
+                getPanel().setLocation(x-xx,y-xy);
             }
         });
 		
-		frame.getAppBar().addMouseListener(new java.awt.event.MouseAdapter() {
+		getPanel().getPrincipalJpane().addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mousePressed(java.awt.event.MouseEvent evt) {
             	xx = evt.getX();
             	xy = evt.getY();
             }
         });
 		
+		return this;
+	}
+	
+	public PrincipalController addItemMenu(String nome, CriaController cController) {
 		
+		LOG.info("menu "+nome+" criado");
 		
+		addItemMenu(nome, null, cController);
 		
-		registerAction(frame.getBotao(), new AbstractAction() {
-			
-			private boolean isMenuAberto = true;
-			
-			@Override
-			protected void preAction() {
-				LOG.info("preAction");
-			}
-			
-			@Override
+		return this;
+	}
+	
+	public PrincipalController addItemMenu(String nome, String imagem, CriaController cController) {
+		
+		LOG.info("menu "+nome+" criado");
+		
+		getPanel().getMenu().addItem(new ItemMenu(nome, imagem, new AbstractAction() {
 			protected void action() {
-				LOG.info("action");
-				//fireEvent(new MeuEvento("Teste", frame.getTarget()));
-				if(isMenuAberto = !isMenuAberto) {
-					frame.remove(frame.getAppBar());
-					frame.getContentPane().add(frame.getAppBar(), 
-							new AbsoluteConstraints(Constantes.LARGURA_MENU_ABERTO, 0, Constantes.LARGURA_APP_BAR, Constantes.ALTURA_APP_BAR));
-			        
-				}else {
-					frame.remove(frame.getAppBar());
-					frame.getContentPane().add(frame.getAppBar(), 
-							new AbsoluteConstraints(Constantes.LARGURA_MENU_FECHADO, 0, Constantes.LARGURA_APP_BAR_FULL, Constantes.ALTURA_APP_BAR));
-					
-				}
-				
-				fireEvent(new AtualizarAppEvento());
-				fireEvent(new MeuEvento("Teste", frame.getTarget()));
+				AbstractController<?> controllerMenu = cController.criar(PrincipalController.this);
+				fireEvent(new EventItemMenu(nome, controllerMenu));
 			}
-			
-			@Override
-			protected void posAction() {
-				LOG.info("preAction");
-			}
-			
-		});
-		
-		registerEventListener(AtualizarAppEvento.class, (event) -> frame.atualizar());
-		registerEventListener(MeuEvento.class, (event) -> event.print());
-		
+		}));
+		return this;
+	}
+	
+	public void visualizarApp() {
+		this.getPanel().setVisible(true);
 	}
 	
 

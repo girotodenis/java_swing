@@ -24,7 +24,7 @@ package br.com.dsg.swing.controller.action;
  *  
  *
  */
-public abstract class AbstractAction {
+public abstract class AbstractAction implements Action{
 	
 	/**
 	 * Método principal, define o processamento da <code>AbstractAction</code>.
@@ -35,12 +35,12 @@ public abstract class AbstractAction {
 	 * Método acionado <strong>antes</string> de <code>action()</code>.
 	 * <p>Caso uma exceção (<code>RuntimeException</code>) seja lançada, a execução de toda a <code>AbstractAction</code> é interrompida.</p>
 	 */
-	protected abstract void preAction();
+	protected void preAction() {}
 
 	/**
 	 * Método executado após a conclusão de <code>action()</code>.
 	 */
-	protected abstract void posAction();
+	protected void posAction() {}
 	
 	/**
 	 * Método é acionado quando alguma falha ocorre durante a execução de <code>action</code>, <code>preAction</code> ou <code>posAction</code>.
@@ -51,7 +51,7 @@ public abstract class AbstractAction {
 	 * Método responsável por organizar e executar a cadeia de métodos de <code>AbstractAction</code>.
 	 * @throws <code>RuntimeException</code> caso algum erro ocorra.
 	 */
-	public final void actionPerformed() {
+	public final void executar() {
     	try {
     		preAction();
     		action();

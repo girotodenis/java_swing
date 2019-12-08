@@ -1,6 +1,7 @@
 package br.com.dsg.swing.controller;
 
 import java.awt.Button;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -12,10 +13,13 @@ import java.util.Map;
 
 import javax.swing.AbstractButton;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import br.com.dsg.principal.view.PrincipalView;
 import br.com.dsg.swing.controller.action.AbstractAction;
+import br.com.dsg.swing.controller.action.Action;
 
 /**
  * @author Denis Giroto
@@ -33,31 +37,37 @@ import br.com.dsg.swing.controller.action.AbstractAction;
  * 
  *
  */
-public abstract class AbstractController implements ActionListener, WindowListener {
+public abstract class AbstractController<T> implements ActionListener, WindowListener {
 
 	private static Logger LOG = Logger.getLogger(AbstractController.class);
 	
-	private AbstractController parent;
+	private AbstractController<?> controllerPai;
 	
-	private java.util.List<AbstractController> subControllers = new ArrayList<AbstractController>();
+	private T panel;
 	
-	private Map<String, AbstractAction> actions = new HashMap<String, AbstractAction>();
+	private java.util.List<AbstractController<?>> subControllers = new ArrayList<AbstractController<?>>();
+	
+	private Map<String, Action> actions = new HashMap<String, Action>();
 	
 	private Map<String, List<AbstractEventListener<?>>> eventListeners = new HashMap<String, List<AbstractEventListener<?>>>();
 	
-	public AbstractController(){}
+	public AbstractController(T frame){
+		this.panel = frame;
+	}
 	
 	/**
 	 * Controller possui um auto-relacionamento, Sutil em situacoes aonde uma hierarquia de controladores deve ser respeitada.
-	 * @param parent controller <i>pai</i>
+	 * @param controllerPai controller <i>pai</i>
 	 */
-	public AbstractController(AbstractController parent){
-		if (parent != null) {
-			this.parent = parent;
-			this.parent.subControllers.add(this);
+	public AbstractController(AbstractController<?> controllerPai, T panel){
+		this.panel = panel;
+		if (controllerPai != null) {
+			this.controllerPai = controllerPai;
+			this.controllerPai.subControllers.add(this);
 		}
 	}
 	
+
 	/**
 	 * Registra uma <code>acao</code> a um componente <code>button</code>.
 	 * 
@@ -79,7 +89,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
 	 * @param source
 	 * @param action
 	 */
-	protected void registerAction(Button source, AbstractAction action) {
+	protected void registerAction(Button source, Action action) {
 		if (source.getActionCommand() == null) {
 			throw new RuntimeException("Componente (Button) sem acao definida!");
 		}
@@ -98,12 +108,12 @@ public abstract class AbstractController implements ActionListener, WindowListen
 	protected <T> void fireEvent(T event) {
 		if (eventListeners.get(event.getClass().getName()) != null) {
             for (AbstractEventListener eventListener : eventListeners.get(event.getClass().getName())) {
-                LOG.info("Evento: " + event.getClass().getName() + " com listener: " + eventListener.getClass().getName());
+                LOG.info("Evento: " + event.getClass().getSimpleName() + " com listener: " + eventListener.getClass().getName());
                 eventListener.handleEvent(event);
             }
         }
-		if (parent != null)
-			parent.fireEvent(event);
+		if (controllerPai != null)
+			controllerPai.fireEvent(event);
 	}
 	
 	/**
@@ -122,7 +132,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
         eventListeners.put(eventClass.getName(), listenersForEvent);
     }
 	
-	protected AbstractAction getAction(ActionEvent actionEvent) {
+	protected Action getAction(ActionEvent actionEvent) {
 		
 		String actionCommand = null;
 		if(actionEvent.getSource() instanceof AbstractButton) {
@@ -145,12 +155,12 @@ public abstract class AbstractController implements ActionListener, WindowListen
 	public void actionPerformed(ActionEvent actionEvent) {
 		try {
 			
-			AbstractAction action = getAction(actionEvent);
+			Action action = getAction(actionEvent);
 
 			if (action != null) {
 				LOG.info("Executando action: " + action.getClass());
 				try {
-					action.actionPerformed();
+					action.executar();
 				} catch (Exception ex) {
 					handlerException(ex);
 				}
@@ -170,9 +180,10 @@ public abstract class AbstractController implements ActionListener, WindowListen
 		JOptionPane.showMessageDialog(null,ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 	}
 	
-	public AbstractController getParentController() {
-        return parent;
+	public AbstractController<?> getControllerPai() {
+        return controllerPai;
     }
+	
 	
 	/**
 	 * Método utilizado para liberar recursos carregados pela <code>Controller</code>.
@@ -180,7 +191,7 @@ public abstract class AbstractController implements ActionListener, WindowListen
 	protected void cleanUp() {
 		LOG.debug("Liberando recursos do controller "+this.getClass().getName());
 		
-		for (AbstractController subController : subControllers) {
+		for (AbstractController<?> subController : subControllers) {
             subController.cleanUp();
         }
 	}
@@ -189,7 +200,12 @@ public abstract class AbstractController implements ActionListener, WindowListen
 		cleanUp(); 
 	}
 	
-    public void windowOpened(WindowEvent windowEvent) {}
+	
+    public T getPanel() {
+		return panel;
+	}
+
+	public void windowOpened(WindowEvent windowEvent) {}
     public void windowClosed(WindowEvent windowEvent) {}
     public void windowIconified(WindowEvent windowEvent) {}
     public void windowDeiconified(WindowEvent windowEvent) {}
