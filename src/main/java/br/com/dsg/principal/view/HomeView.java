@@ -65,7 +65,7 @@ public class HomeView extends javax.swing.JPanel{
 		target.add(jLabel);
         
         add(brickBotao, gbc01);
-        add(target, gbc01);
+        add(new Brick(), gbc01);
         add(new Brick(), gbc01);
         add(new Brick(), gbc01);
         add(new Brick(), gbc01);
@@ -76,7 +76,7 @@ public class HomeView extends javax.swing.JPanel{
         add(new Brick(), gbc01);
         add(new Brick(), gbc01);
         add(new Brick(), gbc01);
-        add(new Brick(), gbc01);
+        add(target, gbc01);
         
         gbc01.gridy = 2;
         

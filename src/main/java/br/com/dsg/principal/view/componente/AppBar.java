@@ -26,10 +26,5 @@ public class AppBar extends javax.swing.JPanel{
 	}
 	
 	
-	public void atualizar() {
-		this.invalidate();
-		this.validate();
-		this.repaint();
-	}
-
+	
 }

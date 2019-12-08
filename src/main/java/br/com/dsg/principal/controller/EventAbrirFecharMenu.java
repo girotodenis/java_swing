@@ -23,11 +23,17 @@ public class EventAbrirFecharMenu {
 	private void fechar(PrincipalView principal) {
 		principal.getMenu().encolheItens();
 		
-		int LARGURA_APP_BAR_FULL = principal.getWidth() - Constantes.LARGURA_MENU_FECHADO;
+		int largura = principal.getWidth() - Constantes.LARGURA_MENU_FECHADO;
+		
 		principal.remove(principal.getPrincipalJpane());
 		principal.getContentPane().add(principal.getPrincipalJpane(), 
 				new AbsoluteConstraints(Constantes.LARGURA_MENU_FECHADO,
-				0, LARGURA_APP_BAR_FULL, principal.getHeight()));
+				Constantes.ALTURA_APP_BAR, largura, principal.getHeight()-Constantes.ALTURA_APP_BAR));
+		
+		principal.remove(principal.getAppBar());
+		principal.getContentPane().add(principal.getAppBar(), 
+				new AbsoluteConstraints(Constantes.LARGURA_MENU_FECHADO,
+						0, largura, Constantes.ALTURA_APP_BAR));
 
 		principal.remove(principal.getMenu());
 		principal.getContentPane().add(principal.getMenu(),
@@ -38,11 +44,16 @@ public class EventAbrirFecharMenu {
 	private void abrir(PrincipalView principal) {
 		principal.getMenu().expandeItens();
 		
-		int LARGURA_APP_BAR = principal.getWidth() - Constantes.LARGURA_MENU_ABERTO;
+		int largura = principal.getWidth() - Constantes.LARGURA_MENU_ABERTO;
 		principal.remove(principal.getPrincipalJpane());
 		principal.getContentPane().add(principal.getPrincipalJpane(), 
 				new AbsoluteConstraints(Constantes.LARGURA_MENU_ABERTO,
-				0, LARGURA_APP_BAR, principal.getHeight()));
+					Constantes.ALTURA_APP_BAR, largura, principal.getHeight()-Constantes.ALTURA_APP_BAR));
+		
+		principal.remove(principal.getAppBar());
+		principal.getContentPane().add(principal.getAppBar(), 
+				new AbsoluteConstraints(Constantes.LARGURA_MENU_ABERTO,
+						0, largura, Constantes.ALTURA_APP_BAR));
 		
 		principal.remove(principal.getMenu());
 		principal.getContentPane().add(principal.getMenu(),
