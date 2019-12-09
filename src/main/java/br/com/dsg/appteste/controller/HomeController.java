@@ -1,11 +1,12 @@
-package br.com.dsg.principal.controller;
+package br.com.dsg.appteste.controller;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import br.com.dsg.principal.view.HomeView;
+import br.com.dsg.appteste.views.HomeView;
+import br.com.dsg.principal.controller.EventItemMenu;
 import br.com.dsg.swing.controller.AbstractController;
 
 /**
@@ -41,6 +42,11 @@ public class HomeController extends AbstractController<HomeView>{
 			
 			fireEvent(new MeuEvento("Teste "+(i++), getPanel().getTarget() ));
 		});
+
+		registerAction(getPanel().getBotao2(),  ()-> {
+			fireEvent(new EventItemMenu("Configuração", new ConfigController(this))) ;
+			}
+		);
 		
 	}
 	

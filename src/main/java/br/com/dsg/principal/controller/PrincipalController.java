@@ -24,6 +24,9 @@ public class PrincipalController extends AbstractController<PrincipalView>{
 	
 	private final static Logger LOG = Logger.getLogger(PrincipalController.class);
 	
+	private String nomMenuInicial;
+	private AbstractController<?> controllerMenuInicial;
+
 	class AtualizarAppEvento {}
 	
 	public PrincipalController() {
@@ -36,9 +39,13 @@ public class PrincipalController extends AbstractController<PrincipalView>{
 		registerEventListener(EventItemMenu.class, (event)->{
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						ItemMenu item = PrincipalController.this.getPanel().getMenu().getItem(event.getNome());
-						item.seleciona();
-						getPanel().getMenu().resetOutros(item);
+
+						if(event.getNome()!=null){
+
+							ItemMenu item = PrincipalController.this.getPanel().getMenu().getItem(event.getNome());
+							item.seleciona();
+							getPanel().getMenu().resetOutros(item);
+						}
 						
 						if(event.getController()!=null) {
 							getPanel().getPrincipalJpane().getConteudo().removeAll();
@@ -74,7 +81,9 @@ public class PrincipalController extends AbstractController<PrincipalView>{
 					}
 				});
             }
-        });
+		});
+		
+		//fireEvent(new EventItemMenu("Home", new HomeController(this)));
 	}
 	
 	public PrincipalController habilitaMovimentavaoAppBar() {
@@ -101,12 +110,21 @@ public class PrincipalController extends AbstractController<PrincipalView>{
 		
 		LOG.info("menu "+nome+" criado");
 		
-		addItemMenu(nome, null, cController);
+		addItemMenu(nome, null, cController, Boolean.FALSE);
+		
+		return this;
+	}
+
+	public PrincipalController addItemMenu(String nome,String imagem, CriaController cController) {
+		
+		LOG.info("menu "+nome+" criado");
+		
+		addItemMenu(nome, imagem, cController, Boolean.FALSE);
 		
 		return this;
 	}
 	
-	public PrincipalController addItemMenu(String nome, String imagem, CriaController cController) {
+	public PrincipalController addItemMenu(String nome, String imagem, CriaController cController, Boolean inicializar) {
 		
 		LOG.info("menu "+nome+" criado");
 		
@@ -116,6 +134,10 @@ public class PrincipalController extends AbstractController<PrincipalView>{
 				fireEvent(new EventItemMenu(nome, controllerMenu));
 			}
 		}));
+
+		if(inicializar){
+			fireEvent(new EventItemMenu(nome, cController.criar(PrincipalController.this)));
+		}
 		return this;
 	}
 	

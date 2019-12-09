@@ -8,15 +8,9 @@
             "type": "java",
             "name": "Debug (Launch)-Main<swing-ui>",
             "request": "launch",
-            "mainClass": "br.com.dsg.principal.Main",
-            "projectName": "swing-ui"
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)-PrincipalView<swing-ui>",
-            "request": "launch",
-            "mainClass": "br.com.dsg.principal.view.PrincipalView",
+            "mainClass": "br.com.dsg.Main",
             "projectName": "swing-ui"
         }
+        
     ]
 }

@@ -1,13 +1,14 @@
 /**
  * 
  */
-package br.com.dsg.principal;
+package br.com.dsg;
 
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
-import br.com.dsg.principal.controller.HomeController;
+import br.com.dsg.appteste.controller.ConfigController;
+import br.com.dsg.appteste.controller.HomeController;
 import br.com.dsg.principal.controller.PrincipalController;
 import br.com.dsg.swing.util.PropertiesUtil;
 
@@ -43,8 +44,8 @@ public class Main {
 				LOG.info("PrincipalController criando...");
 				new PrincipalController()
 					//.habilitaMovimentavaoAppBar()
-					.addItemMenu("Home","/imagens/home_house_10811.png", (controllerPai)->new HomeController(controllerPai))
-					.addItemMenu("Configuração","/imagens/setting-configure.png",  (controllerPai)->new HomeController(controllerPai))
+					.addItemMenu("Home","/imagens/home_house_10811.png", (controllerPai)->new HomeController(controllerPai), Boolean.TRUE)
+					.addItemMenu("Configuração","/imagens/setting-configure.png",  (controllerPai)->new ConfigController(controllerPai))
 					.visualizarApp();
 				LOG.info("PrincipalController criado");
 			}
