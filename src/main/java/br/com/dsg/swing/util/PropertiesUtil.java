@@ -2,7 +2,6 @@ package br.com.dsg.swing.util;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.Properties;
 import java.util.ResourceBundle;
 

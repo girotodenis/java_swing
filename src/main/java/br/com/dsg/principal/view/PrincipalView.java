@@ -3,13 +3,10 @@
  */
 package br.com.dsg.principal.view;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import br.com.dsg.principal.view.componente.AppBar;
 import br.com.dsg.principal.view.componente.Menu;

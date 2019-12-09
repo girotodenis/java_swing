@@ -1,7 +1,6 @@
 package br.com.dsg.swing.controller;
 
 import java.awt.Button;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -13,11 +12,9 @@ import java.util.Map;
 
 import javax.swing.AbstractButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import br.com.dsg.principal.view.PrincipalView;
 import br.com.dsg.swing.controller.action.AbstractAction;
 import br.com.dsg.swing.controller.action.Action;
 

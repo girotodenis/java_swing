@@ -3,7 +3,6 @@ package br.com.dsg.principal.controller;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 
 import javax.swing.SwingUtilities;
 
@@ -13,8 +12,6 @@ import br.com.dsg.principal.view.PrincipalView;
 import br.com.dsg.principal.view.componente.ItemMenu;
 import br.com.dsg.swing.controller.AbstractController;
 import br.com.dsg.swing.controller.action.AbstractAction;
-import br.com.dsg.swing.tela.layout.AbsoluteConstraints;
-import br.com.dsg.swing.util.Constantes;
 
 /**
  * @author Denis Giroto
