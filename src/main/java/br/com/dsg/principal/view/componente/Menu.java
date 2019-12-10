@@ -19,6 +19,7 @@ public class Menu extends javax.swing.JPanel {
 	private Map<String, ItemMenu> mapa = new HashMap<String, ItemMenu>();
 
 	private BotaoMenu botaoMenu;
+	private boolean aberto = Boolean.TRUE;
 	
 	public Menu() {
 		setBackground(Constantes.COR_FUNDO_MENU);
@@ -45,11 +46,13 @@ public class Menu extends javax.swing.JPanel {
 		itens.forEach(i -> i.rest());
 	}
 
-	public void encolheItens() {
+	public void encolherItens() {
 		
+		aberto = false;
 		remove(botaoMenu);
 		botaoMenu = new BotaoMenu(false);
 		add(botaoMenu, new AbsoluteConstraints(0, 0, Constantes.LARGURA_MENU_FECHADO, Constantes.ALTURA_ITEM_MENU));
+		
 		
 		List<ItemMenu> itens = mapa.values().stream().collect(Collectors.toList());
 		itens.forEach(i -> {
@@ -59,8 +62,8 @@ public class Menu extends javax.swing.JPanel {
 		});
 	}
 
-	public void expandeItens() {
-		
+	public void expandirItens() {
+		aberto = true;
 		remove(botaoMenu);
 		botaoMenu = new BotaoMenu(true);
 		add(botaoMenu, new AbsoluteConstraints(0, 0, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU));
@@ -73,14 +76,12 @@ public class Menu extends javax.swing.JPanel {
 		});
 	}
 	
-	public void atualizar() {
-		this.invalidate();
-		this.validate();
-		this.repaint();
-	}
-
 	public BotaoMenu getBotaoMenu() {
 		return botaoMenu;
+	}
+
+	public boolean isAberto() {
+		return aberto;
 	}
 	
 	

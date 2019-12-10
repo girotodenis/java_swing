@@ -6,8 +6,9 @@ import br.com.dsg.swing.util.Constantes;
 
 public class EventAbrirFecharMenu {
 
-	public EventAbrirFecharMenu(Boolean abrir, PrincipalView principal, java.awt.event.MouseAdapter mouseAdapter) {
+	public EventAbrirFecharMenu(PrincipalView principal) {
 
+		boolean abrir = !principal.getMenu().isAberto();
 		if (abrir) {
 			
 			abrir(principal);
@@ -17,11 +18,10 @@ public class EventAbrirFecharMenu {
 			fechar(principal);
 
 		}
-		principal.getMenu().getBotaoMenu().addMouseListener(mouseAdapter);
 	}
 
 	private void fechar(PrincipalView principal) {
-		principal.getMenu().encolheItens();
+		principal.getMenu().encolherItens();
 		
 		int largura = principal.getWidth() - Constantes.LARGURA_MENU_FECHADO;
 		
@@ -42,7 +42,7 @@ public class EventAbrirFecharMenu {
 	}
 
 	private void abrir(PrincipalView principal) {
-		principal.getMenu().expandeItens();
+		principal.getMenu().expandirItens();
 		
 		int largura = principal.getWidth() - Constantes.LARGURA_MENU_ABERTO;
 		principal.remove(principal.getPrincipalJpane());

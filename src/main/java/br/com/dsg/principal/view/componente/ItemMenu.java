@@ -1,6 +1,7 @@
 package br.com.dsg.principal.view.componente;
 
 import br.com.dsg.swing.controller.action.AbstractAction;
+import br.com.dsg.swing.controller.action.Action;
 import br.com.dsg.swing.util.Constantes;
 
 public class ItemMenu extends javax.swing.JPanel {
@@ -16,9 +17,9 @@ public class ItemMenu extends javax.swing.JPanel {
 	private int ordem = 0;
 	private int posicao = 0;
 	
-	private AbstractAction action;
+	private Action action;
 	
-	public ItemMenu(String nome, String imagepath, AbstractAction action) {
+	public ItemMenu(String nome, String imagepath, Action action) {
 		
 		setName(nome);
 		
@@ -82,7 +83,7 @@ public class ItemMenu extends javax.swing.JPanel {
 	
 	
 
-	public AbstractAction getAction() {
+	public Action getAction() {
 		return action;
 	}
 

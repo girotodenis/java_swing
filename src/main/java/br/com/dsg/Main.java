@@ -43,9 +43,11 @@ public class Main {
 			public void run() {
 				LOG.info("PrincipalController criando...");
 				new PrincipalController()
-					//.habilitaMovimentavaoAppBar()
+					.habilitaMovimentavaoAppBar()
 					.addItemMenu("Home","/imagens/home_house_10811.png", (controllerPai)->new HomeController(controllerPai), Boolean.TRUE)
 					.addItemMenu("Configuração","/imagens/setting-configure.png",  (controllerPai)->new ConfigController(controllerPai))
+					.addItemMenu("Sair","/imagens/icons8-exit-sign-64.png",  () -> System.exit(0))
+					.fecharMenu()
 					.visualizarApp();
 				LOG.info("PrincipalController criado");
 			}

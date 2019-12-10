@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import br.com.dsg.appteste.views.HomeView;
-import br.com.dsg.principal.controller.EventItemMenu;
+import br.com.dsg.principal.controller.AtualizarConteudoEvento;
 import br.com.dsg.swing.controller.AbstractController;
 
 /**
@@ -29,7 +29,7 @@ public class HomeController extends AbstractController<HomeView>{
 		
 	}
 	
-	static int i = 1;
+	private int i = 1;
 	
 	public HomeController(AbstractController<?> controlerPai) {
 		super(controlerPai, new HomeView());
@@ -44,7 +44,7 @@ public class HomeController extends AbstractController<HomeView>{
 		});
 
 		registerAction(getPanel().getBotao2(),  ()-> {
-			fireEvent(new EventItemMenu("Configuração", new ConfigController(this))) ;
+			fireEvent(new AtualizarConteudoEvento("Configuração", new ConfigController(this))) ;
 			}
 		);
 		
