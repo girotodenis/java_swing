@@ -3,7 +3,7 @@ package br.com.dsg.appteste.controller;
 import org.apache.log4j.Logger;
 
 import br.com.dsg.appteste.views.ConfView;
-import br.com.dsg.principal.controller.AtualizarConteudoEvento;
+import br.com.dsg.principal.controller.EventVoltarController;
 import br.com.dsg.swing.controller.AbstractController;
 
 /**
@@ -19,7 +19,7 @@ public class ConfigController extends AbstractController<ConfView> {
 		super(controlerPai, new ConfView());
 
 		if(controlerPai!=null && controlerPai.getPanel()!=null )
-			registerAction(getPanel().getBotao(), ()-> fireEvent(new AtualizarConteudoEvento(getControllerPai())) );
+			registerAction(getPanel().getBotao(), ()-> fireEvent(new EventVoltarController(this)) );
 		else
 			getPanel().getBotao().setEnabled(false);
 	}

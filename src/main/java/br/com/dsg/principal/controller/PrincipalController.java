@@ -79,28 +79,28 @@ public class PrincipalController extends AbstractController<PrincipalView> {
 			}
 				
 		});
-
+		
 		/*
-		 * Cadastro do evento de atualização do conteudo
-		 * 
-		 * 
-		 */
+		* Cadastro do evento de atualização do conteudo
+		* 
+		* 
+		*/
 		registerEventListener(AtualizarConteudoEvento.class, (event) -> {
-
+			
 			if (event.getController() == null || event.getController() instanceof PrincipalController) {
 				return;
 			}
 			
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-
+					
 					if (event.getNome() != null) {
-
+						
 						ItemMenu item = PrincipalController.this.getPanel().getMenu().getItem(event.getNome());
 						item.seleciona();
 						getPanel().getMenu().resetOutros(item);
 					}
-
+					
 					if (event.getController() != null) {
 						getPanel().getPrincipalJpane().getConteudo().removeAll();
 						getPanel().getPrincipalJpane().getConteudo().setLayout(new GridBagLayout());
@@ -113,13 +113,28 @@ public class PrincipalController extends AbstractController<PrincipalView> {
 						c.gridwidth = GridBagConstraints.REMAINDER;
 						c.gridheight = GridBagConstraints.REMAINDER;
 						getPanel().getPrincipalJpane().getConteudo().add((Component) event.getController().getPanel(),
-								c);
+						c);
 						fireEvent(new AtualizarAppEvento());
 					}
 				}
 			});
 		});
 		
+		/*
+		 * Cadastro do evento de atualização da tela principal
+		 * con a tela anterior
+		 */
+		registerEventListener(EventVoltarController.class, (event) -> {
+			
+			AbstractController<?> controllerAtual = event.getController();
+			AbstractController<?> controllerAnterior = event.getController().getControllerPai();
+
+			if(controllerAnterior!=null && controllerAnterior.getPanel()!=null ){
+				controllerAnterior.remove(controllerAtual);
+				fireEvent(new AtualizarConteudoEvento(controllerAnterior));
+			}
+		});
+
 		//Cadastro da ação do botão do menu
 		getPanel().getMenu().getBotaoMenu().addMouseListener(new ActionBotaoMenu(this));
 

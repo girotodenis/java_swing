@@ -208,6 +208,20 @@ public abstract class AbstractController<T> implements ActionListener, WindowLis
 		}
 	}
 
+	/**
+	 * Método utilizado para liberar recursos carregados pela
+	 * <code>Controller</code>.
+	 */
+	public void remove(AbstractController<?> controller) {
+		LOG.debug("Liberando recursos do controller " + controller.getClass().getName());
+		LOG.debug("controller " + controller.subControllers.size());
+		LOG.debug("subControllers " + subControllers.size());
+		controller.cleanUp();
+		subControllers.remove(controller);
+		LOG.debug("controller " + controller.subControllers.size());
+		LOG.debug("subControllers " + subControllers.size());
+	}
+
 	public void windowClosing(WindowEvent windowEvent) {
 		cleanUp();
 	}
