@@ -18,7 +18,10 @@ public class ConfigController extends AbstractController<ConfView> {
 	public ConfigController(AbstractController<?> controlerPai) {
 		super(controlerPai, new ConfView());
 
-		registerAction(getPanel().getBotao(), ()-> fireEvent(new AtualizarConteudoEvento(getControllerPai())) );
+		if(controlerPai!=null && controlerPai.getPanel()!=null )
+			registerAction(getPanel().getBotao(), ()-> fireEvent(new AtualizarConteudoEvento(getControllerPai())) );
+		else
+			getPanel().getBotao().setEnabled(false);
 	}
 	
 	

@@ -102,7 +102,7 @@ public abstract class AbstractController<T> implements ActionListener, WindowLis
 		if (source.getActionCommand() == null) {
 			throw new RuntimeException("Componente (Button) sem acao definida!");
 		}
-		LOG.info("Registrando action: " + action.getClass().getName() + " para o botao: " + source.getLabel());
+		LOG.debug("Registrando action: " + action.getClass().getName() + " para o botao: " + source.getLabel());
 		source.addActionListener(this);
 		this.actions.put(source.getActionCommand(), action);
 	}
@@ -117,7 +117,7 @@ public abstract class AbstractController<T> implements ActionListener, WindowLis
 	protected <T> void fireEvent(T event) {
 		if (eventListeners.get(event.getClass().getName()) != null) {
 			for (AbstractEventListener eventListener : eventListeners.get(event.getClass().getName())) {
-				LOG.info("Evento: " + event.getClass().getSimpleName() + " com listener: "
+				LOG.debug("Evento: " + event.getClass().getSimpleName() + " com listener: "
 						+ eventListener.getClass().getName());
 				eventListener.handleEvent(event);
 			}
@@ -134,7 +134,7 @@ public abstract class AbstractController<T> implements ActionListener, WindowLis
 	 * @param eventListener tratador (<code>listener</code>) do evento
 	 */
 	protected <T> void registerEventListener(Class<T> eventClass, AbstractEventListener<T> eventListener) {
-		LOG.info("Registrando listener: " + eventListener + " para o evento: " + eventClass.getName());
+		LOG.debug("Registrando listener: " + eventListener + " para o evento: " + eventClass.getName());
 		java.util.List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(eventClass.getName());
 		if (listenersForEvent == null) {
 			listenersForEvent = new ArrayList<AbstractEventListener<?>>();
@@ -169,7 +169,7 @@ public abstract class AbstractController<T> implements ActionListener, WindowLis
 			Action action = getAction(actionEvent);
 
 			if (action != null) {
-				LOG.info("Executando action: " + action.getClass());
+				LOG.debug("Executando action: " + action.getClass());
 				try {
 					action.executar();
 				} catch (Exception ex) {

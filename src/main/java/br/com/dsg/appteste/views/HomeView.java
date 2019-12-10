@@ -20,6 +20,7 @@ public class HomeView extends javax.swing.JPanel {
 
    private java.awt.Button botao;
    private java.awt.Button botao2;
+   private java.awt.Button botao3;
    private Brick target = new Brick();
 
    public class Brick extends JPanel {
@@ -59,7 +60,7 @@ public class HomeView extends javax.swing.JPanel {
       botao2 = new java.awt.Button();
       botao2.setSize(10, 5);
       botao2.setName("botao02");
-      botao2.setLabel("Ir Config");
+      botao2.setLabel("Só Ir Config");
 
       Brick brickBotao2 = new Brick();
       brickBotao2.setBackground(Color.pink);
@@ -69,6 +70,20 @@ public class HomeView extends javax.swing.JPanel {
       gbc03.gridx = GridBagConstraints.RELATIVE;
       gbc03.gridy = GridBagConstraints.RELATIVE;
       brickBotao2.add(botao2, gbc03);
+      
+      botao3 = new java.awt.Button();
+      botao3.setSize(10, 5);
+      botao3.setName("botao03");
+      botao3.setLabel("Ir/Voltar Config");
+      
+      Brick brickBotao3 = new Brick();
+      brickBotao3.setBackground(Color.pink);
+      brickBotao3.setLayout(new GridBagLayout());
+      GridBagConstraints gbc04 = new GridBagConstraints();
+      gbc04.anchor = GridBagConstraints.NORTHWEST;
+      gbc04.gridx = GridBagConstraints.RELATIVE;
+      gbc04.gridy = GridBagConstraints.RELATIVE;
+      brickBotao3.add(botao3, gbc04);
 
 
       target.setBackground(Color.gray);
@@ -80,7 +95,7 @@ public class HomeView extends javax.swing.JPanel {
 
       add(brickBotao, gbc01);
       add(new Brick(), gbc01);
-      add(new Brick(), gbc01);
+      add(target, gbc01);
       add(new Brick(), gbc01);
       add(new Brick(), gbc01);
 
@@ -90,11 +105,11 @@ public class HomeView extends javax.swing.JPanel {
       add(new Brick(), gbc01);
       add(new Brick(), gbc01);
       add(new Brick(), gbc01);
-      add(target, gbc01);
+      add(new Brick(), gbc01);
 
       gbc01.gridy = 2;
 
-      add(new Brick(), gbc01);
+      add(brickBotao3, gbc01);
       add(new Brick(), gbc01);
       add(new Brick(), gbc01);
       add(new Brick(), gbc01);
@@ -107,6 +122,10 @@ public class HomeView extends javax.swing.JPanel {
 
    public java.awt.Button getBotao2() {
       return botao2;
+   }
+   
+   public java.awt.Button getBotao3() {
+	   return botao3;
    }
 
    public Brick getTarget() {
