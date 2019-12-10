@@ -43,6 +43,9 @@ public class PrincipalView extends JFrame {
 		setBackground(Constantes.COR_FUNDO_APP);
 		setLocationByPlatform(true);// centralizar
 
+		javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/imagens/icons8-logo-java-coffee-cup-64.png"));
+		setIconImage(icon.getImage());
+
 		getContentPane().setLayout(new AbsoluteLayout());
 		setResizable(true);
 		setSize(Constantes.LARGURA_APP, Constantes.ALTURA_APP);

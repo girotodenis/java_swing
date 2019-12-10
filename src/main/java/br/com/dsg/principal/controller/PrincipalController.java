@@ -3,7 +3,6 @@ package br.com.dsg.principal.controller;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.MouseAdapter;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -166,6 +165,16 @@ public class PrincipalController extends AbstractController<PrincipalView> {
 			}
 		});
 
+		return this;
+	}
+
+	/**
+	 * @param nome
+	 * @return
+	 */
+	public PrincipalController setIconImage(String imagemCaminho) {
+		javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource(imagemCaminho));
+		getPanel().setIconImage(icon.getImage());
 		return this;
 	}
 

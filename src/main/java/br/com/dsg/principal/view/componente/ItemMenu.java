@@ -52,6 +52,7 @@ public class ItemMenu extends javax.swing.JPanel {
         jLabel.setForeground(Constantes.COR_FUNDO_LABEL_ITEM_MENU);
         jLabel.setText(nome);
 		jLabel.setIcon(icon);
+		jLabel.setToolTipText(nome);
 		
         layoutItem.setHorizontalGroup(
             layoutItem.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
