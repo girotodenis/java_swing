@@ -4,15 +4,28 @@ import br.com.dsg.swing.controller.AbstractController;
 
 public class EventVoltarController {
 
+	
 	private AbstractController<?> controller;
+	private Object valorDeCallback;
+	
 
 	public EventVoltarController(AbstractController<?> controller) {
-
-		this.controller = controller;
+		
+		this(controller, null);
 	}
 
-	public AbstractController<?> getController(){
+	public EventVoltarController(AbstractController<?> controller, Object valorDeCallback) {
+
+		this.controller = controller;
+		this.valorDeCallback = valorDeCallback;
+	}
+
+	public AbstractController<?> getController() {
 		return controller;
+	}
+
+	public Object getValorDeCallback() {
+		return valorDeCallback;
 	}
 
 }

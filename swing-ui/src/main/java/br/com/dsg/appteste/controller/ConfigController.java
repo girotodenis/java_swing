@@ -19,7 +19,8 @@ public class ConfigController extends AbstractController<ConfView> {
 		super(controlerPai, new ConfView());
 
 		if(controlerPai!=null && controlerPai.getPanel()!=null )
-			registerAction(getPanel().getBotao(), ()-> fireEvent(new EventVoltarController(this)) );
+			registerAction(getPanel().getBotao(), ()-> fireEvent(new EventVoltarController(this, "Voltei do ConfigController"))
+			);
 		else
 			getPanel().getBotao().setEnabled(false);
 	}

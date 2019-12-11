@@ -17,6 +17,7 @@ public class Constantes {
 	public static final java.awt.Color COR_FUNDO_LABEL_ITEM_MENU = new java.awt.Color(255, 255, 255);
 	
 	//Conf APP_BAR
+	public static  int ALTURA_PROGRESS_BAR = 5 ;
 	public static  int ALTURA_APP_BAR = PropertiesUtil.getInt("altura.app.bar") ;
 	public static  int LARGURA_APP_BAR = LARGURA_APP - LARGURA_MENU_ABERTO;
 	public static  int LARGURA_APP_BAR_FULL = LARGURA_APP - LARGURA_MENU_FECHADO;

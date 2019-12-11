@@ -80,7 +80,7 @@ public class PrincipalController extends AbstractController<PrincipalView> {
 		});
 		
 		/*
-		* Cadastro do evento de atualização do conteudo
+		* Cadastro do evento de atualização do conteudo principal
 		* 
 		* 
 		*/
@@ -129,8 +129,22 @@ public class PrincipalController extends AbstractController<PrincipalView> {
 			AbstractController<?> controllerAnterior = event.getController().getControllerPai();
 
 			if(controllerAnterior!=null && controllerAnterior.getPanel()!=null ){
+	
 				controllerAnterior.remove(controllerAtual);
 				fireEvent(new AtualizarConteudoEvento(controllerAnterior));
+			}
+		});
+		
+		/*
+		 * Cadastro do evento de atualização do ProgressBar tela principal
+		 * 
+		 */
+		registerEventListener(EventAtualizarProgressBar.class, (event) -> {
+			
+			getPanel().getAppBar().getjProgressBar().setValue(event.getValor());
+			if(event.getAtual()==event.getTotal() || event.getTotal()==0) {
+				
+				getPanel().getAppBar().getjProgressBar().setValue(0);
 			}
 		});
 

@@ -34,6 +34,11 @@ public class EventAbrirFecharMenu {
 		principal.getContentPane().add(principal.getAppBar(), 
 				new AbsoluteConstraints(Constantes.LARGURA_MENU_FECHADO,
 						0, largura, Constantes.ALTURA_APP_BAR));
+		
+		principal.getAppBar().remove(principal.getAppBar().getjProgressBar());
+		principal.getAppBar().add(principal.getAppBar().getjProgressBar(), 
+				new AbsoluteConstraints(0,
+						Constantes.ALTURA_APP_BAR - Constantes.ALTURA_PROGRESS_BAR, largura, Constantes.ALTURA_APP_BAR));
 
 		principal.remove(principal.getMenu());
 		principal.getContentPane().add(principal.getMenu(),
@@ -54,6 +59,11 @@ public class EventAbrirFecharMenu {
 		principal.getContentPane().add(principal.getAppBar(), 
 				new AbsoluteConstraints(Constantes.LARGURA_MENU_ABERTO,
 						0, largura, Constantes.ALTURA_APP_BAR));
+		
+		principal.getAppBar().remove(principal.getAppBar().getjProgressBar());
+		principal.getAppBar().add(principal.getAppBar().getjProgressBar(), 
+				new AbsoluteConstraints(0,
+						Constantes.ALTURA_APP_BAR - Constantes.ALTURA_PROGRESS_BAR, largura, Constantes.ALTURA_APP_BAR));
 		
 		principal.remove(principal.getMenu());
 		principal.getContentPane().add(principal.getMenu(),
