@@ -239,6 +239,7 @@ public class PrincipalController extends AbstractController<PrincipalView> {
 				AbstractController<?> controllerMenu = cController.criar(PrincipalController.this);
 				controllerMenu.setNomeController(nome);
 				fireEvent(new AtualizarConteudoEvento(controllerMenu));
+				fireEvent(new EventAtualizarProgressBar(0,0));
 			}
 		}));
 
