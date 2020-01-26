@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.AbstractButton;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
@@ -99,6 +100,21 @@ public abstract class AbstractController<T> implements ActionListener, WindowLis
 	 * @param action
 	 */
 	protected void registerAction(Button source, Action action) {
+		if (source.getActionCommand() == null) {
+			throw new RuntimeException("Componente (Button) sem acao definida!");
+		}
+		LOG.debug("Registrando action: " + action.getClass().getName() + " para o botao: " + source.getLabel());
+		source.addActionListener(this);
+		this.actions.put(source.getActionCommand(), action);
+	}
+	
+	/**
+	 * Registra uma <code>acao</code> a um componente <code>button</code>.
+	 * 
+	 * @param source
+	 * @param action
+	 */
+	protected void registerAction(JButton source, Action action) {
 		if (source.getActionCommand() == null) {
 			throw new RuntimeException("Componente (Button) sem acao definida!");
 		}

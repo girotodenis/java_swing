@@ -3,6 +3,12 @@
  */
 package br.com.dsg;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -53,6 +59,36 @@ public class Main {
 			}
 		});
 
+	}
+	
+	public static void reset() {
+		ArrayList<String> commands = new ArrayList<String>();
+        List<String> jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
+
+        // Java
+        commands.add(System.getProperty("java.home") + File.separator + "bin" + File.separator + "java");
+
+
+        // Classpath
+        commands.add("-cp");
+        commands.add(ManagementFactory.getRuntimeMXBean().getClassPath());
+
+        // Class to be executed
+        commands.add(Main.class.getName());
+
+        File workingDir = null; // Null working dir means that the child uses the same working directory
+
+        String[] env = null; // Null env means that the child uses the same environment
+
+        String[] commandArray = new String[commands.size()];
+        commandArray = commands.toArray(commandArray);
+
+        try {
+            Runtime.getRuntime().exec(commandArray, env, workingDir);
+            System.exit(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 }
