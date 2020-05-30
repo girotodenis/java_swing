@@ -1,0 +1,11 @@
+nvm install v12.17.0
+nvm use v12.17.0
+mkdir electron_vue
+cd electron_vue
+npm i -g @vue/cli
+vue create elsectron_vue
+cd elsectron_vue/
+#https://vuetifyjs.com/en/components/api-explorer/
+vue add vuetify
+vue add electron-builder
+npm run electron:serve
