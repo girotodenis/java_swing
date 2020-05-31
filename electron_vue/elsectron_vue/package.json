@@ -1,5 +1,6 @@
 {
   "name": "elsectron_vue",
+  "title": "Meu Desktop",
   "version": "0.1.0",
   "private": true,
   "scripts": {
