@@ -1,0 +1,2 @@
+23:34:40 ERROR	[main   ]	or.li.le.im.StbBackedLoadableImage      :	45	:	org.liquidengine.legui.exception.LeguiException: Failed to initialize image. (/imagens/home_house_10811.png)
+23:36:25 ERROR	[main   ]	or.li.le.im.StbBackedLoadableImage      :	45	:	org.liquidengine.legui.exception.LeguiException: Failed to initialize image. (/imagens/setting-configure.png)
