@@ -1,4 +1,4 @@
-package br.com.dsg.swing.util;
+package br.com.dsg.util;
 
 public class Constantes {
 	
