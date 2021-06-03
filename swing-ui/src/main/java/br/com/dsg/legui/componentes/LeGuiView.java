@@ -2,6 +2,8 @@ package br.com.dsg.legui.componentes;
 
 import org.liquidengine.legui.component.Panel;
 
+import br.com.dsg.util.Constantes;
+
 public class LeGuiView extends Panel{
 	
 	/**
@@ -16,7 +18,7 @@ public class LeGuiView extends Panel{
 
 	public LeGuiView(int width, int height) {
         super(0, 0, width, height);
-        add(this.appBarr = new AppBar());
+        add(this.appBarr = new AppBar(Constantes.LARGURA_MENU_ABERTO, 0, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_PROGRESS_BAR));
         add(this.conteudoLeGui = new ConteudoLeGui());
         add(this.menu = new MenuLeGui(this.appBarr, this.conteudoLeGui));
         //add(this.menu = new MenuLeGui(this.appBarr));

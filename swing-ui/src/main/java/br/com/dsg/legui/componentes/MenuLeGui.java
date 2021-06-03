@@ -32,20 +32,17 @@ public class MenuLeGui extends Panel {
 	public MenuLeGui(Component... panels) {
 
 		this.components = panels;
-			
+
 		this.setPosition(0, 0);
 		this.setSize(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_APP);
 
 		getListenerMap().addListener(WindowSizeEvent.class, (WindowSizeEventListener) event -> {
-
 			Vector2f newSize = new Vector2f(getSize().x, event.getHeight());
-
 			notifica(newSize);
-
 			this.setSize(newSize);
 		});
 
-		botaoMenu = new BotaoMenu(true);
+		botaoMenu = new BotaoMenu(0, 0, Constantes.LARGURA_MENU_FECHADO, Constantes.ALTURA_ITEM_MENU);
 		botaoMenu.setPosition(0, 0);
 		botaoMenu.setSize(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU);
 
@@ -106,19 +103,23 @@ public class MenuLeGui extends Panel {
 	public boolean isAberto() {
 		return aberto;
 	}
-	
+
 	public void notifica(Vector2f newSize) {
-		if (this.components != null)
+
+		EventProcessorProvider.getInstance().pushEvent(new MenuChangeSizeEvent<Component>(botaoMenu, null,
+				MenuLeGui.this.getFrame(), MenuLeGui.this.getSize(), newSize, this.aberto));
+
+		mapa.values().forEach(item -> {
+			EventProcessorProvider.getInstance().pushEvent(new MenuChangeSizeEvent<Component>(item, null,
+					MenuLeGui.this.getFrame(), MenuLeGui.this.getSize(), newSize, this.aberto));
+		});
+
+		if (this.components != null) {
 			for (Component panel : this.components) {
-				EventProcessorProvider.getInstance()
-					.pushEvent(
-							new MenuChangeSizeEvent<Component>(panel, 
-									null,
-									MenuLeGui.this.getFrame(), 
-									MenuLeGui.this.getSize(), 
-									newSize, this.aberto)
-							);
+				EventProcessorProvider.getInstance().pushEvent(new MenuChangeSizeEvent<Component>(panel, null,
+						MenuLeGui.this.getFrame(), MenuLeGui.this.getSize(), newSize, this.aberto));
 			}
+		}
 	}
 
 }
