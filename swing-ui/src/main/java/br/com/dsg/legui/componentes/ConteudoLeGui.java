@@ -5,7 +5,7 @@ import org.liquidengine.legui.component.Panel;
 
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEvent;
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEventListener;
-import br.com.dsg.swing.util.Constantes;
+import br.com.dsg.util.Constantes;
 
 public class ConteudoLeGui extends Panel {
 

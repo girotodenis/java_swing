@@ -7,7 +7,7 @@ import org.liquidengine.legui.icon.Icon;
 import org.liquidengine.legui.icon.ImageIcon;
 import org.liquidengine.legui.image.loader.ImageLoader;
 
-import br.com.dsg.swing.util.Constantes;
+import br.com.dsg.util.Constantes;
 
 public class BotaoMenu extends Panel {
 
