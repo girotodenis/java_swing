@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.joml.Vector2f;
-import org.liquidengine.legui.component.Button;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.Panel;
 import org.liquidengine.legui.event.WindowSizeEvent;
@@ -26,35 +25,43 @@ public class MenuLeGui extends Panel {
 	private Map<String, ItemMenu> mapa = new HashMap<String, ItemMenu>();
 
 	private Component[] components;
-	private BotaoMenu botaoMenu;
 	private boolean aberto = Boolean.TRUE;
+	
+	private float x, y, w, h, wc, wo, hi = 0;
+	
 
-	public MenuLeGui(Component... panels) {
+	public MenuLeGui(float x, float y, float w, float h,float wc, float wo, float hi, Component... panels) {
 
+		this.x = x;
+		this.y = y;
+		this.w = w;
+		this.h = h;
+		this.wc = wc;
+		this.wo = wo;
 		this.components = panels;
 
-		this.setPosition(0, 0);
-		this.setSize(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_APP);
+		this.setPosition(this.x, this.y);
+		this.setSize(this.wo, this.h);
 
 		getListenerMap().addListener(WindowSizeEvent.class, (WindowSizeEventListener) event -> {
+			
+			this.y = event.getHeight();
+			this.x = getSize().x;
+			
 			Vector2f newSize = new Vector2f(getSize().x, event.getHeight());
 			notifica(newSize);
 			this.setSize(newSize);
 		});
 
-		botaoMenu = new BotaoMenu(0, 0, Constantes.LARGURA_MENU_FECHADO, Constantes.ALTURA_ITEM_MENU);
-		botaoMenu.setPosition(0, 0);
-		botaoMenu.setSize(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU);
-
-		add(botaoMenu);
 	}
 
-	public ItemMenu criarItemMenu(String nome, String imagem) {
-		ItemMenu item = new ItemMenu(nome, imagem);
+	
+	public ItemMenu criarItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT) {
+		ItemMenu item = new ItemMenu(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU, nome, imageA, imageB, imageHorizontalAlignRIGHT);
 		mapa.put(item.getNome(), item);
-		item.setOrdem(mapa.size());
+		item.setOrdem(mapa.size()-1);
 		item.setPosition(0, item.getPosicao());
-		item.setSize(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU);
+		item.setSize(this.wo, this.hi);
 		add(item);
 		return item;
 	}
@@ -71,13 +78,8 @@ public class MenuLeGui extends Panel {
 
 	public void encolherItens() {
 		aberto = false;
-		botaoMenu.fechar();
-		List<ItemMenu> itens = mapa.values().stream().collect(Collectors.toList());
-		itens.forEach(i -> {
-			i.encolher();
-		});
-
-		Vector2f newSize = new Vector2f(Constantes.LARGURA_MENU_FECHADO, this.getSize().y);
+//		this.w = this.wc;
+		Vector2f newSize = new Vector2f(this.wc, this.getSize().y);
 		notifica(newSize);
 		setSize(newSize);
 
@@ -85,19 +87,10 @@ public class MenuLeGui extends Panel {
 
 	public void expandirItens() {
 		aberto = true;
-		botaoMenu.abrir();
-		List<ItemMenu> itens = mapa.values().stream().collect(Collectors.toList());
-		itens.forEach(i -> {
-			i.expandir();
-		});
-
-		Vector2f newSize = new Vector2f(Constantes.LARGURA_MENU_ABERTO, this.getSize().y);
+//		this.w = this.wo;
+		Vector2f newSize = new Vector2f(this.wo, this.getSize().y);
 		notifica(newSize);
 		setSize(newSize);
-	}
-
-	public Button getBotaoMenu() {
-		return botaoMenu.getBtMenu();
 	}
 
 	public boolean isAberto() {
@@ -105,9 +98,6 @@ public class MenuLeGui extends Panel {
 	}
 
 	public void notifica(Vector2f newSize) {
-
-		EventProcessorProvider.getInstance().pushEvent(new MenuChangeSizeEvent<Component>(botaoMenu, null,
-				MenuLeGui.this.getFrame(), MenuLeGui.this.getSize(), newSize, this.aberto));
 
 		mapa.values().forEach(item -> {
 			EventProcessorProvider.getInstance().pushEvent(new MenuChangeSizeEvent<Component>(item, null,

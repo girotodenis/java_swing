@@ -7,11 +7,20 @@ public class ListenerEventAbrirFecharMenu implements ControllerEventListener<Eve
 	
 	@Override
 	public void handleEvent(EventAbrirFecharMenu event) {
-		boolean abrir = !event.getPrincipal().getMenu().isAberto();
-		if (abrir) {
-			event.getPrincipal().getMenu().expandirItens();
-		} else {
-			event.getPrincipal().getMenu().encolherItens();
+		
+		if(event.getFechar()!=null) {
+			if(event.getFechar()) {
+				event.getPrincipal().getMenu().encolherItens();
+			}else {
+				event.getPrincipal().getMenu().expandirItens();
+			}
+		}else {
+			boolean abrir = !event.getPrincipal().getMenu().isAberto();
+			if (abrir) {
+				event.getPrincipal().getMenu().expandirItens();
+			} else {
+				event.getPrincipal().getMenu().encolherItens();
+			}
 		}
 	}
 }

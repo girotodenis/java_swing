@@ -7,6 +7,8 @@ import org.liquidengine.legui.icon.Icon;
 import org.liquidengine.legui.icon.ImageIcon;
 import org.liquidengine.legui.image.loader.ImageLoader;
 
+import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEvent;
+import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEventListener;
 import br.com.dsg.util.Constantes;
 
 public class ItemMenu extends Button {
@@ -20,37 +22,72 @@ public class ItemMenu extends Button {
 	private static final long serialVersionUID = 1923843665779481525L;
 
 	private String nome = "";
-	private String imagepath = "";
+	private String imagePathAberta = "";
+	private String imagePathFechada = "";
+	private boolean imageHorizontalAlignRIGHT = false;
 	
+	private float w, h = 0;
 	private int ordem = 0;
 	private int posicao = 0;
 
-	public ItemMenu(String nome, String imagepath) {
-		
-		
+	public ItemMenu(float w, float h, String nome, String imagePathAberta) {
+		this(w, h, nome, imagePathAberta, imagePathAberta, false);
+	}
+	
+	public ItemMenu(float w, float h, String nome, String imagePathAberta, boolean imageHorizontalAlignRIGHT) {
+		this(w,h,nome, imagePathAberta, imagePathAberta, false);
+	}
+	
+	public ItemMenu(float w, float h, String nome, String imagePathAberta, String imagePathFechada, boolean imageHorizontalAlignRIGHT) {
 		
 		this.nome=ESPACO + nome;
-		this.imagepath = imagepath;
+		this.imagePathAberta = imagePathAberta;
+		this.imagePathFechada = imagePathFechada;
+		this.imageHorizontalAlignRIGHT = imageHorizontalAlignRIGHT;
+		this.w=w;
+		this.h=h;
 		
 		getStyle().setHorizontalAlign(HorizontalAlign.LEFT);
 		getTextState().setText(this.nome);
 		
-		setSize(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU);
+		setSize(this.w, this.h);
 
-		Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagepath));
+		Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathAberta));
 		bgIm.setSize(new Vector2f(35, 30));
 		bgIm.setPosition(new Vector2f(8, 5));
 		getStyle().getBackground().setIcon(bgIm);
 		
+		expandir();
+		
+		getListenerMap().addListener(MenuChangeSizeEvent.class, (MenuChangeSizeEventListener) event -> {
+			this.w = event.getNewSize().x();
+			setSize(w, Constantes.ALTURA_ITEM_MENU);
+			if(event.isAberto()) {
+				expandir();
+			}else {
+				encolher();
+			}
+		});
+		
 	}
 
-	public void encolher() {
-		setSize(Constantes.LARGURA_MENU_FECHADO, Constantes.ALTURA_ITEM_MENU);
+	private void encolher() {
+		if(imageHorizontalAlignRIGHT) {
+			Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathFechada));
+			bgIm.setSize(new Vector2f(35, 30));
+			bgIm.setPosition(new Vector2f(8, 5));
+			getStyle().getBackground().setIcon(bgIm);
+		}
 		getTextState().setText("");
 	}
 	
-	public void expandir() {
-		setSize(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU);
+	private void expandir() {
+		if(imageHorizontalAlignRIGHT) {
+			Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathAberta));
+			bgIm.setSize(new Vector2f(35, 30));
+			bgIm.setPosition(new Vector2f(getSize().x()-37, 5));
+			getStyle().getBackground().setIcon(bgIm);
+		}
 		getTextState().setText(nome);
 	}
 	
@@ -76,7 +113,7 @@ public class ItemMenu extends Button {
 
 	public void setOrdem(int ordem) {
 		this.ordem = ordem;
-		this.posicao = Constantes.ALTURA_ITEM_MENU * this.ordem;
+		this.posicao = ((int) this.h) * this.ordem;
 	}
 
 	protected String getNome() {

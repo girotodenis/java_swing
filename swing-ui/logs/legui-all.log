@@ -1,2 +1,2 @@
-23:34:40 ERROR	[main   ]	or.li.le.im.StbBackedLoadableImage      :	45	:	org.liquidengine.legui.exception.LeguiException: Failed to initialize image. (/imagens/home_house_10811.png)
-23:36:25 ERROR	[main   ]	or.li.le.im.StbBackedLoadableImage      :	45	:	org.liquidengine.legui.exception.LeguiException: Failed to initialize image. (/imagens/setting-configure.png)
+16:19:36 ERROR	[main   ]	or.li.le.im.StbBackedLoadableImage      :	45	:	org.liquidengine.legui.exception.LeguiException: Failed to initialize image. (imagens/icons8-cardapio-fechado-30)
+16:19:42 ERROR	[main   ]	or.li.le.im.StbBackedLoadableImage      :	45	:	org.liquidengine.legui.exception.LeguiException: Failed to initialize image. (imagens/icons8-cardapio-fechado-30)

@@ -2,6 +2,7 @@ package br.com.dsg.legui.controller.eventos;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.log4j.Logger;
 import org.liquidengine.legui.component.Panel;
 
 import br.com.dsg.legui.componentes.LeGuiView;
@@ -11,6 +12,8 @@ import br.com.dsg.legui.controller.LeGuiController;
 
 public class ListenerEventAtualizarConteudo implements ControllerEventListener<EventAtualizarConteudoEvento> {
 
+	private final static Logger LOG = Logger.getLogger(LeGuiController.class);
+	
 	private LeGuiController leGuiController;
 	private LeGuiView leGuiView;
 	
@@ -39,7 +42,7 @@ public class ListenerEventAtualizarConteudo implements ControllerEventListener<E
 			}
 		});
 		
-		System.out.println(String.format("Atualizar tela {%s} do controller {%s} ", newView.getClass().getSimpleName(), newController.getNomeController()));
+		LOG.info(String.format("Atualizar tela {%s} do controller {%s} ", newView.getClass().getSimpleName(), newController.getClass().getSimpleName()));
 		leGuiView.addPanel(newView);
 	}
 }

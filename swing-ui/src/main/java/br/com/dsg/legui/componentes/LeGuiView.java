@@ -19,8 +19,13 @@ public class LeGuiView extends Panel{
 	public LeGuiView(int width, int height) {
         super(0, 0, width, height);
         add(this.appBarr = new AppBar(Constantes.LARGURA_MENU_ABERTO, 0, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_PROGRESS_BAR));
-        add(this.conteudoLeGui = new ConteudoLeGui());
-        add(this.menu = new MenuLeGui(this.appBarr, this.conteudoLeGui));
+        add(this.conteudoLeGui = new ConteudoLeGui(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_PROGRESS_BAR, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_APP_CONTEUDO));
+        add(this.menu = new MenuLeGui(0,0,
+        							Constantes.LARGURA_MENU_ABERTO, 
+        							Constantes.ALTURA_APP,
+        							Constantes.LARGURA_MENU_FECHADO,
+        							Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU, 
+        							this.appBarr, this.conteudoLeGui));
         //add(this.menu = new MenuLeGui(this.appBarr));
 	}
 	

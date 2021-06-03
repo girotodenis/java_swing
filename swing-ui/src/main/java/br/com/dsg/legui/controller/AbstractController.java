@@ -122,7 +122,7 @@ public abstract class AbstractController<T extends Panel> {
 	public <T> void fireEvent(T event) {
 		if (eventListeners.get(event.getClass().getName()) != null) {
 			for (ControllerEventListener eventListener : eventListeners.get(event.getClass().getName())) {
-				LOG.info("Evento: " + event.getClass().getSimpleName() + " com listener: "
+				LOG.debug("Evento: " + event.getClass().getSimpleName() + " com listener: "
 						+ eventListener.getClass().getName());
 				eventListener.handleEvent(event);
 			}
@@ -138,14 +138,14 @@ public abstract class AbstractController<T extends Panel> {
 	 * @param class1    tipo do evento
 	 * @param eventAbrirFecharMenu tratador (<code>listener</code>) do evento
 	 */
-	protected <E> void registerControllerEventListener(Class<E> class1, ControllerEventListener<E>... listeners) {
+	protected void registerControllerEventListener(Class<?> class1, ControllerEventListener<?>... listeners) {
 		LOG.debug("Registrando " + listeners.length + " listeners para o evento: " + class1.getName());
 		java.util.List<ControllerEventListener<?>> listenersForEvent = eventListeners.get(class1.getName());
 		if (listenersForEvent == null) {
 			listenersForEvent = new ArrayList<ControllerEventListener<?>>();
 		}
 		
-		for (ControllerEventListener<E> controllerEventListener : listeners) {
+		for (ControllerEventListener<?> controllerEventListener : listeners) {
 			listenersForEvent.add(controllerEventListener);
 		}
 		

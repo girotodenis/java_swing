@@ -203,18 +203,33 @@ public class StartLeGui {
 	}
 
 	
-	public StartLeGui addItemMenu(String nome, String imagem, ActionMenu action) {
-		this.leGuiController.addItemMenu( nome,  imagem,  action);
+	public StartLeGui addItemActionMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT,  ActionMenu<LeGuiController> action) {
+		this.leGuiController.addItemMenu( nome,  imageA, imageB, imageHorizontalAlignRIGHT,  action);
 		return this;
 	}
 	
-	public StartLeGui addItemMenu(String nome, String imagem, GerarController cController) {
-		this.leGuiController.addItemMenu( nome,  imagem,  cController);
+	public StartLeGui addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT,  GerarController cController) {
+		this.leGuiController.addItemMenu(nome,  imageA, imageB,imageHorizontalAlignRIGHT,  cController, false);
 		return this;
 	}
 	
-	public StartLeGui addItemMenu(String nome, String imagem, GerarController cController, Boolean inicializar) {
-		this.leGuiController.addItemMenu( nome,  imagem,  cController, inicializar);
+	public StartLeGui addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT,  GerarController cController, Boolean inicializar) {
+		this.leGuiController.addItemMenu(nome,  imageA, imageB, imageHorizontalAlignRIGHT,  cController, inicializar);
+		return this;
+	}
+	
+	public StartLeGui addItemActionMenu(String nome, String imageA,  ActionMenu<LeGuiController> action) {
+		this.leGuiController.addItemMenu( nome,  imageA, imageA, false,  action);
+		return this;
+	}
+	
+	public StartLeGui addItemMenu(String nome, String imageA,  GerarController cController) {
+		this.leGuiController.addItemMenu(nome,  imageA, imageA, false,  cController, false);
+		return this;
+	}
+	
+	public StartLeGui addItemMenu(String nome, String imageA,  GerarController cController, Boolean inicializar) {
+		this.leGuiController.addItemMenu(nome,  imageA, imageA, false,  cController, inicializar);
 		return this;
 	}
 	
@@ -223,16 +238,16 @@ public class StartLeGui {
 		return this;
 	}
 
-	public static void main(String[] args) {
-		StartLeGui.get(800, 600, "App test")
-			//.addItemMenu("Home","/imagens/home_house_10811.png", (controllerPai)->new HomeController(controllerPai), Boolean.TRUE)
-			//.addItemMenu("Configuração","/imagens/setting-configure.png",  (controllerPai)->new ConfigController(controllerPai))
-			.addItemMenu( "Home","imagens/home_house_10811.png",  () -> System.out.println("Item 1") )
-			.addItemMenu( "Configuração","imagens/setting-configure.png",  () -> System.out.println("Item 2") )
-			.addItemMenu( "Sair","imagens/icons8-exit-sign-64.png",  () -> System.out.println("Sair") )
-			.fecharMenu()
-			.start();
-	}
+//	public static void main(String[] args) {
+//		StartLeGui.get(800, 600, "App test")
+//			//.addItemMenu("Home","/imagens/home_house_10811.png", (controllerPai)->new HomeController(controllerPai), Boolean.TRUE)
+//			//.addItemMenu("Configuração","/imagens/setting-configure.png",  (controllerPai)->new ConfigController(controllerPai))
+//			//.addItemMenu( "Home","imagens/home_house_10811.png",  c -> System.out.println("Item 1") )
+//			.addItemMenu( "Configuração","imagens/setting-configure.png",  controler -> ((LeGuiController)controler).abrirFecharMenu() )
+//			.addItemMenu( "Sair","imagens/icons8-exit-sign-64.png",  (controler) -> System.out.println("Sair") )
+//			.fecharMenu()
+//			.start();
+//	}
 
 
 }

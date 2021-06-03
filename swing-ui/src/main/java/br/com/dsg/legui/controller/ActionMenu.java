@@ -1,7 +1,5 @@
 package br.com.dsg.legui.controller;
 
-import org.liquidengine.legui.event.Event;
-
-public interface ActionMenu {
-	public void executar();
+public interface ActionMenu<T> {
+	public void executar(T controller);
 }

@@ -5,7 +5,6 @@ import org.liquidengine.legui.component.Panel;
 
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEvent;
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEventListener;
-import br.com.dsg.util.Constantes;
 
 public class ConteudoLeGui extends Panel {
 
@@ -14,24 +13,35 @@ public class ConteudoLeGui extends Panel {
 	 */
 	private static final long serialVersionUID = -3275627456468898718L;
 
+	private float x, y, w, h = 0;
 
-	public ConteudoLeGui() {
+	public ConteudoLeGui(float x, float y, float w, float h) {
 		
-		this.setPosition(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_PROGRESS_BAR);
-		this.setSize(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_APP_CONTEUDO);
-
+		this.x = x;
+		this.y = y;
+		this.w = w;
+		this.h = h;
+		
+		this.setPosition(this.x, this.y);
+		this.setSize(this.w, this.h);
+		
 		getListenerMap().addListener(MenuChangeSizeEvent.class, (MenuChangeSizeEventListener) event -> {
 			
-			this.setPosition(event.getNewSize().x(), Constantes.ALTURA_PROGRESS_BAR);
-			if(event.isAberto()) {
-				this.setSize(this.getFrame().getTooltipLayer().getSize().x()-Constantes.LARGURA_MENU_ABERTO, this.getFrame().getTooltipLayer().getSize().y()-Constantes.ALTURA_PROGRESS_BAR);
-			}else {
-				this.setSize(this.getFrame().getTooltipLayer().getSize().x()-Constantes.LARGURA_MENU_FECHADO, this.getFrame().getTooltipLayer().getSize().y()-Constantes.ALTURA_PROGRESS_BAR);
-			}
+			float larguraApp = this.getFrame().getTooltipLayer().getSize().x();
+			float alturaApp = this.getFrame().getTooltipLayer().getSize().y();
+			
+			this.x = event.getNewSize().x();
+			
+			this.setPosition(this.x, this.y);
+			
+			this.w = larguraApp-this.x;
+			this.h = alturaApp-this.y;
+			
+			this.setSize(this.w, this.h);
 			
 			for(Component c: getChildComponents() ) {
 				c.setPosition(0,0);
-				c.setSize(this.getSize());
+				c.setSize(this.w, this.h);
 			}
 			
 		});
