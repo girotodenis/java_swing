@@ -48,7 +48,7 @@ public class MenuLeGui extends Panel {
 			this.y = event.getHeight();
 			this.x = getSize().x;
 			
-			Vector2f newSize = new Vector2f(getSize().x, event.getHeight());
+			Vector2f newSize = new Vector2f(this.x, event.getHeight());
 			notifica(newSize);
 			this.setSize(newSize);
 		});
@@ -69,11 +69,18 @@ public class MenuLeGui extends Panel {
 	public ItemMenu getItem(String nome) {
 		return mapa.get(nome);
 	}
+	
+	public ItemMenu getItem(Class<?> classe) {
+		List<ItemMenu> itens = mapa.values().stream().filter(i -> i.getPanel()!=null && i.getPanel().equals(classe))
+				.collect(Collectors.toList());
+		return itens.isEmpty()?null:itens.get(0);
+	}
 
 	public void resetOutros(ItemMenu item) {
 		List<ItemMenu> itens = mapa.values().stream().filter(i -> !i.getNome().equals(item.getNome()))
 				.collect(Collectors.toList());
 		itens.forEach(i -> i.rest());
+		
 	}
 
 	public void encolherItens() {

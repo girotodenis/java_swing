@@ -5,6 +5,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.liquidengine.legui.component.Panel;
 
+import br.com.dsg.legui.componentes.ItemMenu;
 import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.controller.AbstractController;
 import br.com.dsg.legui.controller.ControllerEventListener;
@@ -34,13 +35,20 @@ public class ListenerEventAtualizarConteudo implements ControllerEventListener<E
 			public void run() {
 				for (int i = 0; i <= 100; i++) {
 					try {
-						Thread.sleep(2);
+						Thread.sleep(1);
 						leGuiController.fireEvent(new EventProgressBar(i));
 					} catch (Exception e) {
 					}
 				}
 			}
 		});
+		
+		ItemMenu itemMenu = leGuiView.getMenu().getItem(newView.getClass());
+		if(itemMenu!=null) {
+			itemMenu.seleciona();
+			this.leGuiView.getMenu().resetOutros(itemMenu);
+			//leGuiView.getMenu().resetOutros(itemMenu);
+		}
 		
 		LOG.info(String.format("Atualizar tela {%s} do controller {%s} ", newView.getClass().getSimpleName(), newController.getClass().getSimpleName()));
 		leGuiView.addPanel(newView);

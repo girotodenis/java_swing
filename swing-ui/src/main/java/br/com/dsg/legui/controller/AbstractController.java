@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.log4j.Logger;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.Dialog;
@@ -15,6 +17,9 @@ import org.liquidengine.legui.event.Event;
 import org.liquidengine.legui.event.MouseClickEvent;
 import org.liquidengine.legui.event.MouseClickEvent.MouseClickAction;
 import org.liquidengine.legui.listener.EventListener;
+
+import br.com.dsg.legui.componentes.eventos.ActionClickListener;
+import br.com.dsg.legui.controller.eventos.EventProgressBar;
 
 
 /**
@@ -101,12 +106,28 @@ public abstract class AbstractController<T extends Panel> {
 	 * @param source
 	 * @param action
 	 */
+	protected void registerTarefa(Component source, Action acao) {
+		LOG.debug("Registrando action para o botao: " + source.toString());
+		source.getListenerMap().addListener(MouseClickEvent.class, new ActionClickListener( this, source, acao) ); 
+	}
+	/**
+	 * Registra uma <code>acao</code> a um componente <code>button</code>.
+	 * 
+	 * @param source
+	 * @param action
+	 */
 	protected void registerAction(Component source, Action acao) {
 		LOG.debug("Registrando action para o botao: " + source.toString());
 		
 		source.getListenerMap().addListener(MouseClickEvent.class, (event)->{
 			if(event.getAction().equals(MouseClickAction.CLICK)) {
-				acao.executar(event);
+				try {
+					source.setEnabled(false);
+					acao.executar(event);
+					source.setEnabled(true);
+				} catch (Exception e) {
+					handlerException(e);
+				}
 			}
 		}); 
 	}
@@ -158,7 +179,7 @@ public abstract class AbstractController<T extends Panel> {
 	 * 
 	 * @param ex
 	 */
-	protected void handlerException(Exception ex) {
+	public void handlerException(Exception ex) {
 		
 		Dialog dialog = new Dialog("Erro", 300, 100);
 		dialog.setDraggable(false);

@@ -203,8 +203,8 @@ public class StartLeGui {
 	}
 
 	
-	public StartLeGui addItemActionMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT,  ActionMenu<LeGuiController> action) {
-		this.leGuiController.addItemMenu( nome,  imageA, imageB, imageHorizontalAlignRIGHT,  action);
+	public StartLeGui addItemActionMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
+		this.leGuiController.addItemMenu( nome,  imageA, imageB, imageHorizontalAlignRIGHT, desabilitarSelecaoMenu,  action);
 		return this;
 	}
 	
@@ -219,7 +219,7 @@ public class StartLeGui {
 	}
 	
 	public StartLeGui addItemActionMenu(String nome, String imageA,  ActionMenu<LeGuiController> action) {
-		this.leGuiController.addItemMenu( nome,  imageA, imageA, false,  action);
+		this.leGuiController.addItemMenu( nome,  imageA, imageA, false, false,  action);
 		return this;
 	}
 	

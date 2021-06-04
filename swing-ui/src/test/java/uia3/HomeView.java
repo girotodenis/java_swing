@@ -17,9 +17,9 @@ public class HomeView extends Panel {
 
    public HomeView() {
 	   
-	   add(this.botao1 = new Button("Botão 1", 50, 0,  50, 30));
-	   add(this.botao2 = new Button("Botão 2", 50, 40, 50, 30));
-	   add(this.botao3 = new Button("Botão 3", 50, 80, 50, 30));
+	   add(this.botao1 = new Button("navegar outra tela", 50, 0,  100, 30));
+	   add(this.botao2 = new Button("executar tarefa", 50, 40, 100, 30));
+	   add(this.botao3 = new Button("executar ação", 50, 80, 100, 30));
    }
 
 

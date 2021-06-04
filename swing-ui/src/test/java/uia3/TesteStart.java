@@ -15,6 +15,7 @@ public class TesteStart {
 							"imagens/icons8-cardapio-30.png",
 							"imagens/icons8-cardapio-fechado-30.png", 
 							true, 
+							true,
 							(c) -> c.menuAbrirFecharMenu() 
 		)
 		.addItemMenu("Configuração",

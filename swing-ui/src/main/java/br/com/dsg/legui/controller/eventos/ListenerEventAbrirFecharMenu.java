@@ -1,25 +1,50 @@
 package br.com.dsg.legui.controller.eventos;
 
+import javax.swing.SwingUtilities;
+
+import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.controller.ControllerEventListener;
+import br.com.dsg.legui.controller.LeGuiController;
 
 public class ListenerEventAbrirFecharMenu implements ControllerEventListener<EventAbrirFecharMenu> {
 
+	private LeGuiController leGuiController;
+	private LeGuiView leGuiView;
+	
+	public ListenerEventAbrirFecharMenu(LeGuiController leGuiController,
+			LeGuiView leGuiView) {
+		super();
+		this.leGuiController = leGuiController;
+		this.leGuiView = leGuiView;
+	}
 	
 	@Override
 	public void handleEvent(EventAbrirFecharMenu event) {
 		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				for (int i = 0; i <= 100; i++) {
+					try {
+						Thread.sleep(1);
+						leGuiController.fireEvent(new EventProgressBar(i));
+					} catch (Exception e) {
+					}
+				}
+			}
+		});
+		
 		if(event.getFechar()!=null) {
 			if(event.getFechar()) {
-				event.getPrincipal().getMenu().encolherItens();
+				this.leGuiView.getMenu().encolherItens();
 			}else {
-				event.getPrincipal().getMenu().expandirItens();
+				this.leGuiView.getMenu().expandirItens();
 			}
 		}else {
-			boolean abrir = !event.getPrincipal().getMenu().isAberto();
+			boolean abrir = !this.leGuiView.getMenu().isAberto();
 			if (abrir) {
-				event.getPrincipal().getMenu().expandirItens();
+				this.leGuiView.getMenu().expandirItens();
 			} else {
-				event.getPrincipal().getMenu().encolherItens();
+				this.leGuiView.getMenu().encolherItens();
 			}
 		}
 	}
