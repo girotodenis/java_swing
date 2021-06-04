@@ -76,6 +76,11 @@ public class MenuLeGui extends Panel {
 		return itens.isEmpty()?null:itens.get(0);
 	}
 
+	public void seleciona(ItemMenu item) {
+		item.seleciona();
+		resetOutros(item);
+	}
+	
 	public void resetOutros(ItemMenu item) {
 		List<ItemMenu> itens = mapa.values().stream().filter(i -> !i.getNome().equals(item.getNome()))
 				.collect(Collectors.toList());

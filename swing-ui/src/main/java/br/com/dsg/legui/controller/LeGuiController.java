@@ -54,23 +54,26 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 	 */
 	public LeGuiController addItemMenu(String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController cController, Boolean inicializar) {
 		LOG.info("menu " + nome + " criado");
+		
+		final AbstractController<?> controllerMenu = cController.criar(this);
+		controllerMenu.setNomeController(nome+"_menu_"+System.currentTimeMillis());
+		
 		ItemMenu item = getPanel().getMenu().criarItemMenu(nome, imageA, imageB, imageHorizontalAlignRIGHT);
-		item.setPanel(cController.criar(this).getPanel().getClass());
+		item.setPanel(controllerMenu.getPanel().getClass());
+		
 		registerAction(item, (event) -> {
-			item.seleciona();
-			getPanel().getMenu().resetOutros(item);
+			getPanel().getMenu().seleciona(item);
 			ActionMenu<LeGuiController> action = new ActionMenu<LeGuiController>() {
 				public void executar(LeGuiController controller) {
-					AbstractController<?> controllerMenu = cController.criar(controller);
-					controllerMenu.setNomeController(nome);
-					fireEvent(new EventAtualizarConteudoEvento(nome, controllerMenu));
+//					AbstractController<?> controllerMenu = cController.criar(controller);
+//					controllerMenu.setNomeController(nome);
+					fireEvent(new EventAtualizarConteudoEvento(controllerMenu.getNomeController(), controllerMenu));
 				}
 			};
 			action.executar(this);
 		});
 		if (inicializar) {
-			item.seleciona();
-			getPanel().getMenu().resetOutros(item);
+			getPanel().getMenu().seleciona(item);
 			fireEvent(new EventAtualizarConteudoEvento(nome, cController.criar(LeGuiController.this)));
 		}
 		return this;
@@ -82,8 +85,7 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 		registerAction(item, (event) -> {
 			
 			if(!desabilitarSelecaoMenu) {
-				item.seleciona();
-				getPanel().getMenu().resetOutros(item);
+				getPanel().getMenu().seleciona(item);
 			}
 			
 			SwingUtilities.invokeLater(new Runnable() {

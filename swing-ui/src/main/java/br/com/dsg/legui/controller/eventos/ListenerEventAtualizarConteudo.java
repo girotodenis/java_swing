@@ -45,9 +45,7 @@ public class ListenerEventAtualizarConteudo implements ControllerEventListener<E
 		
 		ItemMenu itemMenu = leGuiView.getMenu().getItem(newView.getClass());
 		if(itemMenu!=null) {
-			itemMenu.seleciona();
-			this.leGuiView.getMenu().resetOutros(itemMenu);
-			//leGuiView.getMenu().resetOutros(itemMenu);
+			this.leGuiView.getMenu().seleciona(itemMenu);
 		}
 		
 		LOG.info(String.format("Atualizar tela {%s} do controller {%s} ", newView.getClass().getSimpleName(), newController.getClass().getSimpleName()));

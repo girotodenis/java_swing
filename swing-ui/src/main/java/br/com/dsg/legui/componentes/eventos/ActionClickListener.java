@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.joml.Vector4f;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.event.MouseClickEvent;
 import org.liquidengine.legui.event.MouseClickEvent.MouseClickAction;
@@ -21,38 +22,51 @@ public class ActionClickListener implements EventListener<MouseClickEvent> {
 	private Component source;
 	private Action action;
 	
+	private Vector4f color;
+	private List<EventListener<MouseClickEvent>> eventListeners;
+	
 	public ActionClickListener(AbstractController<?> controller, Component source, Action action) {
 		this.source = source;
 		this.action = action;
 		this.controller = controller;
+		this.color = source.getStyle().getBackground().getColor();
 	}
 	
 	@Override
 	public void process(MouseClickEvent event) {
-		if(event.getAction().equals(MouseClickAction.CLICK)) {
-			source.setEnabled(false);
-			source.setPressed(true);
-			List<EventListener<MouseClickEvent>> eventListeners =  source.getListenerMap().getListeners(MouseClickEvent.class);
-			source.getListenerMap().removeAllListeners(MouseClickEvent.class);
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						
-						LOG.info(String.format("Executando click %s ", source.toString() ));
-						action.executar(event);
-						source.setEnabled(true);
-						source.setPressed(false);
-						
-						for (EventListener<MouseClickEvent> eventListener : eventListeners) {
-							source.getListenerMap().addListener(MouseClickEvent.class, eventListener);
+			if(event.getAction().equals(MouseClickAction.CLICK)) {
+				bloquearComponente();
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							LOG.info(String.format("Executando click %s ", source.toString() ));
+							action.executar(event);
+						} catch (Exception e) {
+							controller.handlerException(e);
+						} finally {
+							habilitarComponente();
 						}
-						
-					} catch (Exception e) {
-						controller.handlerException(e);
 					}
-				}
-			});
+
+				});
+			}
+	}
+
+	public void habilitarComponente() {
+		source.setEnabled(true);
+		source.setPressed(false);
+		source.getStyle().getBackground().setColor(ActionClickListener.this.color);
+		for (EventListener<MouseClickEvent> eventListener : ActionClickListener.this.eventListeners) {
+			source.getListenerMap().addListener(MouseClickEvent.class, eventListener);
 		}
+	}
+	
+	public void bloquearComponente() {
+		source.setEnabled(false);
+		source.setPressed(true);
+		source.getStyle().getBackground().setColor(source.getPressedStyle().getBackground().getColor());
+		ActionClickListener.this.eventListeners =  source.getListenerMap().getListeners(MouseClickEvent.class);
+		source.getListenerMap().removeAllListeners(MouseClickEvent.class);
 	}
 
 }

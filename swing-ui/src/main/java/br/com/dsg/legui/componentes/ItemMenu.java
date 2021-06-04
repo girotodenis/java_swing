@@ -99,7 +99,7 @@ public class ItemMenu extends Button {
 		getTextState().setText(nome);
 	}
 	
-	public void seleciona() {
+	protected void seleciona() {
 		this.setEnabled(false);
 		this.setPressed(true);
 		this.setFocused(true);

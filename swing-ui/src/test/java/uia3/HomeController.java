@@ -28,24 +28,25 @@ public class HomeController extends AbstractController<HomeView> {
 
 	}
 
-	private int iValor = 1;
 
 	public HomeController(AbstractController<?> controlerPai) {
 		super(controlerPai, new HomeView());
 
-		registerAction(getPanel().botao1, (event) -> fireEvent(
-
-				new EventAtualizarConteudoEvento(new ConfigController(this)))
-
-		);
+		registerAction(getPanel().botao1,
+				(event) -> fireEvent(new EventAtualizarConteudoEvento(new ConfigController(this))));
 
 		registerTarefa(getPanel().botao2, (event) -> {
-			for (int i = 0; i <= 100; i++) {
-				try {
+			try {
+				for (int i = 0; i <= 100; i++) {
 					Thread.sleep(50);
-				} catch (Exception e) {
+					if(i==50) {
+						fireEvent(new EventAtualizarConteudoEvento(new ConfigController(this)));
+					}
+					fireEvent(new EventProgressBar(i));
 				}
-				fireEvent(new EventProgressBar(i));
+				Thread.sleep(500);
+				fireEvent(new EventAtualizarConteudoEvento(new HomeController(this)));
+			} catch (Exception e) {
 			}
 		});
 
