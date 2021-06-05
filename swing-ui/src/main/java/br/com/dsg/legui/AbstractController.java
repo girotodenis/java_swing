@@ -1,12 +1,10 @@
-package br.com.dsg.legui.controller;
+package br.com.dsg.legui;
 
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.liquidengine.legui.component.Component;
@@ -18,8 +16,8 @@ import org.liquidengine.legui.event.MouseClickEvent;
 import org.liquidengine.legui.event.MouseClickEvent.MouseClickAction;
 import org.liquidengine.legui.listener.EventListener;
 
-import br.com.dsg.legui.componentes.eventos.ActionClickListener;
-import br.com.dsg.legui.controller.eventos.EventProgressBar;
+import br.com.dsg.legui.controller.seguranca.Sessao;
+import br.com.dsg.legui.controller.seguranca.Usuario;
 
 
 /**
@@ -55,8 +53,8 @@ public abstract class AbstractController<T extends Panel> {
 
 	private T panel;
 
-	private String nomeController;;
-
+	private String nomeController;
+	
 	private java.util.List<AbstractController<?>> subControllers = new ArrayList<AbstractController<?>>();
 
 	private Map<String, List<ControllerEventListener<?>>> eventListeners = new HashMap<String, List<ControllerEventListener<?>>>();
@@ -122,9 +120,8 @@ public abstract class AbstractController<T extends Panel> {
 		source.getListenerMap().addListener(MouseClickEvent.class, (event)->{
 			if(event.getAction().equals(MouseClickAction.CLICK)) {
 				try {
-					source.setEnabled(false);
+					LOG.info(String.format("Executando click %s ", source.toString() ));
 					acao.executar(event);
-					source.setEnabled(true);
 				} catch (Exception e) {
 					handlerException(e);
 				}
@@ -234,6 +231,5 @@ public abstract class AbstractController<T extends Panel> {
 	public void setNomeController(String nomeController) {
 		this.nomeController = nomeController;
 	}
-
 
 }

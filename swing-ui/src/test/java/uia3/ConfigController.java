@@ -2,7 +2,7 @@ package uia3;
 
 import org.apache.log4j.Logger;
 
-import br.com.dsg.legui.controller.AbstractController;
+import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.controller.eventos.EventVoltarController;
 
 /**

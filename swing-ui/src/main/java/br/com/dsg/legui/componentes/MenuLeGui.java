@@ -104,6 +104,25 @@ public class MenuLeGui extends Panel {
 		notifica(newSize);
 		setSize(newSize);
 	}
+	
+	
+	public void esconder() {
+		Vector2f newSize = new Vector2f(0, this.getSize().y);
+		notifica(newSize);
+		setSize(newSize);
+	}
+
+	public void exibir() {
+		Vector2f newSize = null;
+		if(aberto) {
+			newSize = new Vector2f(this.wo, this.getSize().y);
+		}else {
+			newSize = new Vector2f(this.wc, this.getSize().y);
+		}
+		notifica(newSize);
+		setSize(newSize);
+	}
+	
 
 	public boolean isAberto() {
 		return aberto;

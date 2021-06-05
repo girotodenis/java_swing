@@ -10,6 +10,7 @@ public class TesteStart {
 	@Test
 	public void deve_iniciar_app() {
 		StartLeGui.get(800, 600, "App test")
+		.autenticacao( (controllerPai) -> new LoginController(controllerPai) )
 		.addItemActionMenu(
 							"",
 							"imagens/icons8-cardapio-30.png",
@@ -24,7 +25,8 @@ public class TesteStart {
 		)
 		.addItemMenu("Home",
 						"imagens/home_house_10811.png", 
-						(controllerPai)->new HomeController(controllerPai), true
+						(controllerPai)->new HomeController(controllerPai)
+						, true
 		)
 		.addItemActionMenu( 
 				"Sair",

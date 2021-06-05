@@ -1,4 +1,4 @@
-package br.com.dsg.legui.componentes.eventos;
+package br.com.dsg.legui;
 
 import java.util.List;
 
@@ -10,9 +10,6 @@ import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.event.MouseClickEvent;
 import org.liquidengine.legui.event.MouseClickEvent.MouseClickAction;
 import org.liquidengine.legui.listener.EventListener;
-
-import br.com.dsg.legui.controller.AbstractController;
-import br.com.dsg.legui.controller.Action;
 
 public class ActionClickListener implements EventListener<MouseClickEvent> {
 

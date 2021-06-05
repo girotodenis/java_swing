@@ -40,6 +40,7 @@ import org.lwjgl.glfw.GLFWWindowCloseCallbackI;
 import org.lwjgl.opengl.GL;
 
 import br.com.dsg.legui.componentes.LeGuiView;
+import br.com.dsg.legui.controller.seguranca.SeguracaController;
 
 public class StartLeGui {
 
@@ -235,6 +236,11 @@ public class StartLeGui {
 	
 	public StartLeGui fecharMenu() {
 		this.leGuiController.fecharMenu();
+		return this;
+	}
+
+	public <T extends SeguracaController<?>> StartLeGui autenticacao( GerarController<T> cController) {
+		this.leGuiController.autenticacao(cController);
 		return this;
 	}
 

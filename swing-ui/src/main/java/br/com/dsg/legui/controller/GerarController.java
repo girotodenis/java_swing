@@ -1,7 +1,9 @@
 package br.com.dsg.legui.controller;
 
-public interface GerarController {
+import br.com.dsg.legui.AbstractController;
+
+public interface GerarController<T extends AbstractController<?> > {
 
 	
-	AbstractController<?> criar(AbstractController<?> controllerPai);
+	T criar(AbstractController<?> controllerPai);
 }

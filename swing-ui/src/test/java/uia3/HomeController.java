@@ -7,7 +7,8 @@ import org.apache.log4j.Logger;
 import org.liquidengine.legui.component.Dialog;
 import org.liquidengine.legui.component.Label;
 
-import br.com.dsg.legui.controller.AbstractController;
+import br.com.dsg.legui.AbstractController;
+import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.controller.eventos.EventAtualizarConteudoEvento;
 import br.com.dsg.legui.controller.eventos.EventProgressBar;
 
@@ -39,11 +40,9 @@ public class HomeController extends AbstractController<HomeView> {
 			try {
 				for (int i = 0; i <= 100; i++) {
 					Thread.sleep(50);
-					if(i==50) {
-						fireEvent(new EventAtualizarConteudoEvento(new ConfigController(this)));
-					}
 					fireEvent(new EventProgressBar(i));
 				}
+				fireEvent(new EventAtualizarConteudoEvento(new ConfigController(this)));
 				Thread.sleep(500);
 				fireEvent(new EventAtualizarConteudoEvento(new HomeController(this)));
 			} catch (Exception e) {
@@ -58,6 +57,15 @@ public class HomeController extends AbstractController<HomeView> {
 			dialog.getContainer().add(erro);
 			dialog.show(getPanel().getFrame());
 		});
+		
+		
+		registerAction(getPanel().botao4, (event) -> {
+			((LeGuiView) getControllerPai().getPanel()).getMenu().esconder();
+		});
+		registerAction(getPanel().botao5, (event) -> {
+			((LeGuiView) getControllerPai().getPanel()).getMenu().exibir();
+		});
+
 
 	}
 

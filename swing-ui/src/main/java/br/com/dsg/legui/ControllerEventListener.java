@@ -1,4 +1,4 @@
-package br.com.dsg.legui.controller;
+package br.com.dsg.legui;
 
 /**
  * @author Denis Giroto

@@ -1,6 +1,6 @@
 package br.com.dsg.legui.controller.eventos;
 
-import br.com.dsg.legui.controller.AbstractController;
+import br.com.dsg.legui.AbstractController;
 
 public class EventVoltarController {
 

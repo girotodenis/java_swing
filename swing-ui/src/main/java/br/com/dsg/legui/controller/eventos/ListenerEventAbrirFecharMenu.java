@@ -2,8 +2,8 @@ package br.com.dsg.legui.controller.eventos;
 
 import javax.swing.SwingUtilities;
 
+import br.com.dsg.legui.ControllerEventListener;
 import br.com.dsg.legui.componentes.LeGuiView;
-import br.com.dsg.legui.controller.ControllerEventListener;
 import br.com.dsg.legui.controller.LeGuiController;
 
 public class ListenerEventAbrirFecharMenu implements ControllerEventListener<EventAbrirFecharMenu> {

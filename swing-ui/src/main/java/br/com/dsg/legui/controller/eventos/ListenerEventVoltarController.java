@@ -1,8 +1,8 @@
 package br.com.dsg.legui.controller.eventos;
 
+import br.com.dsg.legui.AbstractController;
+import br.com.dsg.legui.ControllerEventListener;
 import br.com.dsg.legui.componentes.LeGuiView;
-import br.com.dsg.legui.controller.AbstractController;
-import br.com.dsg.legui.controller.ControllerEventListener;
 import br.com.dsg.legui.controller.LeGuiController;
 
 public class ListenerEventVoltarController implements ControllerEventListener<EventVoltarController> {
