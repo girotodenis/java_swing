@@ -5,6 +5,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 
 import br.com.dsg.legui.AbstractController;
+import br.com.dsg.legui.ExecutarEvento;
 import br.com.dsg.legui.componentes.ItemMenu;
 import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.controller.eventos.EventAbrirFecharMenu;
@@ -32,20 +33,28 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 	private Boolean loadMenuFechado = Boolean.FALSE;
 	
 	private Sessao session = new Sessao<>(false);
+	
+	private static LeGuiController instance;
+	
 
 	/**
 	 * 
 	 */
-	public LeGuiController(LeGuiView leGuiView) {
+	protected LeGuiController(LeGuiView leGuiView) {
 		super(leGuiView);
+		instance = this;
 		
-		registerControllerEventListener(EventAbrirFecharMenu.class, new ListenerEventAbrirFecharMenu(this, getPanel()));
-		registerControllerEventListener(EventAtualizarConteudoEvento.class, new ListenerEventAtualizarConteudo(this, getPanel()));
-		registerControllerEventListener(EventVoltarController.class, new ListenerEventVoltarController(this, getPanel()));
-		registerControllerEventListener(EventProgressBar.class, new ListenerEventProgressBar(this, getPanel()));
+		registerControllerEventListener(EventAbrirFecharMenu.class, new ListenerEventAbrirFecharMenu());
+		registerControllerEventListener(EventAtualizarConteudoEvento.class, new ListenerEventAtualizarConteudo());
+		registerControllerEventListener(EventVoltarController.class, new ListenerEventVoltarController());
+		registerControllerEventListener(EventProgressBar.class, new ListenerEventProgressBar());
 		loadMenuFechado();
 	}
 
+	public static LeGuiController get() {
+		return instance;
+	}
+	
 	/**
 	 * @author Denis Giroto Classe utilizada para disparar um evento que atualiza a
 	 *         tela Principal.
@@ -75,14 +84,22 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 				public void executar(LeGuiController controller) {
 //					AbstractController<?> controllerMenu = cController.criar(controller);
 //					controllerMenu.setNomeController(nome);
-					fireEvent(new EventAtualizarConteudoEvento(controllerMenu.getNomeController(), controllerMenu));
+					
+					ExecutarEvento.get().lancar(
+						new EventAtualizarConteudoEvento(controllerMenu.getNomeController(), controllerMenu)
+					).executar();
+					
 				}
 			};
 			action.executar(this);
 		});
 		if (inicializar) {
 			getPanel().getMenu().seleciona(item);
-			fireEvent(new EventAtualizarConteudoEvento(nome, controllerMenu));
+			
+			ExecutarEvento.get().lancar(
+					new EventAtualizarConteudoEvento(nome, controllerMenu)
+			).executar();
+			
 		}
 		return this;
 	}
@@ -101,7 +118,11 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 					for (int i = 0; i <= 100; i++) {
 						try {
 							Thread.sleep(1);
-							fireEvent(new EventProgressBar(i));
+							
+							ExecutarEvento.get().lancar(
+									new EventProgressBar(i)
+							).executar();
+							
 						} catch (Exception e) {}
 					}
 				}
@@ -115,7 +136,7 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 		getSession().setLoginAtivo(true);
 		final SeguracaController<?> controllerSeguranca= cController.criar(LeGuiController.this);
 		controllerSeguranca.setNomeController("SeguracaController_"+System.currentTimeMillis());
-		registerControllerEventListener(EventLoginApp.class, new ListenerEventLoginApp( this, getPanel(), controllerSeguranca ));
+		registerControllerEventListener(EventLoginApp.class, new ListenerEventLoginApp( controllerSeguranca ));
 		
 //		SwingUtilities.invokeLater(new Runnable() {
 //			public void run() {
@@ -138,7 +159,10 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 			public void run() {
 				try {
 					Thread.sleep(100);
-					fireEvent(new EventAbrirFecharMenu(LeGuiController.this.loadMenuFechado));
+					
+					ExecutarEvento.get().lancar(
+						new EventAbrirFecharMenu(LeGuiController.this.loadMenuFechado)
+					).executar();
 					
 					if(LeGuiController.this.getSession()!= null && LeGuiController.this.getSession().isLoginAtivo() && !LeGuiController.this.getSession().isAutenticado()) {
 						LeGuiController.this.getPanel().getMenu().esconder();
@@ -155,9 +179,12 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					fireEvent(new EventAbrirFecharMenu());
-				} catch (Exception e) {
-				}
+					
+					ExecutarEvento.get().lancar(
+							new EventAbrirFecharMenu()
+					).executar();
+					
+				} catch (Exception e) {}
 			}
 		});
 		return this;

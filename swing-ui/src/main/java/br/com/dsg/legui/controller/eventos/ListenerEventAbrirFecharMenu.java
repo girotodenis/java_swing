@@ -3,19 +3,12 @@ package br.com.dsg.legui.controller.eventos;
 import javax.swing.SwingUtilities;
 
 import br.com.dsg.legui.ControllerEventListener;
-import br.com.dsg.legui.componentes.LeGuiView;
-import br.com.dsg.legui.controller.LeGuiController;
+import br.com.dsg.legui.ExecutarEvento;
 
 public class ListenerEventAbrirFecharMenu implements ControllerEventListener<EventAbrirFecharMenu> {
 
-	private LeGuiController leGuiController;
-	private LeGuiView leGuiView;
-	
-	public ListenerEventAbrirFecharMenu(LeGuiController leGuiController,
-			LeGuiView leGuiView) {
+	public ListenerEventAbrirFecharMenu() {
 		super();
-		this.leGuiController = leGuiController;
-		this.leGuiView = leGuiView;
 	}
 	
 	@Override
@@ -26,7 +19,11 @@ public class ListenerEventAbrirFecharMenu implements ControllerEventListener<Eve
 				for (int i = 0; i <= 100; i++) {
 					try {
 						Thread.sleep(1);
-						leGuiController.fireEvent(new EventProgressBar(i));
+						
+						ExecutarEvento.get().lancar(
+								new EventProgressBar(i)
+						).executar();
+						
 					} catch (Exception e) {
 					}
 				}
@@ -35,16 +32,16 @@ public class ListenerEventAbrirFecharMenu implements ControllerEventListener<Eve
 		
 		if(event.getFechar()!=null) {
 			if(event.getFechar()) {
-				this.leGuiView.getMenu().encolherItens();
+				event.getControllerAlvo().getPanel().getMenu().encolherItens();
 			}else {
-				this.leGuiView.getMenu().expandirItens();
+				event.getControllerAlvo().getPanel().getMenu().expandirItens();
 			}
 		}else {
-			boolean abrir = !this.leGuiView.getMenu().isAberto();
+			boolean abrir = !event.getControllerAlvo().getPanel().getMenu().isAberto();
 			if (abrir) {
-				this.leGuiView.getMenu().expandirItens();
+				event.getControllerAlvo().getPanel().getMenu().expandirItens();
 			} else {
-				this.leGuiView.getMenu().encolherItens();
+				event.getControllerAlvo().getPanel().getMenu().encolherItens();
 			}
 		}
 	}

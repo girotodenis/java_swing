@@ -57,7 +57,7 @@ public abstract class AbstractController<T extends Panel> {
 	
 	private java.util.List<AbstractController<?>> subControllers = new ArrayList<AbstractController<?>>();
 
-	private Map<String, List<ControllerEventListener<?>>> eventListeners = new HashMap<String, List<ControllerEventListener<?>>>();
+	private Map<String, List<ControllerEventListener<?>>> eventosControllers = new HashMap<String, List<ControllerEventListener<?>>>();
 
 	public AbstractController(T frame) {
 		this.panel = frame;
@@ -130,24 +130,27 @@ public abstract class AbstractController<T extends Panel> {
 	}
 
 	
-	/**
-	 * Aciona o <code>AbstractEventListener</code> relacionado ao
-	 * <code>AbstractEvent</code> para que o <code>listener</code> trate o evento.
-	 * 
-	 * @param event referÃªncia do evento gerado
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public <T> void fireEvent(T event) {
-		if (eventListeners.get(event.getClass().getName()) != null) {
-			for (ControllerEventListener eventListener : eventListeners.get(event.getClass().getName())) {
-				LOG.debug("Evento: " + event.getClass().getSimpleName() + " com listener: "
-						+ eventListener.getClass().getName());
-				eventListener.handleEvent(event);
-			}
-		}
-		if (controllerPai != null)
-			controllerPai.fireEvent(event);
-	}
+//	/**
+//	 * Aciona o <code>AbstractEventListener</code> relacionado ao
+//	 * <code>AbstractEvent</code> para que o <code>listener</code> trate o evento.
+//	 * 
+//	 * @param event referÃªncia do evento gerado
+//	 */
+//	@SuppressWarnings({ "unchecked", "rawtypes" })
+//	public <T extends EventoController> void fireEvent(T event) {
+//		
+//		ExecutarEvento.get().lancar(event).executar();
+		
+//		if (eventosControllers.get(event.getClass().getName()) != null) {
+//			for (ControllerEventListener eventListener : eventosControllers.get(event.getClass().getName())) {
+//				LOG.debug("Evento: " + event.getClass().getSimpleName() + " com listener: "
+//						+ eventListener.getClass().getName());
+//				eventListener.handleEvent(event);
+//			}
+//		}
+//		if (controllerPai != null)
+//			controllerPai.fireEvent(event);
+//	}
 
 	/**
 	 * Registra um <code>listener</code> que deve ser acionado de acordo com o tipo
@@ -158,7 +161,7 @@ public abstract class AbstractController<T extends Panel> {
 	 */
 	protected void registerControllerEventListener(Class<?> class1, ControllerEventListener<?>... listeners) {
 		LOG.debug("Registrando " + listeners.length + " listeners para o evento: " + class1.getName());
-		java.util.List<ControllerEventListener<?>> listenersForEvent = eventListeners.get(class1.getName());
+		java.util.List<ControllerEventListener<?>> listenersForEvent = eventosControllers.get(class1.getName());
 		if (listenersForEvent == null) {
 			listenersForEvent = new ArrayList<ControllerEventListener<?>>();
 		}
@@ -167,7 +170,7 @@ public abstract class AbstractController<T extends Panel> {
 			listenersForEvent.add(controllerEventListener);
 		}
 		
-		eventListeners.put(class1.getName(), listenersForEvent);
+		eventosControllers.put(class1.getName(), listenersForEvent);
 	}
 
 
@@ -231,5 +234,11 @@ public abstract class AbstractController<T extends Panel> {
 	public void setNomeController(String nomeController) {
 		this.nomeController = nomeController;
 	}
+
+	protected Map<String, List<ControllerEventListener<?>>> getEventosControllers() {
+		return eventosControllers;
+	}
+	
+	
 
 }

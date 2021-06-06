@@ -109,11 +109,11 @@ public class StartLeGui {
 
 		leGuiView = new LeGuiView(WIDTH, HEIGHT);
 		leGuiView.setFocusable(false);
-		leGuiView.getListenerMap().addListener(WindowSizeEvent.class,
-				(WindowSizeEventListener) event -> leGuiView.setSize(event.getWidth(), event.getHeight()));
-		frame.getContainer().add(leGuiView);
-
 		leGuiController = new LeGuiController(leGuiView);
+
+		leGuiView.getListenerMap().addListener(WindowSizeEvent.class,
+				(WindowSizeEventListener) event -> leGuiController.getPanel().setSize(event.getWidth(), event.getHeight()));
+		frame.getContainer().add(leGuiController.getPanel());
 	}
 
 	public static StartLeGui get(int width, int height, String appNome) {

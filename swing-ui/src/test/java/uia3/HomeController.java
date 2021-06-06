@@ -8,6 +8,7 @@ import org.liquidengine.legui.component.Dialog;
 import org.liquidengine.legui.component.Label;
 
 import br.com.dsg.legui.AbstractController;
+import br.com.dsg.legui.ExecutarEvento;
 import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.controller.eventos.EventAtualizarConteudoEvento;
 import br.com.dsg.legui.controller.eventos.EventProgressBar;
@@ -23,7 +24,6 @@ public class HomeController extends AbstractController<HomeView> {
 	class MeuEvento {
 
 		public MeuEvento(String valor, JPanel target) {
-
 			((JLabel) target.getComponent(0)).setText(valor);
 		}
 
@@ -34,17 +34,22 @@ public class HomeController extends AbstractController<HomeView> {
 		super(controlerPai, new HomeView());
 
 		registerAction(getPanel().botao1,
-				(event) -> fireEvent(new EventAtualizarConteudoEvento(new ConfigController(this))));
+				(event) -> ExecutarEvento.get().lancar(
+						new EventAtualizarConteudoEvento(new ConfigController(this))
+					).executar());
 
 		registerTarefa(getPanel().botao2, (event) -> {
 			try {
 				for (int i = 0; i <= 100; i++) {
+					
 					Thread.sleep(50);
-					fireEvent(new EventProgressBar(i));
+					
+					ExecutarEvento.get().lancar(
+							new EventProgressBar(i)
+					).executar();
+					
 				}
-				fireEvent(new EventAtualizarConteudoEvento(new ConfigController(this)));
 				Thread.sleep(500);
-				fireEvent(new EventAtualizarConteudoEvento(new HomeController(this)));
 			} catch (Exception e) {
 			}
 		});
@@ -62,6 +67,7 @@ public class HomeController extends AbstractController<HomeView> {
 		registerAction(getPanel().botao4, (event) -> {
 			((LeGuiView) getControllerPai().getPanel()).getMenu().esconder();
 		});
+		
 		registerAction(getPanel().botao5, (event) -> {
 			((LeGuiView) getControllerPai().getPanel()).getMenu().exibir();
 		});

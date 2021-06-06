@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.ControllerEventListener;
-import br.com.dsg.legui.componentes.LeGuiView;
+import br.com.dsg.legui.ExecutarEvento;
 import br.com.dsg.legui.controller.LeGuiController;
 import br.com.dsg.legui.controller.seguranca.SeguracaController;
 
@@ -12,29 +12,27 @@ public class ListenerEventLoginApp implements ControllerEventListener<EventLogin
 
 	private final static Logger LOG = Logger.getLogger(LeGuiController.class);
 	
-	private LeGuiController leGuiController;
-	private LeGuiView leGuiView;
 	private SeguracaController<?> controllerSeguranca;
 	
-	public ListenerEventLoginApp(LeGuiController leGuiController,
-			LeGuiView leGuiView, SeguracaController<?> controllerSeguranca) {
+	public ListenerEventLoginApp(SeguracaController<?> controllerSeguranca) {
 		super();
-		this.leGuiController = leGuiController;
-		this.leGuiView = leGuiView;
 		this.controllerSeguranca=controllerSeguranca;
 	}
 
 	@Override
 	public void handleEvent(EventLoginApp event) {
 		
-		AbstractController newController = event.getNewController();
+		AbstractController<?> newController = event.getNewController();
 		controllerSeguranca.setCallback((sessao)->{
-			leGuiController.setSession(sessao);
+			event.getControllerAlvo().setSession(sessao);
 			if(sessao.isAutenticado()) {
-				this.leGuiView.getMenu().exibir();
-				leGuiController.fireEvent(new EventAtualizarConteudoEvento(newController));
+				event.getControllerAlvo().getPanel().getMenu().exibir();
+				
+				ExecutarEvento.get().lancar(
+					new EventAtualizarConteudoEvento(newController)
+				).executar();
 			}
 		});
-		leGuiView.addPanel(controllerSeguranca.getPanel());
+		event.getControllerAlvo().getPanel().addPanel(controllerSeguranca.getPanel());
 	}
 }

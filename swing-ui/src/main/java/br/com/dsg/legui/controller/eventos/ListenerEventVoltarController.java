@@ -2,19 +2,12 @@ package br.com.dsg.legui.controller.eventos;
 
 import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.ControllerEventListener;
-import br.com.dsg.legui.componentes.LeGuiView;
-import br.com.dsg.legui.controller.LeGuiController;
+import br.com.dsg.legui.ExecutarEvento;
 
 public class ListenerEventVoltarController implements ControllerEventListener<EventVoltarController> {
 
-	private LeGuiController LeGuiController;
-	private LeGuiView leGuiView;
-	
-	public ListenerEventVoltarController(LeGuiController leGuiController,
-			LeGuiView leGuiView) {
+	public ListenerEventVoltarController() {
 		super();
-		LeGuiController = leGuiController;
-		this.leGuiView = leGuiView;
 	}
 	
 	@Override
@@ -24,7 +17,11 @@ public class ListenerEventVoltarController implements ControllerEventListener<Ev
 
 		if(controllerAnterior!=null && controllerAnterior.getPanel()!=null ){
 			controllerAnterior.remove(controllerAtual);
-			LeGuiController.fireEvent(new EventAtualizarConteudoEvento(controllerAnterior));
+			
+			ExecutarEvento.get().lancar(
+					new EventAtualizarConteudoEvento(controllerAnterior)
+			).executar();
+			
 		}
 	}
 }

@@ -1,10 +1,14 @@
 package br.com.dsg.legui.controller.eventos;
 
-public class EventProgressBar {
+import br.com.dsg.legui.EventoController;
+import br.com.dsg.legui.controller.LeGuiController;
+
+public class EventProgressBar extends EventoController<LeGuiController>{
 	
 	private float valor;
 
 	public EventProgressBar(float valor) {
+		super(LeGuiController.get());
 		this.valor = valor;
 	}
 

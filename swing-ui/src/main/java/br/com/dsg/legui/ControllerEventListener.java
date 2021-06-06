@@ -15,7 +15,7 @@ package br.com.dsg.legui;
  *
  * @param <M> tipo do Evento que deverá ser tratado.
  */
-public interface ControllerEventListener<M> {
+public interface ControllerEventListener<M extends EventoController> {
 
 	 public void handleEvent(M event);
 
