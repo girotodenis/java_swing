@@ -1,7 +1,10 @@
 package br.com.dsg.legui.componentes;
 
+import org.joml.Vector2f;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.Panel;
+import org.liquidengine.legui.component.event.component.ChangeSizeEvent;
+import org.liquidengine.legui.listener.processor.EventProcessorProvider;
 
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEvent;
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEventListener;
@@ -41,7 +44,13 @@ public class ConteudoLeGui extends Panel {
 			
 			for(Component c: getChildComponents() ) {
 				c.setPosition(0,0);
+				
+				Vector2f oldSize = c.getSize();
 				c.setSize(this.w, this.h);
+				Vector2f newSize = c.getSize();
+				
+				EventProcessorProvider.getInstance().pushEvent(new ChangeSizeEvent<Component>(c, null,
+						this.getFrame(),oldSize, newSize));
 			}
 			
 		});
