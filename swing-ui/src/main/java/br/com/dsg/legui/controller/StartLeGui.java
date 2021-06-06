@@ -204,6 +204,18 @@ public class StartLeGui {
 	}
 
 	
+	public StartLeGui abrirFecharMenuPagrao() {
+		this.leGuiController.addItemMenu(
+				"",
+				"imagens/icons8-cardapio-30.png",
+				"imagens/icons8-cardapio-fechado-30.png", 
+				true, 
+				true,
+				(c) -> c.menuAbrirFecharMenu() 
+		);
+		return this;
+	}
+	
 	public StartLeGui addItemActionMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
 		this.leGuiController.addItemMenu( nome,  imageA, imageB, imageHorizontalAlignRIGHT, desabilitarSelecaoMenu,  action);
 		return this;

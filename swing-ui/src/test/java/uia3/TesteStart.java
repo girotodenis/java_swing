@@ -1,24 +1,19 @@
 package uia3;
 
-import org.testng.annotations.Test;
-
 import br.com.dsg.legui.controller.StartLeGui;
 
 
 public class TesteStart {
+	
+	public static void main(String[] args) {
+		new TesteStart().deve_iniciar_app();
+	}
 
-	@Test
+//	@Test
 	public void deve_iniciar_app() {
 		StartLeGui.get(800, 600, "App test")
 		.autenticacao( (controllerPai) -> new LoginController(controllerPai) )
-		.addItemActionMenu(
-							"",
-							"imagens/icons8-cardapio-30.png",
-							"imagens/icons8-cardapio-fechado-30.png", 
-							true, 
-							true,
-							(c) -> c.menuAbrirFecharMenu() 
-		)
+		.abrirFecharMenuPagrao()
 		.addItemMenu("Configuração",
 						"imagens/setting-configure.png",  
 						(controllerPai)->new ConfigController(controllerPai)
