@@ -34,6 +34,8 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 	
 	private Sessao session = new Sessao<>(false);
 	
+	private  boolean appFinalizado = false;
+	
 	private static LeGuiController instance;
 	
 
@@ -200,6 +202,14 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 
 	public void setSession(Sessao<Usuario> session) {
 		this.session = session;
+	}
+
+	protected boolean isAppFinalizado() {
+		return appFinalizado;
+	}
+	
+	protected void setAppFinalizado(boolean appFinalizado) {
+		this.appFinalizado = appFinalizado;
 	}
 
 }

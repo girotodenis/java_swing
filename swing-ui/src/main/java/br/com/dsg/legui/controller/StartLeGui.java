@@ -129,6 +129,7 @@ public class StartLeGui {
 
 		GLFWKeyCallbackI glfwKeyCallbackI = (w1, key, code, action,
 				mods) -> running = !(key == GLFW_KEY_ESCAPE && action != GLFW_RELEASE);
+		
 		GLFWWindowCloseCallbackI glfwWindowCloseCallbackI = w -> running = false;
 
 		// if we want to create some callbacks for system events you should create and
@@ -139,7 +140,7 @@ public class StartLeGui {
 		// glfwSetWindowCloseCallback(window, glfwWindowCloseCallbackI);
 		//
 		// Right:
-		initializer.getCallbackKeeper().getChainKeyCallback().add(glfwKeyCallbackI);
+		//initializer.getCallbackKeeper().getChainKeyCallback().add(glfwKeyCallbackI);
 		initializer.getCallbackKeeper().getChainWindowCloseCallback().add(glfwWindowCloseCallbackI);
 
 		// Initialization finished, so we can start render loop.
@@ -196,6 +197,8 @@ public class StartLeGui {
 				fullscreen = !fullscreen;
 				toggleFullscreen = false;
 			}
+			running = !leGuiController.isAppFinalizado();
+			
 		}
 		// And when rendering is ended we need to destroy renderer
 		renderer.destroy();
