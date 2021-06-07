@@ -80,12 +80,11 @@ public class ItemMenu extends Button {
 	}
 
 	private void encolher() {
-		if(imageHorizontalAlignRIGHT) {
-			Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathFechada));
-			bgIm.setSize(new Vector2f(35, 30));
-			bgIm.setPosition(new Vector2f(8, 5));
-			getStyle().getBackground().setIcon(bgIm);
-		}
+		Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathFechada));
+		bgIm.setSize(new Vector2f(35, 30));
+		bgIm.setPosition(new Vector2f(8, 5));
+		getStyle().getBackground().setIcon(bgIm);
+		
 		getTextState().setText("");
 	}
 	
@@ -94,6 +93,11 @@ public class ItemMenu extends Button {
 			Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathAberta));
 			bgIm.setSize(new Vector2f(35, 30));
 			bgIm.setPosition(new Vector2f(getSize().x()-37, 5));
+			getStyle().getBackground().setIcon(bgIm);
+		}else {
+			Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathAberta));
+			bgIm.setSize(new Vector2f(35, 30));
+			bgIm.setPosition(new Vector2f(8, 5));
 			getStyle().getBackground().setIcon(bgIm);
 		}
 		getTextState().setText(nome);
