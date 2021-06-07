@@ -9,7 +9,6 @@ import org.liquidengine.legui.icon.Icon;
 import org.liquidengine.legui.icon.ImageIcon;
 import org.liquidengine.legui.image.loader.ImageLoader;
 
-import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEvent;
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEventListener;
 import br.com.dsg.util.Constantes;
