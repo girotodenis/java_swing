@@ -1,16 +1,15 @@
 package br.com.dsg.legui.controller.eventos;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.ControllerEventListener;
 import br.com.dsg.legui.ExecutarEvento;
-import br.com.dsg.legui.controller.LeGuiController;
 import br.com.dsg.legui.controller.seguranca.SeguracaController;
 
 public class ListenerEventLoginApp implements ControllerEventListener<EventLoginApp> {
 
-	private final static Logger LOG = Logger.getLogger(LeGuiController.class);
+	//private final static Logger LOG = Logger.getLogger(LeGuiController.class);
 	
 	private SeguracaController<?> controllerSeguranca;
 	

@@ -114,7 +114,7 @@ public abstract class AbstractController<T extends Panel> {
 	 * @param source
 	 * @param action
 	 */
-	protected void registerAction(Component source, Action acao) {
+	public void registerAction(Component source, Action acao) {
 		LOG.debug("Registrando action para o botao: " + source.toString());
 		
 		source.getListenerMap().addListener(MouseClickEvent.class, (event)->{

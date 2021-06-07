@@ -249,8 +249,8 @@ public class StartLeGui {
 		return this;
 	}
 	
-	public StartLeGui fecharMenu() {
-		this.leGuiController.fecharMenu();
+	public StartLeGui menuFechado() {
+		this.leGuiController.menuFechado();
 		return this;
 	}
 

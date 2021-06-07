@@ -6,14 +6,15 @@ import org.apache.log4j.Logger;
 
 import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.ExecutarEvento;
-import br.com.dsg.legui.componentes.ItemMenu;
 import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.controller.eventos.EventAbrirFecharMenu;
+import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
 import br.com.dsg.legui.controller.eventos.EventAtualizarConteudoEvento;
 import br.com.dsg.legui.controller.eventos.EventLoginApp;
 import br.com.dsg.legui.controller.eventos.EventProgressBar;
 import br.com.dsg.legui.controller.eventos.EventVoltarController;
 import br.com.dsg.legui.controller.eventos.ListenerEventAbrirFecharMenu;
+import br.com.dsg.legui.controller.eventos.ListenerEventAdicionarItemMenu;
 import br.com.dsg.legui.controller.eventos.ListenerEventAtualizarConteudo;
 import br.com.dsg.legui.controller.eventos.ListenerEventLoginApp;
 import br.com.dsg.legui.controller.eventos.ListenerEventProgressBar;
@@ -32,7 +33,7 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 	
 	private Boolean loadMenuFechado = Boolean.FALSE;
 	
-	private Sessao session = new Sessao<>(false);
+	private Sessao<?> session = new Sessao<>(false);
 	
 	private  boolean appFinalizado = false;
 	
@@ -50,6 +51,8 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 		registerControllerEventListener(EventAtualizarConteudoEvento.class, new ListenerEventAtualizarConteudo());
 		registerControllerEventListener(EventVoltarController.class, new ListenerEventVoltarController());
 		registerControllerEventListener(EventProgressBar.class, new ListenerEventProgressBar());
+		registerControllerEventListener(EventAdicionarItemMenu.class, new ListenerEventAdicionarItemMenu());
+		
 		loadMenuFechado();
 	}
 
@@ -72,65 +75,18 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 	 * @return
 	 */
 	public LeGuiController addItemMenu(String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController cController, Boolean inicializar) {
-		LOG.info("menu " + nome + " criado");
 		
-		final AbstractController<?> controllerMenu = cController.criar(this);
-		controllerMenu.setNomeController(nome+"_menu_"+System.currentTimeMillis());
-		
-		ItemMenu item = getPanel().getMenu().criarItemMenu(nome, imageA, imageB, imageHorizontalAlignRIGHT);
-		item.setPanel(controllerMenu.getPanel().getClass());
-		
-		registerAction(item, (event) -> {
-			getPanel().getMenu().seleciona(item);
-			ActionMenu<LeGuiController> action = new ActionMenu<LeGuiController>() {
-				public void executar(LeGuiController controller) {
-//					AbstractController<?> controllerMenu = cController.criar(controller);
-//					controllerMenu.setNomeController(nome);
-					
-					ExecutarEvento.get().lancar(
-						new EventAtualizarConteudoEvento(controllerMenu.getNomeController(), controllerMenu)
-					).executar();
-					
-				}
-			};
-			action.executar(this);
-		});
-		if (inicializar) {
-			getPanel().getMenu().seleciona(item);
-			
-			ExecutarEvento.get().lancar(
-					new EventAtualizarConteudoEvento(nome, controllerMenu)
-			).executar();
-			
-		}
+		ExecutarEvento.get().lancar(
+			new EventAdicionarItemMenu( nome,  imageA,  imageB, imageHorizontalAlignRIGHT,  cController,  inicializar)
+		);
+
 		return this;
 	}
 
 	public LeGuiController addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
-		LOG.info("menu " + nome + " criado");
-		ItemMenu item = getPanel().getMenu().criarItemMenu(nome, imageA, imageB, imageHorizontalAlignRIGHT);
-		registerAction(item, (event) -> {
-			
-			if(!desabilitarSelecaoMenu) {
-				getPanel().getMenu().seleciona(item);
-			}
-			
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					for (int i = 0; i <= 100; i++) {
-						try {
-							Thread.sleep(1);
-							
-							ExecutarEvento.get().lancar(
-									new EventProgressBar(i)
-							).executar();
-							
-						} catch (Exception e) {}
-					}
-				}
-			});
-			action.executar(this);
-		});
+		ExecutarEvento.get().lancar(
+			new EventAdicionarItemMenu( nome,  imageA,  imageB, imageHorizontalAlignRIGHT,  desabilitarSelecaoMenu,  action)
+		);
 		return this;
 	}
 	
@@ -139,16 +95,6 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 		final SeguracaController<?> controllerSeguranca= cController.criar(LeGuiController.this);
 		controllerSeguranca.setNomeController("SeguracaController_"+System.currentTimeMillis());
 		registerControllerEventListener(EventLoginApp.class, new ListenerEventLoginApp( controllerSeguranca ));
-		
-//		SwingUtilities.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					Thread.sleep(100);
-//					fireEvent(new EventAtualizarConteudoEvento(controllerSeguranca.getNomeController(), controllerSeguranca));
-//				} catch (Exception e) {
-//				}
-//			}
-//		});
 		return this;
 	}
 	
@@ -192,15 +138,15 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 		return this;
 	}
 
-	public void fecharMenu() {
+	public void menuFechado() {
 		this.loadMenuFechado = Boolean.TRUE;
 	}
 
-	public Sessao<Usuario> getSession() {
-		return session;
+	public <T extends Usuario> Sessao<T> getSession() {
+		return (Sessao<T>) session;
 	}
 
-	public void setSession(Sessao<Usuario> session) {
+	public <T extends Usuario> void setSession(Sessao<T> session) {
 		this.session = session;
 	}
 
@@ -208,7 +154,7 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 		return appFinalizado;
 	}
 	
-	protected void setAppFinalizado(boolean appFinalizado) {
+	public void setAppFinalizado(boolean appFinalizado) {
 		this.appFinalizado = appFinalizado;
 	}
 

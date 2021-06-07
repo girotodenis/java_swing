@@ -26,9 +26,9 @@ public class TesteStart {
 		.addItemActionMenu( 
 				"Sair",
 				"imagens/icons8-exit-sign-64.png",  
-				(c) -> System.exit(2) 
+				(c) -> c.setAppFinalizado(true) 
 		)
-		.fecharMenu()
+		.menuFechado()
 		.start();
 	}
 }
