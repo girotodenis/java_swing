@@ -38,6 +38,7 @@ public class MenuLeGui extends Panel {
 		this.h = h;
 		this.wc = wc;
 		this.wo = wo;
+		this.hi = hi;
 		this.components = panels;
 
 		this.setPosition(this.x, this.y);
@@ -142,5 +143,42 @@ public class MenuLeGui extends Panel {
 			}
 		}
 	}
+
+
+	public float x() {
+		return x;
+	}
+
+
+	public float y() {
+		return y;
+	}
+
+
+	public float w() {
+		return w;
+	}
+
+
+	public float h() {
+		return h;
+	}
+
+
+	public float wc() {
+		return wc;
+	}
+
+
+	public float wo() {
+		return wo;
+	}
+
+
+	public float hi() {
+		return hi;
+	}
+	
+	
 
 }

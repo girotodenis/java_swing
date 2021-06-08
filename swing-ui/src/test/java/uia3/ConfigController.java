@@ -19,15 +19,82 @@ public class ConfigController extends AbstractController<ConfigView> {
 		super(controlerPai, new ConfigView());
 
 		registerAction(getPanel().btCriarMenu,
-				(event) -> ExecutarEvento.get().lancar(
-						new EventAdicionarItemMenu(
-								"nome_"+System.currentTimeMillis(),
-								"imagens/icons8-cardapio-16.png",
-								"imagens/icons8-cardapio-fechado-16.png",
-								false,
-								true,
-								(c)->c.setAppFinalizado(true))
-						).executar()
+				(event) -> {
+					EventAdicionarItemMenu event2 = new EventAdicionarItemMenu(
+							"nome_"+System.currentTimeMillis(),
+							"imagens/icons8-cardapio-16.png",
+							"imagens/icons8-cardapio-fechado-16.png",
+							false,
+							true,
+							(c)->c.setAppFinalizado(true));
+					event2.addMenuFlutuante(
+							new EventAdicionarItemMenu(
+									"1_"+System.currentTimeMillis(),
+									"imagens/icons8-cardapio-16.png",
+									"imagens/icons8-cardapio-fechado-16.png",
+									false,
+									true,
+									(c)->System.out.print("--_"+System.currentTimeMillis()))
+							);
+					event2.addMenuFlutuante(
+							new EventAdicionarItemMenu(
+									"2_"+System.currentTimeMillis(),
+									"imagens/icons8-cardapio-16.png",
+									"imagens/icons8-cardapio-fechado-16.png",
+									false,
+									true,
+									(c)->System.out.print("++_"+System.currentTimeMillis()))
+							);
+					event2.addMenuFlutuante(
+							new EventAdicionarItemMenu(
+									"3_"+System.currentTimeMillis(),
+									"imagens/icons8-cardapio-16.png",
+									"imagens/icons8-cardapio-fechado-16.png",
+									false,
+									true,
+									(c)->System.out.print("**_"+System.currentTimeMillis()))
+							);
+					event2.addMenuFlutuante(
+							new EventAdicionarItemMenu(
+									"4_"+System.currentTimeMillis(),
+									"imagens/icons8-cardapio-16.png",
+									"imagens/icons8-cardapio-fechado-16.png",
+									false,
+									true,
+									(c)->System.out.print("**_"+System.currentTimeMillis()))
+							);
+					event2.addMenuFlutuante(
+							new EventAdicionarItemMenu(
+									"5_"+System.currentTimeMillis(),
+									"imagens/icons8-cardapio-16.png",
+									"imagens/icons8-cardapio-fechado-16.png",
+									false,
+									true,
+									(c)->System.out.print("**_"+System.currentTimeMillis()))
+							);
+					event2.addMenuFlutuante(
+							new EventAdicionarItemMenu(
+									"6_"+System.currentTimeMillis(),
+									"imagens/icons8-cardapio-16.png",
+									"imagens/icons8-cardapio-fechado-16.png",
+									false,
+									true,
+									(c)->System.out.print("**_"+System.currentTimeMillis()))
+							);
+					event2.addMenuFlutuante(
+							new EventAdicionarItemMenu(
+									"7_"+System.currentTimeMillis(),
+									"imagens/icons8-cardapio-16.png",
+									"imagens/icons8-cardapio-fechado-16.png",
+									false,
+									true,
+									(c)->System.out.print("**_"+System.currentTimeMillis()))
+							);
+					
+					ExecutarEvento.get().lancar(
+							event2
+							).executar();
+				}
 		);
 		
 		registerAction(getPanel().btCancelar,

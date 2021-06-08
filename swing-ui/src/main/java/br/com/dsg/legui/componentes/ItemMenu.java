@@ -79,7 +79,7 @@ public class ItemMenu extends Button {
 	}
 
 	private void encolher() {
-		Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathFechada));
+		Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathFechada!=null?this.imagePathFechada:this.imagePathAberta));
 		bgIm.setSize(new Vector2f(35, 30));
 		bgIm.setPosition(new Vector2f(8, 5));
 		getStyle().getBackground().setIcon(bgIm);

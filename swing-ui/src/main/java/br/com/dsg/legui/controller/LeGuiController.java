@@ -32,6 +32,7 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 	private final static Logger LOG = Logger.getLogger(LeGuiController.class);
 	
 	private Boolean loadMenuFechado = Boolean.FALSE;
+	private Boolean removerMenu = Boolean.FALSE;
 	
 	private Sessao<?> session = new Sessao<>(false);
 	
@@ -60,41 +61,39 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 		return instance;
 	}
 	
-	/**
-	 * @author Denis Giroto Classe utilizada para disparar um evento que atualiza a
-	 *         tela Principal.
-	 */
-	public class AtualizarAppEvento {
-	}
-
-	/**
-	 * @param nome
-	 * @param imageA
-	 * @param cController
-	 * @param inicializar
-	 * @return
-	 */
-	public LeGuiController addItemMenu(String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController cController, Boolean inicializar) {
-		
-		ExecutarEvento.get().lancar(
-			new EventAdicionarItemMenu( nome,  imageA,  imageB, imageHorizontalAlignRIGHT,  cController,  inicializar)
-		);
-
+	public LeGuiController addItemMenu(EventAdicionarItemMenu itemMenu) {
+		ExecutarEvento.get().lancar( itemMenu );
 		return this;
 	}
-
-	public LeGuiController addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
-		ExecutarEvento.get().lancar(
-			new EventAdicionarItemMenu( nome,  imageA,  imageB, imageHorizontalAlignRIGHT,  desabilitarSelecaoMenu,  action)
-		);
-		return this;
-	}
-	
+//	public LeGuiController addItemMenu(String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController cController, Boolean inicializar) {
+//		
+//		ExecutarEvento.get().lancar(
+//			new EventAdicionarItemMenu( nome,  imageA,  imageB, imageHorizontalAlignRIGHT,  cController,  inicializar)
+//		);
+//
+//		return this;
+//	}
+//
+//	public LeGuiController addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
+//		ExecutarEvento.get().lancar(
+//			new EventAdicionarItemMenu( nome,  imageA,  imageB, imageHorizontalAlignRIGHT,  desabilitarSelecaoMenu,  action)
+//		);
+//		return this;
+//	}
+//	
 	public <T extends SeguracaController<?>> LeGuiController autenticacao(GerarController<T> cController ) {
 		getSession().setLoginAtivo(true);
 		final SeguracaController<?> controllerSeguranca= cController.criar(LeGuiController.this);
 		controllerSeguranca.setNomeController("SeguracaController_"+System.currentTimeMillis());
 		registerControllerEventListener(EventLoginApp.class, new ListenerEventLoginApp( controllerSeguranca ));
+		return this;
+	}
+	
+	public <T extends AbstractController<?>> LeGuiController controllerPrincipall(GerarController<T> cController ) {
+		final AbstractController<?> controller = cController.criar(LeGuiController.this);
+		ExecutarEvento.get().lancar(
+			new EventAtualizarConteudoEvento( controller )
+		);
 		return this;
 	}
 	
@@ -109,7 +108,7 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 					Thread.sleep(100);
 					
 					ExecutarEvento.get().lancar(
-						new EventAbrirFecharMenu(LeGuiController.this.loadMenuFechado)
+						new EventAbrirFecharMenu(LeGuiController.this.loadMenuFechado, LeGuiController.this.removerMenu)
 					).executar();
 					
 					if(LeGuiController.this.getSession()!= null && LeGuiController.this.getSession().isLoginAtivo() && !LeGuiController.this.getSession().isAutenticado()) {

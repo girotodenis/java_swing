@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import br.com.dsg.legui.ControllerEventListener;
 import br.com.dsg.legui.ExecutarEvento;
+import br.com.dsg.legui.componentes.MenuLeGui;
 
 public class ListenerEventAbrirFecharMenu implements ControllerEventListener<EventAbrirFecharMenu> {
 
@@ -30,18 +31,23 @@ public class ListenerEventAbrirFecharMenu implements ControllerEventListener<Eve
 			}
 		});
 		
-		if(event.getFechar()!=null) {
-			if(event.getFechar()) {
-				event.getControllerAlvo().getPanel().getMenu().encolherItens();
-			}else {
-				event.getControllerAlvo().getPanel().getMenu().expandirItens();
-			}
+		MenuLeGui menu = event.getControllerAlvo().getPanel().getMenu();
+		if(event.removerMenu || menu.isEmpty()) {
+			menu.esconder();
 		}else {
-			boolean abrir = !event.getControllerAlvo().getPanel().getMenu().isAberto();
-			if (abrir) {
-				event.getControllerAlvo().getPanel().getMenu().expandirItens();
-			} else {
-				event.getControllerAlvo().getPanel().getMenu().encolherItens();
+			if(event.fechar!=null) {
+				if(event.fechar) {
+					menu.encolherItens();
+				}else {
+					menu.expandirItens();
+				}
+			}else {
+				boolean abrir = !menu.isAberto();
+				if (abrir) {
+					menu.expandirItens();
+				} else {
+					menu.encolherItens();
+				}
 			}
 		}
 	}

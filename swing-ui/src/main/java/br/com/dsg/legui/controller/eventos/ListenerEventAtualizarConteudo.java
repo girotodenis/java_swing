@@ -9,6 +9,8 @@ import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.ControllerEventListener;
 import br.com.dsg.legui.ExecutarEvento;
 import br.com.dsg.legui.componentes.ItemMenu;
+import br.com.dsg.legui.componentes.LeGuiView;
+import br.com.dsg.legui.componentes.MenuLeGui;
 import br.com.dsg.legui.controller.LeGuiController;
 
 public class ListenerEventAtualizarConteudo implements ControllerEventListener<EventAtualizarConteudoEvento> {
@@ -23,6 +25,14 @@ public class ListenerEventAtualizarConteudo implements ControllerEventListener<E
 		
 		AbstractController<?> newController = event.getController();
 		Panel newView = newController.getPanel();
+		
+		LeGuiView leGuiView = event.getControllerAlvo().getPanel();
+		MenuLeGui menu = leGuiView.getMenu();
+		
+		if(leGuiView.getConteudoLeGui().getChildComponents().size()>0 && leGuiView.getConteudoLeGui().getChildComponents().get(0).getClass().equals(newView.getClass())){
+			LOG.info(String.format(" tela {%s} já está ativa ", newView.getClass().getSimpleName() ));
+			return;
+		}
 		
 		LOG.info(String.format("Atualizar tela {%s} do controller {%s} ", newView.getClass().getSimpleName(), newController.getClass().getSimpleName()));
 		
@@ -50,12 +60,16 @@ public class ListenerEventAtualizarConteudo implements ControllerEventListener<E
 			return;
 		}
 		
-		ItemMenu itemMenu = event.getControllerAlvo().getPanel().getMenu().getItem(newView.getClass());
-		if(itemMenu!=null) {
-			event.getControllerAlvo().getPanel().getMenu().seleciona(itemMenu);
+		if(menu.isEmpty()) {
+			menu.esconder();
 		}
 		
-		event.getControllerAlvo().getPanel().addPanel(newView);
+		ItemMenu itemMenu = menu.getItem(newView.getClass());
+		if(itemMenu!=null) {
+			menu.seleciona(itemMenu);
+		}
+		
+		leGuiView.addPanel(newView);
 		
 	}
 }

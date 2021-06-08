@@ -5,19 +5,17 @@ import br.com.dsg.legui.controller.LeGuiController;
 
 public class EventAbrirFecharMenu extends EventoController<LeGuiController>{
 	
-	private Boolean fechar;
+	protected Boolean removerMenu;
+	protected Boolean fechar;
 
-	public EventAbrirFecharMenu(Boolean fechar) {
+	public EventAbrirFecharMenu(Boolean fechar, Boolean removerMenu) {
 		super(LeGuiController.get());
 		this.fechar = fechar;
+		this.removerMenu = removerMenu;
 	}
 	
 	public EventAbrirFecharMenu() {
-		this(null);
+		this(null, Boolean.FALSE);
 	}
 
-	protected Boolean getFechar() {
-		return fechar;
-	}
-	
 }

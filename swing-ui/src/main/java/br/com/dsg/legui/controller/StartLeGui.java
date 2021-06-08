@@ -39,7 +39,9 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowCloseCallbackI;
 import org.lwjgl.opengl.GL;
 
+import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.componentes.LeGuiView;
+import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
 import br.com.dsg.legui.controller.seguranca.SeguracaController;
 
 public class StartLeGui {
@@ -140,7 +142,7 @@ public class StartLeGui {
 		// glfwSetWindowCloseCallback(window, glfwWindowCloseCallbackI);
 		//
 		// Right:
-		//initializer.getCallbackKeeper().getChainKeyCallback().add(glfwKeyCallbackI);
+		initializer.getCallbackKeeper().getChainKeyCallback().add(glfwKeyCallbackI);
 		initializer.getCallbackKeeper().getChainWindowCloseCallback().add(glfwWindowCloseCallbackI);
 
 		// Initialization finished, so we can start render loop.
@@ -207,50 +209,59 @@ public class StartLeGui {
 	}
 
 	
-	public StartLeGui abrirFecharMenuPagrao() {
-		this.leGuiController.addItemMenu(
+	public StartLeGui abrirFecharMenuPadrao() {
+		this.leGuiController.addItemMenu(new EventAdicionarItemMenu(
 				"",
 				"imagens/icons8-cardapio-30.png",
 				"imagens/icons8-cardapio-fechado-30.png", 
 				true, 
 				true,
-				(c) -> c.menuAbrirFecharMenu() 
+				(c) -> c.menuAbrirFecharMenu() )
 		);
 		return this;
 	}
 	
-	public StartLeGui addItemActionMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
-		this.leGuiController.addItemMenu( nome,  imageA, imageB, imageHorizontalAlignRIGHT, desabilitarSelecaoMenu,  action);
+	public StartLeGui addItemMenu(EventAdicionarItemMenu itemMenu) {
+		this.leGuiController.addItemMenu( itemMenu );
 		return this;
 	}
 	
-	public StartLeGui addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT,  GerarController cController) {
-		this.leGuiController.addItemMenu(nome,  imageA, imageB,imageHorizontalAlignRIGHT,  cController, false);
-		return this;
-	}
-	
-	public StartLeGui addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT,  GerarController cController, Boolean inicializar) {
-		this.leGuiController.addItemMenu(nome,  imageA, imageB, imageHorizontalAlignRIGHT,  cController, inicializar);
-		return this;
-	}
-	
-	public StartLeGui addItemActionMenu(String nome, String imageA,  ActionMenu<LeGuiController> action) {
-		this.leGuiController.addItemMenu( nome,  imageA, imageA, false, false,  action);
-		return this;
-	}
-	
-	public StartLeGui addItemMenu(String nome, String imageA,  GerarController cController) {
-		this.leGuiController.addItemMenu(nome,  imageA, imageA, false,  cController, false);
-		return this;
-	}
-	
-	public StartLeGui addItemMenu(String nome, String imageA,  GerarController cController, Boolean inicializar) {
-		this.leGuiController.addItemMenu(nome,  imageA, imageA, false,  cController, inicializar);
-		return this;
-	}
+//	public StartLeGui addItemActionMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
+//		this.leGuiController.addItemMenu( nome,  imageA, imageB, imageHorizontalAlignRIGHT, desabilitarSelecaoMenu,  action);
+//		return this;
+//	}
+//	
+//	public StartLeGui addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT,  GerarController cController) {
+//		this.leGuiController.addItemMenu(nome,  imageA, imageB,imageHorizontalAlignRIGHT,  cController, false);
+//		return this;
+//	}
+//	
+//	public StartLeGui addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT,  GerarController cController, Boolean inicializar) {
+//		this.leGuiController.addItemMenu(nome,  imageA, imageB, imageHorizontalAlignRIGHT,  cController, inicializar);
+//		return this;
+//	}
+//	
+//	public StartLeGui addItemActionMenu(String nome, String imageA,  ActionMenu<LeGuiController> action) {
+//		this.leGuiController.addItemMenu( nome,  imageA, imageA, false, false,  action);
+//		return this;
+//	}
+//	
+//	public StartLeGui addItemMenu(String nome, String imageA,  GerarController cController) {
+//		this.leGuiController.addItemMenu(nome,  imageA, imageA, false,  cController, false);
+//		return this;
+//	}
+//	
+//	public StartLeGui addItemMenu(String nome, String imageA,  GerarController cController, Boolean inicializar) {
+//		this.leGuiController.addItemMenu(nome,  imageA, imageA, false,  cController, inicializar);
+//		return this;
+//	}
 	
 	public StartLeGui menuFechado() {
 		this.leGuiController.menuFechado();
+		return this;
+	}
+	public <T extends AbstractController<?>> StartLeGui controllerPrincipall(GerarController<T> cController ) {
+		this.leGuiController.controllerPrincipall(cController);
 		return this;
 	}
 

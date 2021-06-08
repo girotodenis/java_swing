@@ -14,6 +14,7 @@ import org.liquidengine.legui.component.Panel;
 import org.liquidengine.legui.event.Event;
 import org.liquidengine.legui.event.MouseClickEvent;
 import org.liquidengine.legui.event.MouseClickEvent.MouseClickAction;
+import org.liquidengine.legui.input.Mouse;
 import org.liquidengine.legui.listener.EventListener;
 
 import br.com.dsg.legui.controller.seguranca.Sessao;
@@ -115,12 +116,31 @@ public abstract class AbstractController<T extends Panel> {
 	 * @param action
 	 */
 	public void registerAction(Component source, Action acao) {
-		LOG.debug("Registrando action para o botao: " + source.toString());
+		LOG.debug("Registrando action para o MouseButton1: " + source.toString());
 		
 		source.getListenerMap().addListener(MouseClickEvent.class, (event)->{
-			if(event.getAction().equals(MouseClickAction.CLICK)) {
+			
+			LOG.debug(String.format("Executando  action %s ", event.getAction() ));
+			if(event.getAction().equals(MouseClickAction.CLICK) && event.getButton().equals(Mouse.MouseButton.MOUSE_BUTTON_1)) {
 				try {
-					LOG.info(String.format("Executando click %s ", source.toString() ));
+					LOG.debug(String.format("click %s detalhe %s", source.toString() , event.toString()));
+					acao.executar(event);
+				} catch (Exception e) {
+					handlerException(e);
+				}
+			}
+		}); 
+	}
+	
+	public void registerActionMouseButton2(Component source, Action acao) {
+		LOG.debug("Registrando action para o MouseButton2: " + source.toString());
+		
+		source.getListenerMap().addListener(MouseClickEvent.class, (event)->{
+			
+			LOG.debug(String.format("Executando  action %s ", event.getAction() ));
+			if(event.getAction().equals(MouseClickAction.CLICK) && event.getButton().equals(Mouse.MouseButton.MOUSE_BUTTON_2)) {
+				try {
+					LOG.debug(String.format("click %s detalhe %s", source.toString() , event.toString()));
 					acao.executar(event);
 				} catch (Exception e) {
 					handlerException(e);
@@ -187,6 +207,7 @@ public abstract class AbstractController<T extends Panel> {
 		Label erro = new Label(ex.getLocalizedMessage(), 10, 10, 300, 20);
 		dialog.getContainer().add(erro);
 		dialog.show(this.panel.getFrame());
+		ex.printStackTrace();
 	}
 
 	public AbstractController<?> getControllerPai() {

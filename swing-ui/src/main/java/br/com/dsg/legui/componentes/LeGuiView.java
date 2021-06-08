@@ -41,4 +41,10 @@ public class LeGuiView extends Panel{
 		appBarr.setValue(value);
 	}
 
+	public ConteudoLeGui getConteudoLeGui() {
+		return conteudoLeGui;
+	}
+	
+	
+
 }

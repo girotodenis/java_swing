@@ -1,5 +1,8 @@
 package br.com.dsg.legui.controller.eventos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.dsg.legui.EventoController;
 import br.com.dsg.legui.controller.ActionMenu;
 import br.com.dsg.legui.controller.GerarController;
@@ -15,6 +18,8 @@ public class EventAdicionarItemMenu extends EventoController<LeGuiController>{
 	protected Boolean inicializar;
 	protected Boolean desabilitarSelecaoMenu;
 	protected ActionMenu<LeGuiController> action;
+	
+	protected List<EventAdicionarItemMenu> menuFlutuante = new ArrayList<>();
 
 	public EventAdicionarItemMenu(String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController<?> cController, Boolean inicializar) {
 		super(LeGuiController.get());
@@ -38,5 +43,17 @@ public class EventAdicionarItemMenu extends EventoController<LeGuiController>{
 		this.action = action;
 	}	
 	
+//	public EventAdicionarItemMenu(String nome, String imageA, GerarController<?> gController) {
+//		this(nome,imageA,imageA,Boolean.FALSE, gController, Boolean.FALSE);
+//	}
+//	
+//	public EventAdicionarItemMenu(String nome, String imageA, Boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
+//		this(nome,imageA,imageA,Boolean.FALSE, desabilitarSelecaoMenu, action);
+//	}
+
+	public EventAdicionarItemMenu addMenuFlutuante(EventAdicionarItemMenu menu) {
+		this.menuFlutuante.add(menu);
+		return this;
+	}
 	
 }
