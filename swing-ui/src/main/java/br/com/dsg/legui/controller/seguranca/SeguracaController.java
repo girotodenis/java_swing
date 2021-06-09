@@ -4,7 +4,7 @@ import org.liquidengine.legui.component.Panel;
 
 import br.com.dsg.legui.AbstractController;
 
-public abstract class SeguracaController<T extends Panel> extends AbstractController<T>{
+public abstract class SeguracaController<U extends UsuarioPrincipal, T extends Panel> extends AbstractController<T>{
 
 	private Seguranca callback;
 	
@@ -14,18 +14,19 @@ public abstract class SeguracaController<T extends Panel> extends AbstractContro
 
 	protected boolean login(String... parametros) {
 		
-		Usuario usuario = logar(parametros);
-		Sessao sessao = new Sessao( usuario != null );
-		if(sessao.isAutenticado()) {
-			sessao.setUsuario(usuario);
+		U usuario = logar(parametros);
+		Sessao.get().setLoginAtivo(true);
+		Sessao.get().setAutenticado( usuario != null );
+		if(Sessao.get().isAutenticado()) {
+			callback.call(usuario);
+			Sessao.get().setUsuario(usuario);
 		}
-		callback.call(sessao);
-		return sessao.isAutenticado();
+		return Sessao.get().isAutenticado();
 	}
 	
-	protected abstract Usuario logar(String... parametros) ;
+	protected abstract U logar(String... parametros) ;
 
-	public void setCallback(Seguranca callback) {
+	public void setCallback(Seguranca<U> callback) {
 		this.callback = callback;
 	}
 

@@ -27,6 +27,7 @@ import org.liquidengine.legui.DefaultInitializer;
 import org.liquidengine.legui.animation.Animator;
 import org.liquidengine.legui.animation.AnimatorProvider;
 import org.liquidengine.legui.component.Frame;
+import org.liquidengine.legui.component.Panel;
 import org.liquidengine.legui.event.WindowSizeEvent;
 import org.liquidengine.legui.listener.WindowSizeEventListener;
 import org.liquidengine.legui.system.context.Context;
@@ -43,6 +44,7 @@ import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
 import br.com.dsg.legui.controller.seguranca.SeguracaController;
+import br.com.dsg.legui.controller.seguranca.UsuarioPrincipal;
 
 public class StartLeGui {
 
@@ -158,6 +160,7 @@ public class StartLeGui {
 
 		context = initializer.getContext();
 
+		this.leGuiController.loadController();
 		while (running) {
 
 			// Also we can do it in one line
@@ -199,7 +202,9 @@ public class StartLeGui {
 				fullscreen = !fullscreen;
 				toggleFullscreen = false;
 			}
-			running = !leGuiController.isAppFinalizado();
+			
+			if(running)
+				running = !leGuiController.isAppFinalizado();
 			
 		}
 		// And when rendering is ended we need to destroy renderer
@@ -226,46 +231,17 @@ public class StartLeGui {
 		return this;
 	}
 	
-//	public StartLeGui addItemActionMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
-//		this.leGuiController.addItemMenu( nome,  imageA, imageB, imageHorizontalAlignRIGHT, desabilitarSelecaoMenu,  action);
-//		return this;
-//	}
-//	
-//	public StartLeGui addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT,  GerarController cController) {
-//		this.leGuiController.addItemMenu(nome,  imageA, imageB,imageHorizontalAlignRIGHT,  cController, false);
-//		return this;
-//	}
-//	
-//	public StartLeGui addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT,  GerarController cController, Boolean inicializar) {
-//		this.leGuiController.addItemMenu(nome,  imageA, imageB, imageHorizontalAlignRIGHT,  cController, inicializar);
-//		return this;
-//	}
-//	
-//	public StartLeGui addItemActionMenu(String nome, String imageA,  ActionMenu<LeGuiController> action) {
-//		this.leGuiController.addItemMenu( nome,  imageA, imageA, false, false,  action);
-//		return this;
-//	}
-//	
-//	public StartLeGui addItemMenu(String nome, String imageA,  GerarController cController) {
-//		this.leGuiController.addItemMenu(nome,  imageA, imageA, false,  cController, false);
-//		return this;
-//	}
-//	
-//	public StartLeGui addItemMenu(String nome, String imageA,  GerarController cController, Boolean inicializar) {
-//		this.leGuiController.addItemMenu(nome,  imageA, imageA, false,  cController, inicializar);
-//		return this;
-//	}
-	
 	public StartLeGui menuFechado() {
 		this.leGuiController.menuFechado();
 		return this;
 	}
+	
 	public <T extends AbstractController<?>> StartLeGui controllerPrincipall(GerarController<T> cController ) {
 		this.leGuiController.controllerPrincipall(cController);
 		return this;
 	}
 
-	public <T extends SeguracaController<?>> StartLeGui autenticacao( GerarController<T> cController) {
+	public <T extends SeguracaController<? extends UsuarioPrincipal,? extends Panel>> StartLeGui autenticacao( GerarController<T> cController) {
 		this.leGuiController.autenticacao(cController);
 		return this;
 	}

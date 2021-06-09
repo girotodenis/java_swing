@@ -1,7 +1,7 @@
 package br.com.dsg.legui.controller.seguranca;
 
-public interface Seguranca {
+public interface Seguranca<U> {
 
-	void call(Sessao sessao);
+	void call(U usuario);
 
 }

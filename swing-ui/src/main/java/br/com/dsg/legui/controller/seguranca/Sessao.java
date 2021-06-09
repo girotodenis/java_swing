@@ -1,25 +1,33 @@
 package br.com.dsg.legui.controller.seguranca;
 
-public class Sessao<T extends Usuario> {
+public class Sessao {
+	
+	
+	
+	private static Sessao instance = new Sessao(false);
 	
 	private boolean loginAtivo;
 	private boolean autenticado;
-	private T usuario;
+	private UsuarioPrincipal usuario;
 	
-	public Sessao(boolean autenticado) {
+	private Sessao(boolean autenticado) {
 		this.autenticado = autenticado;
 		this.loginAtivo = autenticado;
 	}
+	
+	public static Sessao get(){
+		return instance;
+	}
 
 	public boolean isAutenticado() {
-		return autenticado;
+		return loginAtivo ? autenticado : true;
 	}
 
-	public T getUsuario() {
-		return usuario;
+	public <T extends UsuarioPrincipal> T getUsuario() {
+		return (T) usuario;
 	}
 	
-	public void setUsuario(T usuario) {
+	public <T extends UsuarioPrincipal> void setUsuario(T usuario) {
 		this.usuario = usuario;
 	}
 

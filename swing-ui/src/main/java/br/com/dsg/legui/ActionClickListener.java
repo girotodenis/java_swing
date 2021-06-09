@@ -36,7 +36,7 @@ public class ActionClickListener implements EventListener<MouseClickEvent> {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							LOG.info(String.format("Executando click %s ", source.toString() ));
+							LOG.debug(String.format("Executando click %s ", source.toString() ));
 							action.executar(event);
 						} catch (Exception e) {
 							controller.handlerException(e);

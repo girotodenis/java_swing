@@ -1,4 +1,4 @@
-package uia3;
+package uia3.componentes;
 
 import org.liquidengine.legui.component.Button;
 import org.liquidengine.legui.component.Panel;

@@ -1,4 +1,4 @@
-package uia3;
+package uia3.componentes;
 
 import org.apache.log4j.Logger;
 
@@ -6,11 +6,13 @@ import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.ExecutarEvento;
 import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
 import br.com.dsg.legui.controller.eventos.EventVoltarController;
+import br.com.dsg.legui.controller.seguranca.TemPermissao;
 
 /**
  * @author Denis Giroto
  *
  */
+@TemPermissao("configurar")
 public class ConfigController extends AbstractController<ConfigView> {
 
 	private final static Logger LOG = Logger.getLogger(ConfigController.class);

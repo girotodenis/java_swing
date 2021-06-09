@@ -13,6 +13,7 @@ import br.com.dsg.legui.componentes.MenuLeGui;
 import br.com.dsg.legui.controller.ActionMenu;
 import br.com.dsg.legui.controller.GerarController;
 import br.com.dsg.legui.controller.LeGuiController;
+import br.com.dsg.legui.controller.LeGuiEventos;
 import br.com.dsg.util.Constantes;
 
 public class ListenerEventAdicionarItemMenu implements ControllerEventListener<EventAdicionarItemMenu> {
@@ -116,7 +117,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 	 * @return
 	 */
 	public ItemMenu addItemMenu(LeGuiController controller,MenuLeGui menu, String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController<?> cController, Boolean inicializar,Dialog menuFrame) {
-		LOG.info("menu " + nome + " criado");
+		LOG.debug("menu " + nome + " criado");
 		
 		final AbstractController<?> controllerMenu = cController.criar(controller);
 		controllerMenu.setNomeController(nome+"_menu_"+System.currentTimeMillis());
@@ -126,13 +127,8 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 		
 		controller.registerAction(item, (event) -> {
 			menu.seleciona(item);
-			ActionMenu<LeGuiController> action = (controllerPai)->{
-				
-				ExecutarEvento.get().lancar(
-						new EventAtualizarConteudoEvento(controllerMenu.getNomeController(), controllerMenu)
-				).executar();
-				
-			};
+			
+			ActionMenu<LeGuiController> action = (controllerPai) -> LeGuiEventos.irPara(  controllerMenu ) ;
 					
 			action.executar(controller);
 			if(menuFrame!=null) {
@@ -142,16 +138,14 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 		if (inicializar) {
 			menu.seleciona(item);
 			
-			ExecutarEvento.get().lancar(
-					new EventAtualizarConteudoEvento(nome, controllerMenu)
-			).executar();
+			LeGuiEventos.irPara( controllerMenu );
 			
 		}
 		return item;
 	}
 
 	public ItemMenu addItemMenuAcao(LeGuiController controller, MenuLeGui menu, String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action, Dialog menuFrame) {
-		LOG.info("menu " + nome + " criado");
+		LOG.debug("menu " + nome + " criado");
 		ItemMenu item = menu.criarItemMenu(nome, imageA, imageB, imageHorizontalAlignRIGHT);
 		controller.registerAction(item, (event) -> {
 			

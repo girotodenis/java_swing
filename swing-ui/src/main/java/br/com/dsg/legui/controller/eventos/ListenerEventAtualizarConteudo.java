@@ -12,10 +12,12 @@ import br.com.dsg.legui.componentes.ItemMenu;
 import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.componentes.MenuLeGui;
 import br.com.dsg.legui.controller.LeGuiController;
+import br.com.dsg.legui.controller.LeGuiEventos;
+import br.com.dsg.legui.controller.seguranca.Sessao;
 
 public class ListenerEventAtualizarConteudo implements ControllerEventListener<EventAtualizarConteudoEvento> {
 
-	private final static Logger LOG = Logger.getLogger(LeGuiController.class);
+	private final static Logger LOG = Logger.getLogger(ListenerEventAtualizarConteudo.class);
 	
 	public ListenerEventAtualizarConteudo() {
 	}
@@ -30,35 +32,34 @@ public class ListenerEventAtualizarConteudo implements ControllerEventListener<E
 		MenuLeGui menu = leGuiView.getMenu();
 		
 		if(leGuiView.getConteudoLeGui().getChildComponents().size()>0 && leGuiView.getConteudoLeGui().getChildComponents().get(0).getClass().equals(newView.getClass())){
-			LOG.info(String.format(" tela {%s} já está ativa ", newView.getClass().getSimpleName() ));
+			LOG.debug(String.format(" tela {%s} já está ativa ", newView.getClass().getSimpleName() ));
 			return;
 		}
 		
-		LOG.info(String.format("Atualizar tela {%s} do controller {%s} ", newView.getClass().getSimpleName(), newController.getClass().getSimpleName()));
+		if(Sessao.get().isLoginAtivo() && ( !event.isIgnoreAutenticacao() || !Sessao.get().isAutenticado())) {
+			LOG.debug(String.format("indo para login volta para controller {%s} ", newController.getClass().getSimpleName()));
+			ExecutarEvento.get()
+					.lancar(
+							new EventLoginApp(newController)
+					).executar();
+			return;
+		}
+		
+		
+		LOG.debug(String.format("Atualizar tela {%s} do controller {%s} ", newView.getClass().getSimpleName(), newController.getClass().getSimpleName()));
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				for (int i = 0; i <= 100; i++) {
 					try {
 						Thread.sleep(1);
-						ExecutarEvento.get().lancar(
-								new EventProgressBar(i)
-						).executar();
+						LeGuiEventos.atualizarProgressBar( i );
 					} catch (Exception e) {
 					}
 				}
 			}
 		});
 		
-		if(event.getControllerAlvo().getSession()!= null && event.getControllerAlvo().getSession().isLoginAtivo() && !event.getControllerAlvo().getSession().isAutenticado()) {
-			LOG.info(String.format("indo para login volta para controller {%s} ", newController.getClass().getSimpleName()));
-			
-			ExecutarEvento.get().lancar(
-					new EventLoginApp(newController)
-			).executar();
-			
-			return;
-		}
 		
 		if(menu.isEmpty()) {
 			menu.esconder();

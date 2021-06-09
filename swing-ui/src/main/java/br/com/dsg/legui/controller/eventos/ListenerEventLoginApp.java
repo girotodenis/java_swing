@@ -1,20 +1,31 @@
 package br.com.dsg.legui.controller.eventos;
 
+import org.apache.log4j.Logger;
+import org.liquidengine.legui.component.Dialog;
+import org.liquidengine.legui.component.Label;
+import org.liquidengine.legui.component.Panel;
+
 //import org.apache.log4j.Logger;
 
 import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.ControllerEventListener;
 import br.com.dsg.legui.ExecutarEvento;
+import br.com.dsg.legui.controller.LeGuiController;
+import br.com.dsg.legui.controller.LeGuiEventos;
 import br.com.dsg.legui.controller.seguranca.SeguracaController;
+import br.com.dsg.legui.controller.seguranca.Sessao;
+import br.com.dsg.legui.controller.seguranca.TemPermissao;
+import br.com.dsg.legui.controller.seguranca.UsuarioPrincipal;
 
 public class ListenerEventLoginApp implements ControllerEventListener<EventLoginApp> {
 
-	//private final static Logger LOG = Logger.getLogger(LeGuiController.class);
+	private final static Logger LOG = Logger.getLogger(ListenerEventLoginApp.class);
 	
-	private SeguracaController<?> controllerSeguranca;
+	private SeguracaController<? extends UsuarioPrincipal,? extends Panel> controllerSeguranca;
 	
-	public ListenerEventLoginApp(SeguracaController<?> controllerSeguranca) {
+	public ListenerEventLoginApp(SeguracaController<? extends UsuarioPrincipal,? extends Panel> controllerSeguranca) {
 		super();
+		Sessao.get().setLoginAtivo(true);
 		this.controllerSeguranca=controllerSeguranca;
 	}
 
@@ -22,16 +33,47 @@ public class ListenerEventLoginApp implements ControllerEventListener<EventLogin
 	public void handleEvent(EventLoginApp event) {
 		
 		AbstractController<?> newController = event.getNewController();
-		controllerSeguranca.setCallback((sessao)->{
-			event.getControllerAlvo().setSession(sessao);
-			if(sessao.isAutenticado()) {
-				event.getControllerAlvo().getPanel().getMenu().exibir();
-				
-				ExecutarEvento.get().lancar(
-					new EventAtualizarConteudoEvento(newController)
-				).executar();
+		LOG.debug(String.format("newController %s", newController.getClass().getSimpleName()) );
+		if(!Sessao.get().isAutenticado()) {
+			controllerSeguranca.setCallback((usuario)->{
+				if(Sessao.get().isAutenticado()) {
+					LeGuiEventos.removerMenu(LeGuiController.get().getMenuFechado(), false);
+					validarPermissao(usuario, newController);
+				}
+			});
+			LOG.debug(String.format("indo para {%s}", controllerSeguranca.getClass().getSimpleName()) );
+			event.getControllerAlvo().getPanel().addPanel(controllerSeguranca.getPanel());
+		}else {
+			if(Sessao.get().isLoginAtivo()) {
+				validarPermissao(Sessao.get().getUsuario(), newController);
+			}else {
+//				LeGuiEventos.irPara(newController);
+				ExecutarEvento.get().lancar(new EventAtualizarConteudoEvento(newController,true)).executar();
 			}
-		});
-		event.getControllerAlvo().getPanel().addPanel(controllerSeguranca.getPanel());
+		}
+		
+	}
+
+	public void validarPermissao(UsuarioPrincipal usuario, AbstractController<?> newController) {
+		Class<?> classeDoRecurso = newController.getClass();
+		TemPermissao temPermissao = classeDoRecurso.getAnnotation(TemPermissao.class);
+		
+		if(temPermissao!=null) {
+			
+			if(usuario!=null && usuario.temPermissao(temPermissao.value())) {
+//				LeGuiEventos.irPara( newController );
+				ExecutarEvento.get().lancar(new EventAtualizarConteudoEvento(newController,true)).executar();
+			}else {
+				Dialog dialog = new Dialog("Sem permissão", 500, 100);
+				dialog.setDraggable(false);
+				dialog.setResizable(false);
+				Label erro = new Label(String.format("Usuario %s sem permissão na %s", usuario.usuario(), newController.getNomeController()), 10, 10, 500, 20);
+				dialog.getContainer().add(erro);
+				dialog.show(LeGuiController.get().getPanel().getFrame());
+			}
+		}else {
+			
+			ExecutarEvento.get().lancar(new EventAtualizarConteudoEvento(newController,true)).executar();
+		}
 	}
 }

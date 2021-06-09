@@ -3,6 +3,7 @@ package br.com.dsg.legui.controller;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.liquidengine.legui.component.Panel;
 
 import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.ExecutarEvento;
@@ -11,17 +12,19 @@ import br.com.dsg.legui.controller.eventos.EventAbrirFecharMenu;
 import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
 import br.com.dsg.legui.controller.eventos.EventAtualizarConteudoEvento;
 import br.com.dsg.legui.controller.eventos.EventLoginApp;
+import br.com.dsg.legui.controller.eventos.EventPrincipalController;
 import br.com.dsg.legui.controller.eventos.EventProgressBar;
 import br.com.dsg.legui.controller.eventos.EventVoltarController;
 import br.com.dsg.legui.controller.eventos.ListenerEventAbrirFecharMenu;
 import br.com.dsg.legui.controller.eventos.ListenerEventAdicionarItemMenu;
 import br.com.dsg.legui.controller.eventos.ListenerEventAtualizarConteudo;
 import br.com.dsg.legui.controller.eventos.ListenerEventLoginApp;
+import br.com.dsg.legui.controller.eventos.ListenerEventPrincipalController;
 import br.com.dsg.legui.controller.eventos.ListenerEventProgressBar;
 import br.com.dsg.legui.controller.eventos.ListenerEventVoltarController;
 import br.com.dsg.legui.controller.seguranca.SeguracaController;
 import br.com.dsg.legui.controller.seguranca.Sessao;
-import br.com.dsg.legui.controller.seguranca.Usuario;
+import br.com.dsg.legui.controller.seguranca.UsuarioPrincipal;
 
 /**
  * @author Denis Giroto
@@ -31,10 +34,8 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 
 	private final static Logger LOG = Logger.getLogger(LeGuiController.class);
 	
-	private Boolean loadMenuFechado = Boolean.FALSE;
+	private Boolean menuFechado = Boolean.FALSE;
 	private Boolean removerMenu = Boolean.FALSE;
-	
-	private Sessao<?> session = new Sessao<>(false);
 	
 	private  boolean appFinalizado = false;
 	
@@ -54,7 +55,7 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 		registerControllerEventListener(EventProgressBar.class, new ListenerEventProgressBar());
 		registerControllerEventListener(EventAdicionarItemMenu.class, new ListenerEventAdicionarItemMenu());
 		
-		loadMenuFechado();
+//		loadMenuFechado();
 	}
 
 	public static LeGuiController get() {
@@ -65,35 +66,22 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 		ExecutarEvento.get().lancar( itemMenu );
 		return this;
 	}
-//	public LeGuiController addItemMenu(String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController cController, Boolean inicializar) {
-//		
-//		ExecutarEvento.get().lancar(
-//			new EventAdicionarItemMenu( nome,  imageA,  imageB, imageHorizontalAlignRIGHT,  cController,  inicializar)
-//		);
-//
-//		return this;
-//	}
-//
-//	public LeGuiController addItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
-//		ExecutarEvento.get().lancar(
-//			new EventAdicionarItemMenu( nome,  imageA,  imageB, imageHorizontalAlignRIGHT,  desabilitarSelecaoMenu,  action)
-//		);
-//		return this;
-//	}
-//	
-	public <T extends SeguracaController<?>> LeGuiController autenticacao(GerarController<T> cController ) {
-		getSession().setLoginAtivo(true);
-		final SeguracaController<?> controllerSeguranca= cController.criar(LeGuiController.this);
+
+	public <T extends SeguracaController<? extends UsuarioPrincipal,? extends Panel>> LeGuiController autenticacao(GerarController<T> cController ) {
+		final SeguracaController<? extends UsuarioPrincipal,? extends Panel> controllerSeguranca= cController.criar(LeGuiController.this);
 		controllerSeguranca.setNomeController("SeguracaController_"+System.currentTimeMillis());
+		
+		LeGuiController.this.removerMenu = true;
+		
 		registerControllerEventListener(EventLoginApp.class, new ListenerEventLoginApp( controllerSeguranca ));
 		return this;
 	}
 	
 	public <T extends AbstractController<?>> LeGuiController controllerPrincipall(GerarController<T> cController ) {
 		final AbstractController<?> controller = cController.criar(LeGuiController.this);
-		ExecutarEvento.get().lancar(
-			new EventAtualizarConteudoEvento( controller )
-		);
+		
+		LeGuiEventos.get().empilhar( controller  );
+		registerControllerEventListener(EventPrincipalController.class, new ListenerEventPrincipalController( controller ));
 		return this;
 	}
 	
@@ -101,17 +89,17 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 	/**
 	 * @return
 	 */
-	private LeGuiController loadMenuFechado() {
+	protected void loadController() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Thread.sleep(100);
 					
 					ExecutarEvento.get().lancar(
-						new EventAbrirFecharMenu(LeGuiController.this.loadMenuFechado, LeGuiController.this.removerMenu)
+							new EventAbrirFecharMenu(LeGuiController.this.menuFechado, LeGuiController.this.removerMenu)
 					).executar();
 					
-					if(LeGuiController.this.getSession()!= null && LeGuiController.this.getSession().isLoginAtivo() && !LeGuiController.this.getSession().isAutenticado()) {
+					if( LeGuiController.this.removerMenu ) {
 						LeGuiController.this.getPanel().getMenu().esconder();
 					}
 						
@@ -119,7 +107,6 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 				}
 			}
 		});
-		return this;
 	}
 	
 	public LeGuiController menuAbrirFecharMenu() {
@@ -138,15 +125,15 @@ public class LeGuiController extends AbstractController<LeGuiView> {
 	}
 
 	public void menuFechado() {
-		this.loadMenuFechado = Boolean.TRUE;
+		this.menuFechado = Boolean.TRUE;
+	}
+	
+	public Boolean getMenuFechado() {
+		return menuFechado;
 	}
 
-	public <T extends Usuario> Sessao<T> getSession() {
-		return (Sessao<T>) session;
-	}
-
-	public <T extends Usuario> void setSession(Sessao<T> session) {
-		this.session = session;
+	public void setMenuFechado(Boolean menuFechado) {
+		this.menuFechado = menuFechado;
 	}
 
 	protected boolean isAppFinalizado() {

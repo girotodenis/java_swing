@@ -2,20 +2,22 @@ package uia3;
 
 import br.com.dsg.legui.controller.StartLeGui;
 import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
+import uia3.componentes.ConfigController;
+import uia3.componentes.HomeController;
 
 
 public class TesteStart {
 	
 	public static void main(String[] args) {
 //		new TesteStart().deve_iniciar_app_com_menu_1();
-		new TesteStart().deve_iniciar_app_com_menu_2();
+//		new TesteStart().deve_iniciar_app_com_menu_2();
 //		new TesteStart().deve_iniciar_app_sem_menu();
 	}
 
 //	@Test
 	public void deve_iniciar_app_com_menu_1() {
 		StartLeGui.get(800, 600, "App test")
-		.autenticacao( (controllerPai) -> new LoginController(controllerPai) )
+		//.autenticacao( (controllerPai) -> new LoginController(controllerPai) )
 		.abrirFecharMenuPadrao()
 		.addItemMenu(
 				new EventAdicionarItemMenu(

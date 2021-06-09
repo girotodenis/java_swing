@@ -8,18 +8,17 @@ public class EventAtualizarConteudoEvento extends EventoController<LeGuiControll
 	
 	private String nome;
 	private AbstractController<?> controller;
-	
-	public EventAtualizarConteudoEvento(String nomeItem, 
-			AbstractController<?> controller) {
-		super(LeGuiController.get());
-		this.nome = nomeItem;
-		this.controller = controller;
-	}
+	private boolean ignoreAutenticacao = false;
 	
 	public EventAtualizarConteudoEvento(AbstractController<?> controller) {
+		this(controller, false);
+	}
+	
+	public EventAtualizarConteudoEvento(AbstractController<?> controller, boolean ignoreAutenticacao) {
 		super(LeGuiController.get());
 		this.nome = controller.getNomeController();
 		this.controller = controller;
+		this.ignoreAutenticacao = ignoreAutenticacao;
 	}
 
 	public String getNome() {
@@ -30,4 +29,9 @@ public class EventAtualizarConteudoEvento extends EventoController<LeGuiControll
 		return controller;
 	}
 
+	public boolean isIgnoreAutenticacao() {
+		return ignoreAutenticacao;
+	}
+
+		
 }

@@ -1,25 +1,24 @@
-package uia3;
+package uia3.componentes;
 
 import org.apache.log4j.Logger;
 
 import br.com.dsg.legui.AbstractController;
-import br.com.dsg.legui.controller.eventos.EventAtualizarConteudoEvento;
 import br.com.dsg.legui.controller.seguranca.SeguracaController;
-import br.com.dsg.legui.controller.seguranca.Usuario;
+import uia3.Usuario;
 
 /**
  * @author Denis Giroto
  *
  */
-public class LoginController extends SeguracaController<LoginView>  {
+public class LoginSemPermissaoController extends SeguracaController<Usuario, LoginView>  {
 
-	private final static Logger LOG = Logger.getLogger(LoginController.class);
+	private final static Logger LOG = Logger.getLogger(LoginSemPermissaoController.class);
 
-	public LoginController(AbstractController<?> controlerPai) {
+	public LoginSemPermissaoController(AbstractController<?> controlerPai) {
 		super(controlerPai, new LoginView());
 		
 		registerAction(getPanel().btLogar, (event) -> {
-			LOG.info("sdsdsdsdsds");
+			LOG.debug("sdsdsdsdsds");
 			login("asasasa", "asasasa");
 //			if(getSession().isAutenticado()) {
 //				fireEvent(new EventAtualizarConteudoEvento(new HomeController(this)));
@@ -29,8 +28,11 @@ public class LoginController extends SeguracaController<LoginView>  {
 	
 	@Override
 	protected Usuario logar(String... parametros) {
-		if(parametros[0].equals(parametros[1])) 
-			return new Usuario();
+		if(parametros[0].equals(parametros[1])) {
+			Usuario usuario = new Usuario();
+			usuario.addPermissao("configurar2");
+			return usuario;
+		}
 		return null;
 	}
 	

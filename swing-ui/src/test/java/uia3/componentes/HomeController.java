@@ -1,4 +1,4 @@
-package uia3;
+package uia3.componentes;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,6 +10,7 @@ import org.liquidengine.legui.component.Label;
 import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.ExecutarEvento;
 import br.com.dsg.legui.componentes.LeGuiView;
+import br.com.dsg.legui.controller.LeGuiEventos;
 import br.com.dsg.legui.controller.eventos.EventAtualizarConteudoEvento;
 import br.com.dsg.legui.controller.eventos.EventProgressBar;
 
@@ -33,21 +34,13 @@ public class HomeController extends AbstractController<HomeView> {
 	public HomeController(AbstractController<?> controlerPai) {
 		super(controlerPai, new HomeView());
 
-		registerAction(getPanel().botao1,
-				(event) -> ExecutarEvento.get().lancar(
-						new EventAtualizarConteudoEvento(new ConfigController(this))
-					).executar());
+		registerAction(getPanel().botao1, (event) -> LeGuiEventos.irPara( new ConfigController(this) ));
 
 		registerTarefa(getPanel().botao2, (event) -> {
 			try {
 				for (int i = 0; i <= 100; i++) {
-					
 					Thread.sleep(50);
-					
-					ExecutarEvento.get().lancar(
-							new EventProgressBar(i)
-					).executar();
-					
+					LeGuiEventos.atualizarProgressBar( i );
 				}
 				Thread.sleep(500);
 			} catch (Exception e) {

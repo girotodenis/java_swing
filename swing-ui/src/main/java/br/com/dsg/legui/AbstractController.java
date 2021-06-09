@@ -17,9 +17,6 @@ import org.liquidengine.legui.event.MouseClickEvent.MouseClickAction;
 import org.liquidengine.legui.input.Mouse;
 import org.liquidengine.legui.listener.EventListener;
 
-import br.com.dsg.legui.controller.seguranca.Sessao;
-import br.com.dsg.legui.controller.seguranca.Usuario;
-
 
 /**
  * @author Denis Giroto
@@ -150,28 +147,6 @@ public abstract class AbstractController<T extends Panel> {
 	}
 
 	
-//	/**
-//	 * Aciona o <code>AbstractEventListener</code> relacionado ao
-//	 * <code>AbstractEvent</code> para que o <code>listener</code> trate o evento.
-//	 * 
-//	 * @param event referÃªncia do evento gerado
-//	 */
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	public <T extends EventoController> void fireEvent(T event) {
-//		
-//		ExecutarEvento.get().lancar(event).executar();
-		
-//		if (eventosControllers.get(event.getClass().getName()) != null) {
-//			for (ControllerEventListener eventListener : eventosControllers.get(event.getClass().getName())) {
-//				LOG.debug("Evento: " + event.getClass().getSimpleName() + " com listener: "
-//						+ eventListener.getClass().getName());
-//				eventListener.handleEvent(event);
-//			}
-//		}
-//		if (controllerPai != null)
-//			controllerPai.fireEvent(event);
-//	}
-
 	/**
 	 * Registra um <code>listener</code> que deve ser acionado de acordo com o tipo
 	 * do <code>evento</code>.
@@ -218,7 +193,7 @@ public abstract class AbstractController<T extends Panel> {
 	 * Método utilizado para liberar recursos carregados pela
 	 * <code>Controller</code>.
 	 */
-	protected void cleanUp() {
+	public void cleanUp() {
 		LOG.debug("Liberando recursos do controller " + this.getClass().getName());
 
 		for (AbstractController<?> subController : subControllers) {
