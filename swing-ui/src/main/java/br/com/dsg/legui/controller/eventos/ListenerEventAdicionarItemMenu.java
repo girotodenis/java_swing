@@ -31,7 +31,10 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 		MenuLeGui menu = event.getControllerAlvo().getPanel().getMenu();
 		
 		final ItemMenu item;
-		if(event.action!=null) {
+				
+		LOG.debug(String.format("nome:%s; action:%s;  configSubMenuButtonMouse2:%s;  event.menuFlutuante.isEmpty():%s",event.nome, event.action!=null, event.configSubMenuButtonMouse2 , event.menuFlutuante.isEmpty()) );
+		if(event.action!=null && event.menuFlutuante.isEmpty()) {
+			
 			item =addItemMenuAcao(controller, menu, 
 					event.nome, 
 					event.imageA, 
@@ -43,14 +46,25 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 			
 			
 		}else {
-			item = addItemMenu(controller, menu, 
-					event.nome, 
-					event.imageA, 
-					event.imageB, 
-					event.imageHorizontalAlignRIGHT, 
-					event.cController, 
-					event.inicializar,
-					null);
+			if(event.menuFlutuante.isEmpty() || event.configSubMenuButtonMouse2) {
+				item = addItemMenu(controller, menu, 
+						event.nome, 
+						event.imageA, 
+						event.imageB, 
+						event.imageHorizontalAlignRIGHT, 
+						event.cController, 
+						event.inicializar,
+						null);
+			}else {
+				item =addItemMenuAcao(controller, menu, 
+						event.nome, 
+						event.imageA, 
+						event.imageB, 
+						event.imageHorizontalAlignRIGHT, 
+						true, 
+						(e)->LOG.info("abrir submenu "+event.nome),
+						null);
+			}
 		}
 		
 		addMenuFlutuante(event, controller, menu, item);
@@ -59,54 +73,65 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 	public void addMenuFlutuante(EventAdicionarItemMenu event, LeGuiController controller, MenuLeGui menu,
 			final ItemMenu item) {
 		if(!event.menuFlutuante.isEmpty()) {
-			controller.registerActionMouseButton2(item, (evento)->{
-				
-				float h = menu.hi() * event.menuFlutuante.size()+new Dialog().getTitleHeight();
-				Dialog menuFrame = new Dialog("", menu.wo(), h);
-				menuFrame.setCloseable(true);
-				menuFrame.setDraggable(true);
-				menuFrame.setResizable(false);
-				MenuLeGui menuFlutuante = new MenuLeGui(
-						0,0,
-						menu.wo(), 
-						menu.hi()*event.menuFlutuante.size(),
-						menu.wo(),
-						menu.wo(), 
-						menu.hi(), 
-						null);
-				
-				//menuFrame.clearChildComponents();
-				menuFrame.getContainer().add(menuFlutuante);
-				event.menuFlutuante.forEach(si->{
-					if(si.action!=null) {
-						ItemMenu itemf =addItemMenuAcao(
-								controller, menuFlutuante, 
-								si.nome, 
-								si.imageA, 
-								si.imageB, 
-								si.imageHorizontalAlignRIGHT, 
-								si.desabilitarSelecaoMenu, 
-								si.action,
-								menuFrame);
-					}else {
-						ItemMenu itemf = addItemMenu(controller, menuFlutuante, 
-								si.nome, 
-								si.imageA, 
-								si.imageB, 
-								si.imageHorizontalAlignRIGHT, 
-								si.cController, 
-								si.inicializar,
-								menuFrame);
-					}
+			if(event.configSubMenuButtonMouse2) {
+				controller.registerActionMouseButton2(item, (evento)->{
+					acaoItemSubMenu(event, controller, menu, item);
 				});
-				menuFrame.show(menu.getFrame());
-				
-				menuFrame.setPosition(
-						menu.wc(), 
-						item.getPosition().y() + (menu.hi()/2)
-						);
-			});
+			}else {
+				controller.registerAction(item, (evento)->{
+					acaoItemSubMenu(event, controller, menu, item);
+				});
+			
+			}
 		}
+	}
+
+	public void acaoItemSubMenu(EventAdicionarItemMenu event, LeGuiController controller, MenuLeGui menu,
+			final ItemMenu item) {
+		float h = menu.hi() * event.menuFlutuante.size()+new Dialog().getTitleHeight();
+		Dialog menuFrame = new Dialog("", menu.wo(), h);
+		menuFrame.setCloseable(true);
+		menuFrame.setDraggable(true);
+		menuFrame.setResizable(false);
+		MenuLeGui menuFlutuante = new MenuLeGui(
+				0,0,
+				menu.wo(), 
+				menu.hi()*event.menuFlutuante.size(),
+				menu.wo(),
+				menu.wo(), 
+				menu.hi(), 
+				null);
+		
+		//menuFrame.clearChildComponents();
+		menuFrame.getContainer().add(menuFlutuante);
+		event.menuFlutuante.forEach(si->{
+			if(si.action!=null) {
+				ItemMenu itemf =addItemMenuAcao(
+						controller, menuFlutuante, 
+						si.nome, 
+						si.imageA, 
+						si.imageB, 
+						si.imageHorizontalAlignRIGHT, 
+						si.desabilitarSelecaoMenu, 
+						si.action,
+						menuFrame);
+			}else {
+				ItemMenu itemf = addItemMenu(controller, menuFlutuante, 
+						si.nome, 
+						si.imageA, 
+						si.imageB, 
+						si.imageHorizontalAlignRIGHT, 
+						si.cController, 
+						si.inicializar,
+						menuFrame);
+			}
+		});
+		menuFrame.show(menu.getFrame());
+		
+		menuFrame.setPosition(
+				menu.wc(), 
+				item.getPosition().y() + (menu.hi()/2)
+				);
 	}
 	
 	/**
@@ -117,8 +142,9 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 	 * @return
 	 */
 	public ItemMenu addItemMenu(LeGuiController controller,MenuLeGui menu, String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController<?> cController, Boolean inicializar,Dialog menuFrame) {
-		LOG.debug("menu " + nome + " criado");
 		
+		
+		LOG.info("addItemMenu " + nome + " criado");
 		final AbstractController<?> controllerMenu = cController.criar(controller);
 		controllerMenu.setNomeController(nome+"_menu_"+System.currentTimeMillis());
 		
@@ -129,12 +155,13 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 			menu.seleciona(item);
 			
 			ActionMenu<LeGuiController> action = (controllerPai) -> LeGuiEventos.irPara(  controllerMenu ) ;
-					
+			LOG.info("ação de menu " + nome + " executada");
 			action.executar(controller);
 			if(menuFrame!=null) {
 				menuFrame.close();
 			}
 		});
+		
 		if (inicializar) {
 			menu.seleciona(item);
 			
@@ -145,7 +172,8 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 	}
 
 	public ItemMenu addItemMenuAcao(LeGuiController controller, MenuLeGui menu, String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action, Dialog menuFrame) {
-		LOG.debug("menu " + nome + " criado");
+		
+		LOG.info("addItemMenuAcao " + nome + " criado");
 		ItemMenu item = menu.criarItemMenu(nome, imageA, imageB, imageHorizontalAlignRIGHT);
 		controller.registerAction(item, (event) -> {
 			
@@ -168,6 +196,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 				}
 			});
 			action.executar(controller);
+			LOG.info("ação de menu " + nome + " executada");
 			if(menuFrame!=null) {
 				menuFrame.close();
 			}

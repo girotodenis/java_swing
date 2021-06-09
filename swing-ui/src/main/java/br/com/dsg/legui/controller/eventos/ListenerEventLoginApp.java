@@ -67,7 +67,7 @@ public class ListenerEventLoginApp implements ControllerEventListener<EventLogin
 				Dialog dialog = new Dialog("Sem permissão", 500, 100);
 				dialog.setDraggable(false);
 				dialog.setResizable(false);
-				Label erro = new Label(String.format("Usuario %s sem permissão na %s", usuario.usuario(), newController.getNomeController()), 10, 10, 500, 20);
+				Label erro = new Label(String.format("Usuario %s sem a permissão \"%s\"", usuario.usuario(), temPermissao.value()), 10, 10, 500, 20);
 				dialog.getContainer().add(erro);
 				dialog.show(LeGuiController.get().getPanel().getFrame());
 			}

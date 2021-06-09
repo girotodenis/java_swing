@@ -38,26 +38,16 @@ public class TesteStart {
 						(controllerPai)->new HomeController(controllerPai),
 						true
 				)
-				.addMenuFlutuante(
-						new EventAdicionarItemMenu(
-								"Sub Item 1", 
-								"imagens/setting-configure.png",
-								null,
-								false,
-								(controllerPai)->new ConfigController(controllerPai),
-								false
-						)
+				.addCOntrollerMenuSubMenuFlutuante(
+							"Sub Item 1", 
+							"imagens/setting-configure.png",
+							(controllerPai)->new ConfigController(controllerPai)
 				)
-				.addMenuFlutuante(
-						new EventAdicionarItemMenu(
-								"Sub Item 2", 
-								"imagens/icons8-exit-sign-64.png",
-								null,
-								false,
-								true,
-								(c)->System.out.println("Sair")
-							)
-						)
+				.addActionMenuSubMenuFlutuante(
+						"Sub Item 2", 
+						"imagens/icons8-exit-sign-64.png",
+						(c)->System.out.println("Sair")
+				)
 		)
 		.addItemMenu(
 				new EventAdicionarItemMenu(
@@ -96,26 +86,16 @@ public class TesteStart {
 						(controllerPai)->new HomeController(controllerPai),
 						true
 				)
-				.addMenuFlutuante(
-						new EventAdicionarItemMenu(
-								"Sub Item 1", 
-								"imagens/setting-configure.png",
-								null,
-								false,
-								(controllerPai)->new ConfigController(controllerPai),
-								false
-						)
+				.addCOntrollerMenuSubMenuFlutuante(
+						"Sub Item 1", 
+						"imagens/setting-configure.png",
+						(controllerPai)->new ConfigController(controllerPai)
 				)
-				.addMenuFlutuante(
-						new EventAdicionarItemMenu(
-								"Sub Item 2", 
-								"imagens/icons8-exit-sign-64.png",
-								null,
-								false,
-								true,
-								(c)->System.out.println("Sair")
-							)
-						)
+				.addActionMenuSubMenuFlutuante(
+						"Sub Item 2", 
+						"imagens/icons8-exit-sign-64.png",
+						(c)->System.out.println("Sair")
+				)
 		)
 		.addItemMenu(
 				new EventAdicionarItemMenu(

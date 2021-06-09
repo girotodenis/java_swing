@@ -18,10 +18,15 @@ public class EventAdicionarItemMenu extends EventoController<LeGuiController>{
 	protected Boolean inicializar;
 	protected Boolean desabilitarSelecaoMenu;
 	protected ActionMenu<LeGuiController> action;
+	protected boolean configSubMenuButtonMouse2 = false;
 	
 	protected List<EventAdicionarItemMenu> menuFlutuante = new ArrayList<>();
 
 	public EventAdicionarItemMenu(String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController<?> cController, Boolean inicializar) {
+		this(nome, imageA, imageB, imageHorizontalAlignRIGHT, cController, inicializar, false);
+	}
+	
+	public EventAdicionarItemMenu(String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController<?> cController, Boolean inicializar, boolean configSubMenuButtonMouse2) {
 		super(LeGuiController.get());
 		
 		this.nome = nome;
@@ -30,10 +35,14 @@ public class EventAdicionarItemMenu extends EventoController<LeGuiController>{
 		this.imageHorizontalAlignRIGHT = imageHorizontalAlignRIGHT;
 		this.cController = cController;
 		this.inicializar = inicializar;
+		this.configSubMenuButtonMouse2 = configSubMenuButtonMouse2;
 		
 	}
 	
 	public EventAdicionarItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
+		this(nome, imageA, imageB, imageHorizontalAlignRIGHT, desabilitarSelecaoMenu, action, false);
+	}
+	public EventAdicionarItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action, boolean configSubMenuButtonMouse2) {
 		super(LeGuiController.get());
 		this.nome = nome;
 		this.imageA = imageA;
@@ -41,18 +50,17 @@ public class EventAdicionarItemMenu extends EventoController<LeGuiController>{
 		this.imageHorizontalAlignRIGHT = imageHorizontalAlignRIGHT;
 		this.desabilitarSelecaoMenu = desabilitarSelecaoMenu;
 		this.action = action;
+		this.configSubMenuButtonMouse2 = configSubMenuButtonMouse2;
 	}	
 	
-//	public EventAdicionarItemMenu(String nome, String imageA, GerarController<?> gController) {
-//		this(nome,imageA,imageA,Boolean.FALSE, gController, Boolean.FALSE);
-//	}
-//	
-//	public EventAdicionarItemMenu(String nome, String imageA, Boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action) {
-//		this(nome,imageA,imageA,Boolean.FALSE, desabilitarSelecaoMenu, action);
-//	}
 
-	public EventAdicionarItemMenu addMenuFlutuante(EventAdicionarItemMenu menu) {
-		this.menuFlutuante.add(menu);
+	public EventAdicionarItemMenu addActionMenuSubMenuFlutuante(String nome, String imageA, ActionMenu<LeGuiController> action) {
+		this.menuFlutuante.add(new EventAdicionarItemMenu(nome,imageA,imageA,false,true,action));
+		return this;
+	}
+	
+	public EventAdicionarItemMenu addCOntrollerMenuSubMenuFlutuante(String nome, String imageA, GerarController<?> cController) {
+		this.menuFlutuante.add(new EventAdicionarItemMenu(nome,imageA,imageA,false,cController,false));
 		return this;
 	}
 	
