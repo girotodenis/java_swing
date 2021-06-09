@@ -1,5 +1,7 @@
 package br.com.dsg.legui.componentes;
 
+import java.util.List;
+
 import org.joml.Vector2f;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.Panel;
@@ -42,19 +44,25 @@ public class ConteudoLeGui extends Panel {
 			
 			this.setSize(this.w, this.h);
 			
-			for(Component c: getChildComponents() ) {
-				c.setPosition(0,0);
-				
-				Vector2f oldSize = c.getSize();
-				c.setSize(this.w, this.h);
-				Vector2f newSize = c.getSize();
-				
-				EventProcessorProvider.getInstance().pushEvent(new ChangeSizeEvent<Component>(c, null,
-						this.getFrame(),oldSize, newSize));
-			}
+			update(getChildComponents());
 			
 		});
 		
+	}
+
+	public void update(List<Component> lista) {
+		for(Component c: lista ) {
+			c.setPosition(0,0);
+			Vector2f oldSize = c.getSize();
+			c.setSize(this.w, this.h);
+			Vector2f newSize = c.getSize();
+			EventProcessorProvider.getInstance().pushEvent(new ChangeSizeEvent<Component>(c, null,
+					this.getFrame(),oldSize, newSize));
+			
+			if(c.getChildComponents()!=null && !c.getChildComponents().isEmpty()) {
+				update(c.getChildComponents());
+			}
+		}
 	}
 
 	public void addPanel(Panel panel) {
