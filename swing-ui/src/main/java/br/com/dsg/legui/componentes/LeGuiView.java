@@ -55,7 +55,20 @@ public class LeGuiView extends Panel{
 	public ConteudoLeGui getConteudoLeGui() {
 		return conteudoLeGui;
 	}
+
+	public void setThemeMenu(Theme themeMenu) {
+		this.themeMenu = themeMenu;
+	}
+
+	public void setThemeConteudo(Theme themeConteudo) {
+		this.themeConteudo = themeConteudo;
+	}
 	
-	
+	public void update() {
+		this.menu.setTheme(themeMenu);
+		this.menu.update();
+		this.conteudoLeGui.setTheme(themeConteudo);
+		this.conteudoLeGui.update();
+	}
 
 }

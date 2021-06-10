@@ -139,22 +139,7 @@ public class StartLeGui {
 			monitors[i] = pointerBuffer.get(i);
 		}
 
-		Theme theme = new FlatColoredTheme(fromInt(245, 245, 245, 1), // backgroundColor
-				fromInt(176, 190, 197, 1), // borderColor
-				fromInt(176, 190, 197, 1), // sliderColor
-				fromInt(100, 181, 246, 1), // strokeColor
-				fromInt(165, 214, 167, 1), // allowColor
-				fromInt(239, 154, 154, 1), // denyColor
-				ColorConstants.transparent(), // shadowColor
-				ColorConstants.darkGray(), // text color
-				FontRegistry.getDefaultFont(), // font
-				16f // font size
-		);
-//		Themes.setDefaultTheme(theme);
-//		
-		Themes.setDefaultTheme(this.themeConteudo);
-		
-
+			
 		// Firstly we need to create frame component for window.
 		frame = new Frame(WIDTH, HEIGHT);// new Frame(WIDTH, HEIGHT);
 
@@ -164,6 +149,7 @@ public class StartLeGui {
 
 		leGuiView.getListenerMap().addListener(WindowSizeEvent.class,
 				(WindowSizeEventListener) event -> leGuiController.getPanel().setSize(event.getWidth(), event.getHeight()));
+		
 		frame.getContainer().add(leGuiController.getPanel());
 	}
 
@@ -176,6 +162,8 @@ public class StartLeGui {
     }
 
 	public void start() {
+		Themes.setDefaultTheme(this.themeConteudo);
+		this.leGuiView.update();
 
 		// We need to create legui instance one for window
 		// which hold all necessary library components
@@ -266,11 +254,13 @@ public class StartLeGui {
 	
 	public StartLeGui setThemeConteudo(Theme themeConteudo) {
 		this.themeConteudo = themeConteudo;
+		this.leGuiView.setThemeConteudo(themeConteudo);
 		return this;
 	}
 
 	public StartLeGui setThemeMenu(Theme themeMenu) {
 		this.themeMenu = themeMenu;
+		this.leGuiView.setThemeMenu(themeMenu);
 		return this;
 	}
 

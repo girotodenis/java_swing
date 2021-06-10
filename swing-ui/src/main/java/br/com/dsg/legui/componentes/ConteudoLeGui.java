@@ -71,6 +71,11 @@ public class ConteudoLeGui extends Panel {
 		
 	}
 
+	public void update() {
+		theme.getThemeManager().getComponentTheme(Panel.class).applyAll(this);
+		update(getChildComponents(), this.getSize(), this.getSize());
+	}
+	
 	public void update(List<Component> lista, Vector2f oldSize, Vector2f newSize) {
 		LOG.info(String.format("%s x=%s, y=%s, w=%s, h=%s.", "ConteudoLeGui", x, y, w, h));
 		LOG.info(String.format("%s x=%s, y=%s, w=%s, h=%s.", "ConteudoLeGui", getPosition().x(), getPosition().y(), getSize().x(), getSize().y()));
@@ -96,6 +101,10 @@ public class ConteudoLeGui extends Panel {
 		theme.getThemeManager().getComponentTheme(Panel.class).applyAll(panel);
 		
 		update(getChildComponents(), panel.getSize(), panel.getSize());
+	}
+	
+	public void setTheme(Theme theme) {
+		this.theme = theme;
 	}
 
 }

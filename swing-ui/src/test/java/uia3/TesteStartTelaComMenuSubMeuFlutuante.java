@@ -1,5 +1,7 @@
 package uia3;
 
+import org.liquidengine.legui.theme.Themes;
+
 import br.com.dsg.legui.controller.StartLeGui;
 import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
 import uia3.componentes.ConfigController;
@@ -14,7 +16,7 @@ public class TesteStartTelaComMenuSubMeuFlutuante {
 
 	
 	public void deve_iniciar_app_com_menu() {
-		StartLeGui.get(800, 600, "App test")
+		StartLeGui.get(800, 600, "App test TesteStartTelaComMenuSubMeuFlutuante")
 		.controllerPrincipall( (controllerPai) -> new HomeController(controllerPai) )
 		.abrirFecharMenuPadrao()
 		.addItemMenu(
@@ -46,6 +48,8 @@ public class TesteStartTelaComMenuSubMeuFlutuante {
 						(c) -> c.setAppFinalizado(true) 
 						)
 				)
+		.setThemeConteudo(Themes.FLAT_PETERRIVER)
+		.setThemeMenu(Themes.FLAT_WHITE)
 //		.menuFechado()
 		.start();
 	}
