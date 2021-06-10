@@ -32,12 +32,12 @@ public class ListenerEventAtualizarConteudo implements ControllerEventListener<E
 		MenuLeGui menu = leGuiView.getMenu();
 		
 		if(leGuiView.getConteudoLeGui().getChildComponents().size()>0 && leGuiView.getConteudoLeGui().getChildComponents().get(0).getClass().equals(newView.getClass())){
-			LOG.debug(String.format(" tela {%s} já está ativa ", newView.getClass().getSimpleName() ));
+			LOG.info(String.format(" tela {%s} já está ativa ", newView.getClass().getSimpleName() ));
 			return;
 		}
 		
 		if(Sessao.get().isLoginAtivo() && ( !event.isIgnoreAutenticacao() || !Sessao.get().isAutenticado())) {
-			LOG.debug(String.format("indo para login volta para controller {%s} ", newController.getClass().getSimpleName()));
+			LOG.info(String.format("indo para login volta para controller {%s} ", newController.getClass().getSimpleName()));
 			ExecutarEvento.get()
 					.lancar(
 							new EventLoginApp(newController)

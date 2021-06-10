@@ -21,7 +21,6 @@ public class ListenerEventVoltarController implements ControllerEventListener<Ev
 			ExecutarEvento.get().lancar(
 					new EventPrincipalController(controllerAtual)
 			).executar();
-			
 			return;
 		}
 		

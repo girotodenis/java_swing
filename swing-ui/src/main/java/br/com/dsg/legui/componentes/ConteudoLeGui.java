@@ -2,6 +2,7 @@ package br.com.dsg.legui.componentes;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.joml.Vector2f;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.Panel;
@@ -17,6 +18,7 @@ public class ConteudoLeGui extends Panel {
 	 * 
 	 */
 	private static final long serialVersionUID = -3275627456468898718L;
+	private final static Logger LOG = Logger.getLogger(ConteudoLeGui.class);
 
 	private float x, y, w, h = 0;
 
@@ -44,35 +46,42 @@ public class ConteudoLeGui extends Panel {
 			
 			this.setSize(this.w, this.h);
 			
-			update(getChildComponents());
-			
+			for(Component c: getChildComponents() ) {
+				c.setPosition(0,0);
+				Vector2f oldSize = c.getSize();
+				c.setSize(this.w, this.h);
+				Vector2f newSize = c.getSize();
+				EventProcessorProvider.getInstance().pushEvent(new ChangeSizeEvent<Component>(c, null,
+						this.getFrame(),oldSize, newSize));
+				
+				if(c.getChildComponents()!=null && !c.getChildComponents().isEmpty()) {
+					update(c.getChildComponents(),oldSize, newSize);
+				}
+			}
 		});
 		
 	}
 
-	public void update(List<Component> lista) {
+	public void update(List<Component> lista, Vector2f oldSize, Vector2f newSize) {
+		LOG.info(String.format("%s x=%s, y=%s, w=%s, h=%s.", "ConteudoLeGui", x, y, w, h));
+		LOG.info(String.format("%s x=%s, y=%s, w=%s, h=%s.", "ConteudoLeGui", getPosition().x(), getPosition().y(), getSize().x(), getSize().y()));
 		for(Component c: lista ) {
-			c.setPosition(0,0);
-			Vector2f oldSize = c.getSize();
-			c.setSize(this.w, this.h);
-			Vector2f newSize = c.getSize();
+			LOG.info(String.format("%s x=%s, y=%s, w=%s, h=%s.", c.getClass().getSimpleName(), c.getPosition().x(), c.getPosition().y(), c.getSize().x(), c.getSize().y()));
 			EventProcessorProvider.getInstance().pushEvent(new ChangeSizeEvent<Component>(c, null,
 					this.getFrame(),oldSize, newSize));
 			
 			if(c.getChildComponents()!=null && !c.getChildComponents().isEmpty()) {
-				update(c.getChildComponents());
+				update(c.getChildComponents(),oldSize, newSize);
 			}
 		}
 	}
 
 	public void addPanel(Panel panel) {
-		
 		removeAll(getChildComponents());
-		
-		panel.setPosition(0,0);
 		panel.setSize(this.getSize());
-		
+		panel.setPosition(0,0);
 		add(panel);
+		update(getChildComponents(), panel.getSize(), panel.getSize());
 	}
 
 }
