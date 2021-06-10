@@ -23,6 +23,7 @@ import static org.lwjgl.opengl.GL11.glViewport;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 import org.joml.Vector2i;
+import org.joml.Vector4f;
 import org.liquidengine.legui.DefaultInitializer;
 import org.liquidengine.legui.animation.Animator;
 import org.liquidengine.legui.animation.AnimatorProvider;
@@ -30,10 +31,14 @@ import org.liquidengine.legui.component.Frame;
 import org.liquidengine.legui.component.Panel;
 import org.liquidengine.legui.event.WindowSizeEvent;
 import org.liquidengine.legui.listener.WindowSizeEventListener;
+import org.liquidengine.legui.style.color.ColorConstants;
+import org.liquidengine.legui.style.font.FontRegistry;
 import org.liquidengine.legui.system.context.Context;
 import org.liquidengine.legui.system.layout.LayoutManager;
 import org.liquidengine.legui.system.renderer.Renderer;
+import org.liquidengine.legui.theme.Theme;
 import org.liquidengine.legui.theme.Themes;
+import org.liquidengine.legui.theme.colored.FlatColoredTheme;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -45,7 +50,7 @@ import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
 import br.com.dsg.legui.controller.seguranca.SeguracaController;
 import br.com.dsg.legui.controller.seguranca.UsuarioPrincipal;
-
+import static org.liquidengine.legui.style.color.ColorUtil.fromInt;
 public class StartLeGui {
 
 	private static volatile boolean running = false;
@@ -66,9 +71,50 @@ public class StartLeGui {
 	private long window = 0;
 
 	private LeGuiController leGuiController = null;
+	
+	public static final Theme THEME_CONTEUDO = new FlatColoredTheme(
+	        rgba(44, 62, 80, 1), // backgroundColor
+	        rgba(127, 140, 141, 1), // borderColor
+	        rgba(127, 140, 141, 1), // sliderColor
+	        rgba(2, 119, 189, 1), // strokeColor
+	        rgba(39, 174, 96, 1), // allowColor
+	        rgba(192, 57, 43, 1), // denyColor
+	        rgba(0, 0, 0, 1f),  // shadowColor
+	        ColorConstants.white(),
+	        FontRegistry.getDefaultFont(),
+	        18f
+	    );
+	
+	 public static final Theme THEME_MENU = new FlatColoredTheme(
+		        rgba(33, 33, 33, 1), // backgroundColor
+		        rgba(97, 97, 97, 1), // borderColor
+		        rgba(97, 97, 97, 1), // sliderColor
+		        rgba(2, 119, 189, 1), // strokeColor
+		        rgba(27, 94, 32, 1), // allowColor
+		        rgba(183, 28, 28, 1), // denyColor
+		        rgba(250, 250, 250, 0.5f),  // shadowColor
+		        ColorConstants.white(),
+		        FontRegistry.getDefaultFont(),
+		        18f
+		    );
+	
+	private Theme themeConteudo = THEME_CONTEUDO;
+	private Theme themeMenu = THEME_MENU;
 
 	private StartLeGui(int width, int height, String appNome) {
 
+		System.setProperty("app.nome.sistema", "AppLegui");
+		System.setProperty("app.frame.largura", String.valueOf(width));
+		System.setProperty("app.frame.altura", String.valueOf(height));
+		System.setProperty("app.bar.altura", "50");
+		System.setProperty("app.largura.menu.fechado", "50");
+		System.setProperty("app.largura.menu.aberto", "200");
+		System.setProperty("app.altura.item.menu", "40");
+		System.setProperty("app.altura.inicial.item.menu", "50");
+		System.setProperty("app.altura.progress.bar", "5");
+		
+		
+		
 		System.setProperty("joml.nounsafe", Boolean.TRUE.toString());
 		System.setProperty("java.awt.headless", Boolean.TRUE.toString());
 
@@ -93,25 +139,26 @@ public class StartLeGui {
 			monitors[i] = pointerBuffer.get(i);
 		}
 
-//		Themes.setDefaultTheme(new FlatColoredTheme(fromInt(245, 245, 245, 1), // backgroundColor
-//				fromInt(176, 190, 197, 1), // borderColor
-//				fromInt(176, 190, 197, 1), // sliderColor
-//				fromInt(100, 181, 246, 1), // strokeColor
-//				fromInt(165, 214, 167, 1), // allowColor
-//				fromInt(239, 154, 154, 1), // denyColor
-//				ColorConstants.transparent(), // shadowColor
-//				ColorConstants.darkGray(), // text color
-//				FontRegistry.getDefaultFont(), // font
-//				16f // font size
-//		));
-		
-		Themes.setDefaultTheme(Themes.FLAT_PETERRIVER_DARK);
+		Theme theme = new FlatColoredTheme(fromInt(245, 245, 245, 1), // backgroundColor
+				fromInt(176, 190, 197, 1), // borderColor
+				fromInt(176, 190, 197, 1), // sliderColor
+				fromInt(100, 181, 246, 1), // strokeColor
+				fromInt(165, 214, 167, 1), // allowColor
+				fromInt(239, 154, 154, 1), // denyColor
+				ColorConstants.transparent(), // shadowColor
+				ColorConstants.darkGray(), // text color
+				FontRegistry.getDefaultFont(), // font
+				16f // font size
+		);
+//		Themes.setDefaultTheme(theme);
+//		
+		Themes.setDefaultTheme(this.themeConteudo);
 		
 
 		// Firstly we need to create frame component for window.
 		frame = new Frame(WIDTH, HEIGHT);// new Frame(WIDTH, HEIGHT);
 
-		leGuiView = new LeGuiView(WIDTH, HEIGHT);
+		leGuiView = new LeGuiView(this.themeMenu, this.themeConteudo, WIDTH, HEIGHT);
 		leGuiView.setFocusable(false);
 		leGuiController = new LeGuiController(leGuiView);
 
@@ -123,6 +170,10 @@ public class StartLeGui {
 	public static StartLeGui get(int width, int height, String appNome) {
 		return instance =  new StartLeGui( width,  height,  appNome) ;
 	}
+	
+	private static Vector4f rgba(int r, int g, int b, float a) {
+        return new Vector4f(r / 255f, g / 255f, b / 255f, a);
+    }
 
 	public void start() {
 
@@ -212,7 +263,21 @@ public class StartLeGui {
 		glfwDestroyWindow(window);
 		glfwTerminate();
 	}
+	
+	public StartLeGui setThemeConteudo(Theme themeConteudo) {
+		this.themeConteudo = themeConteudo;
+		return this;
+	}
 
+	public StartLeGui setThemeMenu(Theme themeMenu) {
+		this.themeMenu = themeMenu;
+		return this;
+	}
+
+	public StartLeGui setAppProperty(String chave, String valor) {
+		System.setProperty(chave, valor);
+		return this;
+	}
 	
 	public StartLeGui abrirFecharMenuPadrao() {
 		this.leGuiController.addItemMenu(new EventAdicionarItemMenu(

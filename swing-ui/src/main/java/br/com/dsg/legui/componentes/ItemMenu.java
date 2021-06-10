@@ -1,13 +1,18 @@
 package br.com.dsg.legui.componentes;
 
+import java.util.List;
+
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.liquidengine.legui.component.Button;
+import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.Panel;
 import org.liquidengine.legui.component.optional.align.HorizontalAlign;
 import org.liquidengine.legui.icon.Icon;
 import org.liquidengine.legui.icon.ImageIcon;
 import org.liquidengine.legui.image.loader.ImageLoader;
+import org.liquidengine.legui.theme.Theme;
+import org.liquidengine.legui.theme.Themes;
 
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEvent;
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEventListener;
@@ -34,18 +39,23 @@ public class ItemMenu extends Button {
 	private int ordem = 0;
 	private int posicao = 0;
 	private Vector4f color;
+	private Vector4f colorSelecionado;
+	
+	private Theme theme = null;
 
-	public ItemMenu(float w, float h, String nome, String imagePathAberta) {
-		this(w, h, nome, imagePathAberta, imagePathAberta, false);
+	public ItemMenu(Theme theme,float w, float h, String nome, String imagePathAberta) {
+		this(theme, w, h, nome, imagePathAberta, imagePathAberta, false);
 	}
 	
-	public ItemMenu(float w, float h, String nome, String imagePathAberta, boolean imageHorizontalAlignRIGHT) {
-		this(w,h,nome, imagePathAberta, imagePathAberta, false);
+	public ItemMenu(Theme theme,float w, float h, String nome, String imagePathAberta, boolean imageHorizontalAlignRIGHT) {
+		this(theme,w,h,nome, imagePathAberta, imagePathAberta, false);
 	}
 	
-	public ItemMenu(float w, float h, String nome, String imagePathAberta, String imagePathFechada, boolean imageHorizontalAlignRIGHT) {
+	public ItemMenu(Theme theme,float w, float h, String nome, String imagePathAberta, String imagePathFechada, boolean imageHorizontalAlignRIGHT) {
 		
-		this.color = getStyle().getBackground().getColor();
+		this.theme=theme;
+		
+		
 		
 		this.nome=ESPACO + nome;
 		this.imagePathAberta = imagePathAberta;
@@ -54,7 +64,7 @@ public class ItemMenu extends Button {
 		this.w=w;
 		this.h=h;
 		
-		getStyle().setHorizontalAlign(HorizontalAlign.LEFT);
+		
 		getTextState().setText(this.nome);
 		
 		setSize(this.w, this.h);
@@ -76,6 +86,10 @@ public class ItemMenu extends Button {
 			}
 		});
 		
+		theme.getThemeManager().getComponentTheme(Button.class).applyAll(this);
+		this.color = getStyle().getBackground().getColor();
+		this.colorSelecionado = getPressedStyle().getBackground().getColor();
+		getStyle().setHorizontalAlign(HorizontalAlign.LEFT);
 	}
 
 	private void encolher() {
@@ -106,15 +120,18 @@ public class ItemMenu extends Button {
 		this.setEnabled(false);
 		this.setPressed(true);
 		this.setFocused(true);
-		
-		this.getStyle().getBackground().setColor(this.getPressedStyle().getBackground().getColor());
+		update();
+		this.getStyle().getBackground().setColor(this.colorSelecionado);
+		//this.getStyle().getBackground().setColor(this.getPressedStyle().getBackground().getColor());
 	}
 
 	public void rest() {
 		this.setEnabled(true);
 		this.setPressed(false);
 		this.setFocused(false);
+		update();
 		this.getStyle().getBackground().setColor(this.color);
+		//this.getStyle().getBackground().setColor(this.color);
 	}
 
 	public int getPosicao() {
@@ -140,6 +157,35 @@ public class ItemMenu extends Button {
 
 	protected Class<? extends Panel> getPanel() {
 		return panel;
+	}
+	
+	public void update() {
+		theme.getThemeManager().getComponentTheme(Button.class).applyAll(this);
+		
+		for(Component c: getChildComponents() ) {
+			if(c.getChildComponents()!=null && !c.getChildComponents().isEmpty()) {
+				update(c.getChildComponents());
+			}
+		}
+		this.getStyle().setHorizontalAlign(HorizontalAlign.LEFT);
+		if(this.isEnabled()){
+			this.getStyle().getBackground().setColor(this.color);
+		}else {
+			this.getStyle().getBackground().setColor(this.colorSelecionado);
+		}
+	}
+	
+	public void update(List<Component> lista) {
+		for(Component c: lista ) {
+			theme.getThemeManager().getComponentTheme((Class<Component>) c.getClass()).applyAll((Component)c);
+			if(c.getChildComponents()!=null && !c.getChildComponents().isEmpty()) {
+				update(c.getChildComponents());
+			}
+		}
+	}
+
+	public Theme getTheme() {
+		return theme;
 	}
 
 }

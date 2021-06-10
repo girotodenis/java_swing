@@ -93,7 +93,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 		menuFrame.setCloseable(true);
 		menuFrame.setDraggable(true);
 		menuFrame.setResizable(false);
-		MenuLeGui menuFlutuante = new MenuLeGui(
+		MenuLeGui menuFlutuante = new MenuLeGui(menu.getTheme(),
 				0,0,
 				menu.wo(), 
 				menu.hi()*event.menuFlutuante.size(),
@@ -126,6 +126,8 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 						menuFrame);
 			}
 		});
+		
+		menuFlutuante.update();
 		menuFrame.show(menu.getFrame());
 		
 		menuFrame.setPosition(
@@ -168,6 +170,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 			LeGuiEventos.irPara( controllerMenu );
 			
 		}
+		menu.update();
 		return item;
 	}
 
@@ -207,6 +210,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 		}else {
 			menu.encolherItens();
 		}
+		menu.update();
 		return item;
 	}
 	

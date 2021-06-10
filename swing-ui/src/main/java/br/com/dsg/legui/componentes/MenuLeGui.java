@@ -8,9 +8,12 @@ import java.util.stream.Collectors;
 import org.joml.Vector2f;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.Panel;
+import org.liquidengine.legui.component.event.component.ChangeSizeEvent;
 import org.liquidengine.legui.event.WindowSizeEvent;
 import org.liquidengine.legui.listener.WindowSizeEventListener;
 import org.liquidengine.legui.listener.processor.EventProcessorProvider;
+import org.liquidengine.legui.theme.Theme;
+import org.liquidengine.legui.theme.Themes;
 
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEvent;
 import br.com.dsg.util.Constantes;
@@ -29,8 +32,9 @@ public class MenuLeGui extends Panel {
 	
 	private float x, y, w, h, wc, wo, hi = 0;
 	
+	private Theme theme = null;
 
-	public MenuLeGui(float x, float y, float w, float h,float wc, float wo, float hi, Component... panels) {
+	public MenuLeGui(Theme theme, float x, float y, float w, float h,float wc, float wo, float hi, Component... panels) {
 
 		this.x = x;
 		this.y = y;
@@ -40,6 +44,7 @@ public class MenuLeGui extends Panel {
 		this.wo = wo;
 		this.hi = hi;
 		this.components = panels;
+		this.theme = theme;
 
 		this.setPosition(this.x, this.y);
 		this.setSize(this.wo, this.h);
@@ -52,18 +57,26 @@ public class MenuLeGui extends Panel {
 			Vector2f newSize = new Vector2f(this.x, event.getHeight());
 			notifica(newSize);
 			this.setSize(newSize);
+			
+			update();
+			
 		});
+		
+		update();
 
 	}
 
 	
 	public ItemMenu criarItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT) {
-		ItemMenu item = new ItemMenu(Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU, nome, imageA, imageB, imageHorizontalAlignRIGHT);
+		ItemMenu item = new ItemMenu(this.theme, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU, nome, imageA, imageB, imageHorizontalAlignRIGHT);
 		mapa.put(item.getNome(), item);
 		item.setOrdem(mapa.size()-1);
 		item.setPosition(0, item.getPosicao());
 		item.setSize(this.wo, this.hi);
+		
+		theme.getThemeManager().getComponentTheme(ItemMenu.class).applyAll(item);
 		add(item);
+		update();
 		return item;
 	}
 
@@ -86,7 +99,7 @@ public class MenuLeGui extends Panel {
 		List<ItemMenu> itens = mapa.values().stream().filter(i -> !i.getNome().equals(item.getNome()))
 				.collect(Collectors.toList());
 		itens.forEach(i -> i.rest());
-		
+		update();
 	}
 
 	public void encolherItens() {
@@ -95,6 +108,7 @@ public class MenuLeGui extends Panel {
 		Vector2f newSize = new Vector2f(this.wc, this.getSize().y);
 		notifica(newSize);
 		setSize(newSize);
+		update();
 
 	}
 
@@ -104,6 +118,7 @@ public class MenuLeGui extends Panel {
 		Vector2f newSize = new Vector2f(this.wo, this.getSize().y);
 		notifica(newSize);
 		setSize(newSize);
+		update();
 	}
 	
 	
@@ -111,6 +126,7 @@ public class MenuLeGui extends Panel {
 		Vector2f newSize = new Vector2f(0, this.getSize().y);
 		notifica(newSize);
 		setSize(newSize);
+		update();
 	}
 
 	public void exibir() {
@@ -122,6 +138,7 @@ public class MenuLeGui extends Panel {
 		}
 		notifica(newSize);
 		setSize(newSize);
+		update();
 	}
 	
 
@@ -177,6 +194,15 @@ public class MenuLeGui extends Panel {
 
 	public float hi() {
 		return hi;
+	}
+	
+	public void update() {
+		theme.getThemeManager().getComponentTheme(Panel.class).applyAll(this);
+		mapa.values().stream().forEach(e->e.update());
+	}
+	
+	public Theme getTheme() {
+		return theme;
 	}
 	
 	

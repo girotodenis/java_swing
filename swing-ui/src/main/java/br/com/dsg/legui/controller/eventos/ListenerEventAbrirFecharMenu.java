@@ -58,5 +58,6 @@ public class ListenerEventAbrirFecharMenu implements ControllerEventListener<Eve
 				}
 			}
 		}
+		menu.update();
 	}
 }

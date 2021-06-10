@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.joml.Vector2f;
+import org.liquidengine.legui.component.Button;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.Panel;
 import org.liquidengine.legui.component.event.component.ChangeSizeEvent;
 import org.liquidengine.legui.listener.processor.EventProcessorProvider;
+import org.liquidengine.legui.theme.Theme;
+import org.liquidengine.legui.theme.Themes;
 
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEvent;
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEventListener;
@@ -21,13 +24,15 @@ public class ConteudoLeGui extends Panel {
 	private final static Logger LOG = Logger.getLogger(ConteudoLeGui.class);
 
 	private float x, y, w, h = 0;
+	private Theme theme = Themes.getDefaultTheme();
 
-	public ConteudoLeGui(float x, float y, float w, float h) {
+	public ConteudoLeGui(Theme themeConteudo, float x, float y, float w, float h) {
 		
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
+		this.theme=themeConteudo;
 		
 		this.setPosition(this.x, this.y);
 		this.setSize(this.w, this.h);
@@ -54,11 +59,15 @@ public class ConteudoLeGui extends Panel {
 				EventProcessorProvider.getInstance().pushEvent(new ChangeSizeEvent<Component>(c, null,
 						this.getFrame(),oldSize, newSize));
 				
+				theme.getThemeManager().getComponentTheme((Class<Component>) c.getClass()).applyAll((Component)c);
+				
 				if(c.getChildComponents()!=null && !c.getChildComponents().isEmpty()) {
 					update(c.getChildComponents(),oldSize, newSize);
 				}
 			}
 		});
+		
+		theme.getThemeManager().getComponentTheme(Panel.class).applyAll(this);
 		
 	}
 
@@ -69,6 +78,8 @@ public class ConteudoLeGui extends Panel {
 			LOG.info(String.format("%s x=%s, y=%s, w=%s, h=%s.", c.getClass().getSimpleName(), c.getPosition().x(), c.getPosition().y(), c.getSize().x(), c.getSize().y()));
 			EventProcessorProvider.getInstance().pushEvent(new ChangeSizeEvent<Component>(c, null,
 					this.getFrame(),oldSize, newSize));
+			
+			theme.getThemeManager().getComponentTheme((Class<Component>) c.getClass()).applyAll((Component)c);
 			
 			if(c.getChildComponents()!=null && !c.getChildComponents().isEmpty()) {
 				update(c.getChildComponents(),oldSize, newSize);
@@ -81,6 +92,9 @@ public class ConteudoLeGui extends Panel {
 		panel.setSize(this.getSize());
 		panel.setPosition(0,0);
 		add(panel);
+		
+		theme.getThemeManager().getComponentTheme(Panel.class).applyAll(panel);
+		
 		update(getChildComponents(), panel.getSize(), panel.getSize());
 	}
 

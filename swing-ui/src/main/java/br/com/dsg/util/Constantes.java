@@ -2,26 +2,32 @@ package br.com.dsg.util;
 
 public class Constantes {
 	
-	public static int ALTURA_APP = PropertiesUtil.getInt("altura.app");
-	public static int LARGURA_APP= PropertiesUtil.getInt("largura.app");
-	public static final java.awt.Color COR_FUNDO_APP = new java.awt.Color(255, 255, 255);
+//	System.setProperty("app.nome.sistema", "AppLegui");
+//	System.setProperty("app.frame.largura", String.valueOf(width));
+//	System.setProperty("app.frame.altura", String.valueOf(height));
+//	System.setProperty("app.bar.altura", "50");
+//	System.setProperty("app.largura.menu.fechado", "50");
+//	System.setProperty("app.largura.menu.aberto", "200");
+//	System.setProperty("app.altura.item.menu", "40");
+//	System.setProperty("app.altura.inicial.item.menu", "50");
+//	System.setProperty("app.altura.inicial.item.menu", "50");
+//	System.setProperty("app.altura.progress.bar", "5");
 	
-	public static int LARGURA_MENU_FECHADO = PropertiesUtil.getInt("largura.menu.fechado");
-	public static int LARGURA_MENU_ABERTO = PropertiesUtil.getInt("largura.menu.aberto");
-	public static final java.awt.Color COR_FUNDO_MENU = new java.awt.Color(23, 35, 51);
+	public static int ALTURA_APP = Integer.valueOf( System.getProperty("app.frame.altura") );
+	public static int LARGURA_APP = Integer.valueOf( System.getProperty("app.frame.largura") );
 	
-	public static final int ALTURA_ITEM_MENU = PropertiesUtil.getInt("altura.item.menu");
-	public static final int ALTURA_INICIAL_ITEM_MENU = PropertiesUtil.getInt("altura.inicial.item.menu");
-	public static final java.awt.Color COR_FUNDO_ITEM_MENU = new java.awt.Color(23, 35, 51);
-	public static final java.awt.Color COR_FUNDO_ITEM_MENU_SELECIONADO = new java.awt.Color(41,57,80);
-	public static final java.awt.Color COR_FUNDO_LABEL_ITEM_MENU = new java.awt.Color(255, 255, 255);
+	
+	public static int LARGURA_MENU_FECHADO = Integer.valueOf( System.getProperty("app.largura.menu.fechado") );
+	public static int LARGURA_MENU_ABERTO = Integer.valueOf( System.getProperty("app.largura.menu.aberto") );
+	
+	public static final int ALTURA_ITEM_MENU = Integer.valueOf( System.getProperty("app.altura.item.menu") );
+	public static final int ALTURA_INICIAL_ITEM_MENU = Integer.valueOf( System.getProperty("app.altura.inicial.item.menu") );
 	
 	//Conf APP_BAR
-	public static  int ALTURA_PROGRESS_BAR = 5 ;
-	public static  int ALTURA_APP_BAR = PropertiesUtil.getInt("altura.app.bar") ;
+	public static  int ALTURA_PROGRESS_BAR = Integer.valueOf( System.getProperty("app.altura.progress.bar") ); ;
+	public static  int ALTURA_APP_BAR = Integer.valueOf( System.getProperty("app.bar.altura") );
 	public static  int LARGURA_APP_BAR = LARGURA_APP - LARGURA_MENU_ABERTO;
 	public static  int LARGURA_APP_BAR_FULL = LARGURA_APP - LARGURA_MENU_FECHADO;
-	public static final java.awt.Color COR_FUNDO_APP_BAR = new java.awt.Color(71, 120, 197);
 	//Conf APP_BAR
 	
 	public static  int LARGURA_APP_CONTEUDO_MENU_ABERTO = LARGURA_APP - LARGURA_MENU_ABERTO;
