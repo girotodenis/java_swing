@@ -106,12 +106,12 @@ public class StartLeGui {
 		System.setProperty("app.nome.sistema", "AppLegui");
 		System.setProperty("app.frame.largura", String.valueOf(width));
 		System.setProperty("app.frame.altura", String.valueOf(height));
-		System.setProperty("app.bar.altura", "50");
+		System.setProperty("app.bar.altura", "10");
 		System.setProperty("app.largura.menu.fechado", "50");
 		System.setProperty("app.largura.menu.aberto", "200");
 		System.setProperty("app.altura.item.menu", "40");
 		System.setProperty("app.altura.inicial.item.menu", "50");
-		System.setProperty("app.altura.progress.bar", "5");
+		System.setProperty("app.altura.progress.bar", "10");
 		
 		
 		

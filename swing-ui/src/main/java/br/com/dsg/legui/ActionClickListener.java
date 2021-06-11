@@ -20,18 +20,20 @@ public class ActionClickListener implements EventListener<MouseClickEvent> {
 	private Action action;
 	
 	private Vector4f color;
+	private Vector4f colorSelect;
 	private List<EventListener<MouseClickEvent>> eventListeners;
 	
 	public ActionClickListener(AbstractController<?> controller, Component source, Action action) {
 		this.source = source;
 		this.action = action;
 		this.controller = controller;
-		this.color = source.getStyle().getBackground().getColor();
 	}
 	
 	@Override
 	public void process(MouseClickEvent event) {
 			if(event.getAction().equals(MouseClickAction.CLICK)) {
+				this.colorSelect = source.getPressedStyle().getBackground().getColor();
+				this.color = source.getStyle().getBackground().getColor();
 				bloquearComponente();
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
@@ -61,7 +63,7 @@ public class ActionClickListener implements EventListener<MouseClickEvent> {
 	public void bloquearComponente() {
 		source.setEnabled(false);
 		source.setPressed(true);
-		source.getStyle().getBackground().setColor(source.getPressedStyle().getBackground().getColor());
+		source.getStyle().getBackground().setColor(this.colorSelect);
 		ActionClickListener.this.eventListeners =  source.getListenerMap().getListeners(MouseClickEvent.class);
 		source.getListenerMap().removeAllListeners(MouseClickEvent.class);
 	}
