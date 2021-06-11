@@ -77,8 +77,8 @@ public class ConteudoLeGui extends Panel {
 	}
 	
 	public void update(List<Component> lista, Vector2f oldSize, Vector2f newSize) {
-		LOG.info(String.format("%s x=%s, y=%s, w=%s, h=%s.", "ConteudoLeGui", x, y, w, h));
-		LOG.info(String.format("%s x=%s, y=%s, w=%s, h=%s.", "ConteudoLeGui", getPosition().x(), getPosition().y(), getSize().x(), getSize().y()));
+		LOG.debug(String.format("%s x=%s, y=%s, w=%s, h=%s.", "ConteudoLeGui", x, y, w, h));
+		LOG.debug(String.format("%s x=%s, y=%s, w=%s, h=%s.", "ConteudoLeGui", getPosition().x(), getPosition().y(), getSize().x(), getSize().y()));
 		for(Component c: lista ) {
 			LOG.info(String.format("%s x=%s, y=%s, w=%s, h=%s.", c.getClass().getSimpleName(), c.getPosition().x(), c.getPosition().y(), c.getSize().x(), c.getSize().y()));
 			EventProcessorProvider.getInstance().pushEvent(new ChangeSizeEvent<Component>(c, null,
