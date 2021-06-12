@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.joml.Vector2f;
-import org.liquidengine.legui.component.Button;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.Panel;
 import org.liquidengine.legui.component.event.component.ChangeSizeEvent;
@@ -80,7 +79,7 @@ public class ConteudoLeGui extends Panel {
 		LOG.debug(String.format("%s x=%s, y=%s, w=%s, h=%s.", "ConteudoLeGui", x, y, w, h));
 		LOG.debug(String.format("%s x=%s, y=%s, w=%s, h=%s.", "ConteudoLeGui", getPosition().x(), getPosition().y(), getSize().x(), getSize().y()));
 		for(Component c: lista ) {
-			LOG.info(String.format("%s x=%s, y=%s, w=%s, h=%s.", c.getClass().getSimpleName(), c.getPosition().x(), c.getPosition().y(), c.getSize().x(), c.getSize().y()));
+			LOG.debug(String.format("%s x=%s, y=%s, w=%s, h=%s.", c.getClass().getSimpleName(), c.getPosition().x(), c.getPosition().y(), c.getSize().x(), c.getSize().y()));
 			EventProcessorProvider.getInstance().pushEvent(new ChangeSizeEvent<Component>(c, null,
 					this.getFrame(),oldSize, newSize));
 			

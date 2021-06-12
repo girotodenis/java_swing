@@ -31,6 +31,7 @@ public class ListenerEventLoginApp implements ControllerEventListener<EventLogin
 
 	@Override
 	public void handleEvent(EventLoginApp event) {
+		LOG.debug( String.format("executando listener %s ", this.getClass().getSimpleName()) );
 		
 		AbstractController<?> newController = event.getNewController();
 		LOG.debug(String.format("newController %s", newController.getClass().getSimpleName()) );

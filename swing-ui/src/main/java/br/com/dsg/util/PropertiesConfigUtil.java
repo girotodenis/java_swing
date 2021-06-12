@@ -2,6 +2,7 @@ package br.com.dsg.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -9,7 +10,7 @@ import java.util.ResourceBundle;
  * @author Denis Giroto
  *
  */
-public class PropertiesUtil {
+public class PropertiesConfigUtil {
 	
 	private static ResourceBundle config = ResourceBundle.getBundle("config");
 	private static File external;
@@ -48,6 +49,18 @@ public class PropertiesUtil {
 
 	public static int getInt(String string) {
 		return Integer.valueOf(get(string).replaceAll("[^0-9]", ""));
+	}
+	
+	public static void set(String chave, String valor) {
+		properties.setProperty(chave, valor);
+	}
+	
+	public static void salvar() {
+		try {
+			properties.store(new FileOutputStream(external), "salvo_" + System.currentTimeMillis());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 }

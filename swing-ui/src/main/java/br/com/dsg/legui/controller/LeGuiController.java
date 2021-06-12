@@ -23,7 +23,6 @@ import br.com.dsg.legui.controller.eventos.ListenerEventPrincipalController;
 import br.com.dsg.legui.controller.eventos.ListenerEventProgressBar;
 import br.com.dsg.legui.controller.eventos.ListenerEventVoltarController;
 import br.com.dsg.legui.controller.seguranca.SeguracaController;
-import br.com.dsg.legui.controller.seguranca.Sessao;
 import br.com.dsg.legui.controller.seguranca.UsuarioPrincipal;
 
 /**

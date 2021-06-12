@@ -1,12 +1,9 @@
 package br.com.dsg.legui.controller.eventos;
 
-import javax.swing.SwingUtilities;
-
 import org.apache.log4j.Logger;
 
 import br.com.dsg.legui.ControllerEventListener;
 import br.com.dsg.legui.componentes.MenuLeGui;
-import br.com.dsg.legui.controller.LeGuiEventos;
 
 public class ListenerEventAbrirFecharMenu implements ControllerEventListener<EventAbrirFecharMenu> {
 
@@ -18,19 +15,7 @@ public class ListenerEventAbrirFecharMenu implements ControllerEventListener<Eve
 	
 	@Override
 	public void handleEvent(EventAbrirFecharMenu event) {
-		
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				for (int i = 0; i <= 100; i++) {
-					try {
-						
-						Thread.sleep(1);
-						LeGuiEventos.atualizarProgressBar( i );
-						
-					} catch (Exception e) { }
-				}
-			}
-		});
+		LOG.debug( String.format("executando listener %s ", this.getClass().getSimpleName()) );
 		
 		MenuLeGui menu = event.getControllerAlvo().getPanel().getMenu();
 		if(event.removerMenu || menu.isEmpty()) {

@@ -12,7 +12,6 @@ import org.liquidengine.legui.icon.Icon;
 import org.liquidengine.legui.icon.ImageIcon;
 import org.liquidengine.legui.image.loader.ImageLoader;
 import org.liquidengine.legui.theme.Theme;
-import org.liquidengine.legui.theme.Themes;
 
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEvent;
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEventListener;

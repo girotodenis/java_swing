@@ -14,7 +14,6 @@ import br.com.dsg.legui.controller.ActionMenu;
 import br.com.dsg.legui.controller.GerarController;
 import br.com.dsg.legui.controller.LeGuiController;
 import br.com.dsg.legui.controller.LeGuiEventos;
-import br.com.dsg.util.Constantes;
 
 public class ListenerEventAdicionarItemMenu implements ControllerEventListener<EventAdicionarItemMenu> {
 
@@ -26,7 +25,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 	
 	@Override
 	public void handleEvent(EventAdicionarItemMenu event) {
-		
+		LOG.debug( String.format("executando listener %s ", this.getClass().getSimpleName()) );
 		LeGuiController controller = event.getControllerAlvo();
 		MenuLeGui menu = event.getControllerAlvo().getPanel().getMenu();
 		
@@ -62,7 +61,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 						event.imageB, 
 						event.imageHorizontalAlignRIGHT, 
 						true, 
-						(e)->LOG.info("abrir submenu "+event.nome),
+						(e)->LOG.debug("abrir submenu "+event.nome),
 						null);
 			}
 		}
@@ -146,7 +145,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 	public ItemMenu addItemMenu(LeGuiController controller,MenuLeGui menu, String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController<?> cController, Boolean inicializar,Dialog menuFrame) {
 		
 		
-		LOG.info("addItemMenu " + nome + " criado");
+		LOG.debug("addItemMenu " + nome + " criado");
 		final AbstractController<?> controllerMenu = cController.criar(controller);
 		controllerMenu.setNomeController(nome+"_menu_"+System.currentTimeMillis());
 		
@@ -157,7 +156,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 			menu.seleciona(item);
 			
 			ActionMenu<LeGuiController> action = (controllerPai) -> LeGuiEventos.irPara(  controllerMenu ) ;
-			LOG.info("ação de menu " + nome + " executada");
+			LOG.debug("ação de menu " + nome + " executada");
 			action.executar(controller);
 			if(menuFrame!=null) {
 				menuFrame.close();
@@ -176,7 +175,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 
 	public ItemMenu addItemMenuAcao(LeGuiController controller, MenuLeGui menu, String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action, Dialog menuFrame) {
 		
-		LOG.info("addItemMenuAcao " + nome + " criado");
+		LOG.debug("addItemMenuAcao " + nome + " criado");
 		ItemMenu item = menu.criarItemMenu(nome, imageA, imageB, imageHorizontalAlignRIGHT);
 		controller.registerAction(item, (event) -> {
 			
@@ -198,8 +197,9 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 					}
 				}
 			});
+			
 			action.executar(controller);
-			LOG.info("ação de menu " + nome + " executada");
+			LOG.debug("ação de menu " + nome + " executada");
 			if(menuFrame!=null) {
 				menuFrame.close();
 			}

@@ -6,9 +6,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.log4j.Logger;
 
-import br.com.dsg.legui.controller.eventos.EventAtualizarConteudoEvento;
-import br.com.dsg.legui.controller.eventos.EventProgressBar;
-
 public class ExecutarEvento {
 	
 	private static ExecutarEvento instance = new ExecutarEvento();
@@ -32,11 +29,10 @@ public class ExecutarEvento {
 			List<? extends ControllerEventListener<?>> lista = targetComponent.getEventosControllers().get(evento.getClass().getName());
 			if(lista!=null) {
 				for (ControllerEventListener listener : lista) {
-					LOG.debug( String.format("executando listener %s ", listener.getClass().getSimpleName()) );
 					listener.handleEvent(evento);
 				}
 			}else {
-				LOG.error("sem eventos");
+				LOG.error(String.format("Evento %s sem listeners cadastrados", evento.getClass().getName()));
 			}
 		}
 	}
@@ -48,7 +44,6 @@ public class ExecutarEvento {
 	}
 
 	public ExecutarEvento lancar(EventoController<?> event ) {
-		LOG.debug("add Evento: " + event.getClass().getSimpleName());
 		primario.add(event);
 		return this;
 	}

@@ -50,7 +50,6 @@ import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
 import br.com.dsg.legui.controller.seguranca.SeguracaController;
 import br.com.dsg.legui.controller.seguranca.UsuarioPrincipal;
-import static org.liquidengine.legui.style.color.ColorUtil.fromInt;
 public class StartLeGui {
 
 	private static volatile boolean running = false;

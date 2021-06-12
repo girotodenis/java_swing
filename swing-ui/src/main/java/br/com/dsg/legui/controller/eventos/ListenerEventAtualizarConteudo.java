@@ -11,7 +11,6 @@ import br.com.dsg.legui.ExecutarEvento;
 import br.com.dsg.legui.componentes.ItemMenu;
 import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.componentes.MenuLeGui;
-import br.com.dsg.legui.controller.LeGuiController;
 import br.com.dsg.legui.controller.LeGuiEventos;
 import br.com.dsg.legui.controller.seguranca.Sessao;
 
@@ -24,7 +23,7 @@ public class ListenerEventAtualizarConteudo implements ControllerEventListener<E
 
 	@Override
 	public void handleEvent(EventAtualizarConteudoEvento event) {
-		
+		LOG.debug( String.format("executando listener %s ", this.getClass().getSimpleName()) );
 		AbstractController<?> newController = event.getController();
 		Panel newView = newController.getPanel();
 		

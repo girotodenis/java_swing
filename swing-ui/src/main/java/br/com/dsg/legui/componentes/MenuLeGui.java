@@ -8,12 +8,10 @@ import java.util.stream.Collectors;
 import org.joml.Vector2f;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.Panel;
-import org.liquidengine.legui.component.event.component.ChangeSizeEvent;
 import org.liquidengine.legui.event.WindowSizeEvent;
 import org.liquidengine.legui.listener.WindowSizeEventListener;
 import org.liquidengine.legui.listener.processor.EventProcessorProvider;
 import org.liquidengine.legui.theme.Theme;
-import org.liquidengine.legui.theme.Themes;
 
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEvent;
 import br.com.dsg.util.Constantes;

@@ -1,5 +1,7 @@
 package br.com.dsg.legui.controller.eventos;
 
+import org.apache.log4j.Logger;
+
 import br.com.dsg.legui.AbstractController;
 import br.com.dsg.legui.ControllerEventListener;
 import br.com.dsg.legui.ExecutarEvento;
@@ -7,12 +9,15 @@ import br.com.dsg.legui.controller.LeGuiController;
 
 public class ListenerEventVoltarController implements ControllerEventListener<EventVoltarController> {
 
+	private final static Logger LOG = Logger.getLogger(ListenerEventVoltarController.class);
 	public ListenerEventVoltarController() {
 		super();
 	}
 	
 	@Override
 	public void handleEvent(EventVoltarController event) {
+		LOG.debug( String.format("executando listener %s ", this.getClass().getSimpleName()) );
+		
 		AbstractController<?> controllerAtual = event.getController();
 		AbstractController<?> controllerAnterior = event.getController().getControllerPai();
 		
