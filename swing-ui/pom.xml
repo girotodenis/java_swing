@@ -18,6 +18,10 @@
 			<name>your custom repo</name>
 			<url>https://raw.github.com/SpinyOwl/repo/releases</url>
 		</repository>
+		 <repository>
+            <id>maven-eclipse-repo</id>
+            <url>http://maven-eclipse.github.io/maven</url>
+        </repository>
 	</repositories>
 
 	<distributionManagement>
@@ -29,6 +33,13 @@
 	</distributionManagement>
 
 	<dependencies>
+
+<dependency>
+            <groupId>org.eclipse.swt</groupId>
+            <artifactId>org.eclipse.swt.win32.win32.x86_64</artifactId>
+            <version>4.6</version>
+        </dependency>
+
 		<dependency>
 			<groupId>org.liquidengine</groupId>
 			<artifactId>legui</artifactId>

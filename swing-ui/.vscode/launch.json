@@ -6,11 +6,31 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch FileDialogExample",
+            "request": "launch",
+            "mainClass": "uia3.FileDialogExample",
+            "projectName": "swing-ui"
+        },
+        {
+            "type": "java",
+            "name": "Launch TesteStart",
+            "request": "launch",
+            "mainClass": "uia3.TesteStart",
+            "projectName": "swing-ui"
+        },
+        {
+            "type": "java",
+            "name": "Launch TesteStartTelaComMenu",
+            "request": "launch",
+            "mainClass": "uia3.TesteStartTelaComMenu",
+            "projectName": "swing-ui"
+        },
+        {
+            "type": "java",
             "name": "Debug (Launch)-Main<swing-ui>",
             "request": "launch",
-            "mainClass": "br.com.dsg.Main",
+            "mainClass": "uia3.TesteStartTelaComMenuComLogin",
             "projectName": "swing-ui"
         }
-        
     ]
 }

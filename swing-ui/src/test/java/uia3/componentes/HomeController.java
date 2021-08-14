@@ -4,15 +4,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.liquidengine.legui.component.Dialog;
-import org.liquidengine.legui.component.Label;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 
 import br.com.dsg.legui.AbstractController;
-import br.com.dsg.legui.ExecutarEvento;
 import br.com.dsg.legui.componentes.LeGuiView;
 import br.com.dsg.legui.controller.LeGuiEventos;
-import br.com.dsg.legui.controller.eventos.EventAtualizarConteudoEvento;
-import br.com.dsg.legui.controller.eventos.EventProgressBar;
 
 /**
  * @author Denis Giroto
@@ -48,12 +47,28 @@ public class HomeController extends AbstractController<HomeView> {
 		});
 
 		registerAction(getPanel().botao3, (event) -> {
-			Dialog dialog = new Dialog("Erro", 300, 100);
-			dialog.setDraggable(false);
-			dialog.setResizable(false);
-			Label erro = new Label("botão 3", 10, 10, 300, 20);
-			dialog.getContainer().add(erro);
-			dialog.show(getPanel().getFrame());
+			// Dialog dialog = new Dialog("Erro", 300, 100);
+			// dialog.setDraggable(false);
+			// dialog.setResizable(false);
+			// Label erro = new Label("botão 3", 10, 10, 300, 20);
+			// dialog.getContainer().add(erro);
+			// dialog.show(getPanel().getFrame());
+			Display d = new Display();
+			Shell s = new Shell(d);
+			s.setSize(400, 400);
+			FileDialog fd = new FileDialog(s, SWT.MULTI);
+			fd.setText("Open");
+			fd.setFilterPath("C:/");
+			String[] filterExt = { "*.txt", "*.doc", ".rtf", "*.*" };
+			fd.setFilterExtensions(filterExt);
+			String selected = fd.open();
+			System.out.println(selected);
+			String[] selectedFileNames = fd.getFileNames();
+			System.out.println(fd.getFilterPath());
+			for(String fileName : selectedFileNames) {
+				System.out.println("  " + fileName);
+			}
+			d.close();
 		});
 		
 		
